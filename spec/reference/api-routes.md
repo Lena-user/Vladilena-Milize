@@ -120,11 +120,13 @@ Số route: **120**; đường dẫn không module nào nhận trả 404 sau c�
 | `PATCH /v2/employees/:username/position` | `profile.write` | — | [`src/modules/employee-v2/employee-v2.controller.ts:151`](../../src/modules/employee-v2/employee-v2.controller.ts#L151) `patchPosition` |  |
 | `PATCH /v2/employees/:username/profile` | `profile.write` | — | [`src/modules/employee-v2/employee-v2.controller.ts:69`](../../src/modules/employee-v2/employee-v2.controller.ts#L69) `patchProfile` |  |
 | `PATCH /v2/employees/:username/shift` | `profile.write` | — | [`src/modules/employee-v2/employee-v2.controller.ts:178`](../../src/modules/employee-v2/employee-v2.controller.ts#L178) `patchShift` |  |
-| `GET /v2/requests` | đã đăng nhập | — | [`src/modules/request-v2/request-v2.controller.ts:76`](../../src/modules/request-v2/request-v2.controller.ts#L76) `listRequests` |  |
-| `GET /v2/requests/:id` | đã đăng nhập | — | [`src/modules/request-v2/request-v2.controller.ts:103`](../../src/modules/request-v2/request-v2.controller.ts#L103) `getRequest` |  |
-| `PATCH /v2/requests/:id/cancel` | đã đăng nhập | — | [`src/modules/request-v2/request-v2.controller.ts:130`](../../src/modules/request-v2/request-v2.controller.ts#L130) `cancelRequest` |  |
-| `PATCH /v2/requests/:id/review` | `request.decide.*` | — | [`src/modules/request-v2/request-v2.controller.ts:113`](../../src/modules/request-v2/request-v2.controller.ts#L113) `reviewRequest` |  |
+| `GET /v2/requests` | đã đăng nhập | — | [`src/modules/request-v2/request-v2.controller.ts:92`](../../src/modules/request-v2/request-v2.controller.ts#L92) `listRequests` |  |
+| `GET /v2/requests/:id` | đã đăng nhập | — | [`src/modules/request-v2/request-v2.controller.ts:119`](../../src/modules/request-v2/request-v2.controller.ts#L119) `getRequest` |  |
+| `PATCH /v2/requests/:id/cancel` | đã đăng nhập | — | [`src/modules/request-v2/request-v2.controller.ts:146`](../../src/modules/request-v2/request-v2.controller.ts#L146) `cancelRequest` |  |
+| `PATCH /v2/requests/:id/review` | `request.decide.*` | — | [`src/modules/request-v2/request-v2.controller.ts:129`](../../src/modules/request-v2/request-v2.controller.ts#L129) `reviewRequest` |  |
 | `POST /v2/requests/advance` | đã đăng nhập | — | [`src/modules/request-v2/request-v2.controller.ts:60`](../../src/modules/request-v2/request-v2.controller.ts#L60) `createAdvance` |  |
 | `POST /v2/requests/correction` | đã đăng nhập | — | [`src/modules/request-v2/request-v2.controller.ts:28`](../../src/modules/request-v2/request-v2.controller.ts#L28) `createCorrection` |  |
 | `POST /v2/requests/leave` | đã đăng nhập | — | [`src/modules/request-v2/request-v2.controller.ts:12`](../../src/modules/request-v2/request-v2.controller.ts#L12) `createLeave` |  |
 | `POST /v2/requests/overtime` | đã đăng nhập | — | [`src/modules/request-v2/request-v2.controller.ts:44`](../../src/modules/request-v2/request-v2.controller.ts#L44) `createOvertime` |  |
+
+**Cảnh báo:** controller khai route không có trong ROUTE_CAPS: `POST /v2/payroll/:month/calculate`, `POST /v2/payroll/:month/calculate/:employeeId`, `GET /v2/payroll/:month/:employeeId`, `GET /v2/payroll/:month`, `POST /v2/requests/explanation`

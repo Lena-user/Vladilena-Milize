@@ -10,7 +10,7 @@
   // nằm ở src/params/registry.ts; khối GENERATED dưới đây chỉ chứa GIÁ TRỊ, sinh bởi `npm run params:extract`, không sửa tay.
 
   /* GENERATED:BEGIN (scripts/params/extract-defaults.ts) */
-  const DEFAULTS: Record<string, any> = {
+  const DEFAULTS = {
     'advance.basis': 'byWorkedDays',
     'advance.eligibleTypes.ctv': true,
     'advance.eligibleTypes.nv': true,
@@ -482,11 +482,11 @@
     'law.floor.nightOtAddRate': 0.2,
     'law.floor.nightPremium': 0.3,
     'law.floor.otRate': 1.5,
-    'law.floor.weekendOtRate': 2,
     'law.floor.privateLeave.childMarriage': 1,
     'law.floor.privateLeave.death': 3,
     'law.floor.privateLeave.marriage': 3,
     'law.floor.probationPayRate': 0.85,
+    'law.floor.weekendOtRate': 2,
     'law.luongCoSo': 2530000,
     'law.region': 1,
     'law.regionMinWage.1': 5310000,

@@ -11,7 +11,7 @@ Sinh bởi `npm run params:doc` từ `src/params/registry.data.json` và `src/en
 | Khoá | Nhãn trên màn | Loại | Thành phần | Phương án | Mặc định | editableBy | Nối | Căn cứ · tầng | Đợt |
 |---|---|---|---|---|---|---|---|---|---|
 | `fixed.period.cutoff` | Kỳ công: từ ngày 1 đến cuối tháng | cố định | fixed |  |  | locked | — | Quy chế công ty | Sau |
-| `period.reportDeadlineDay` | Hạn nộp chấm công (ngày của tháng sau) | số(day) | quantity |  | 3 ngày | admin | có | Chủ dự án chốt ngày 15/10/2026 | V1-B |
+| `period.reportDeadlineDay` | Hạn nộp chấm công (ngày của tháng sau) | số(day) | quantity |  | 3 ngày | admin | chưa | Chủ dự án chốt ngày 15/10/2026 | V1-B |
 | `period.lateDeclaration` | Khai chấm công sau hạn | chọn | choice | Chỉ cảnh báo (mặc định) · Chặn [chưa có] · Chuyển kỳ sau [chưa có] | warn | admin | chưa | policy: chính sách | V2 |
 | `period.payDay` | Ngày trả lương (ngày của tháng sau) | số(day) | quantity |  | 10 ngày | admin | có | Bộ luật Lao động 2019, Điều 97 về kỳ hạn trả lương (cần pháp chế xác nhận); ngày 5 hay ngày 10 chờ C&B chốt | V1-B |
 | `period.payDayOnHoliday` | Ngày trả lương trùng ngày nghỉ | chọn | choice | Trả ngày làm việc liền trước (mặc định) · Trả ngày làm việc liền sau [chưa có] | before | admin | chưa | policy: chính sách | V1-B |
@@ -105,12 +105,12 @@ Sinh bởi `npm run params:doc` từ `src/params/registry.data.json` và `src/en
 | `attendance.missingOneSideRule` | Quên chấm một đầu (Check-in hoặc Check-out) | chọn | choice | Chờ Admin xử lý (mặc định) · Tính là vắng [chưa có] | pending | admin | có | Chủ dự án chốt ngày 14/10/2026 | V2 |
 | `attendance.missingAllRule` | Ngày có lịch mà không chấm công | chọn | choice | Tính theo lịch đã khai · Tính là vắng (mặc định) · Chờ Admin xử lý | absent | admin | có | Chủ dự án chốt ngày 14/10/2026; đổi mặc định thành "tính theo lịch đã khai" tối 23/10/2026; chốt lại ngày 28/10/2026: ngày khai đi làm mà không có Check-in/Check-out là nghỉ không phép, áp dụng từ tháng 10 | V1-B |
 | `attendance.offScheduleRule` | Đi làm ngoài lịch chưa được duyệt | chọn | choice | Không trả tiền (mặc định) · Coi như ngày đã khai · Chặn Check-in [chưa có] | unpaid | admin | có | Chủ dự án chốt ngày 14/10/2026; chờ pháp chế xem lại rủi ro | V1-B |
-| `attendance.makeupDayStepRule` | Làm bù cả ngày (TTS thứ Bảy) | chọn | choice | Trả đúng phút (mặc định) · Cắt theo bậc | exact | admin | có | policy: chính sách | V1-B |
-| `attendance.openSessionMaxHours` | Lượt Check-in mở quá … giờ thì tính là quên Check-out | số(hour) | quantity |  | 16 giờ | admin | chưa | policy: chính sách | V1-B |
-| `attendance.earlyCheckinMaxHours` | Nhận Check-in sớm hơn giờ ca tối đa … giờ | số(hour) | quantity |  | 4 giờ | admin | chưa | policy: chính sách | V1-B |
+| `attendance.makeupDayStepRule` | Làm bù cả ngày (TTS thứ Bảy) | chọn | choice | Trả đúng phút (mặc định) · Cắt theo bậc | exact | admin | chưa | policy: chính sách | V1-B |
+| `attendance.openSessionMaxHours` | Lượt Check-in mở quá … giờ thì tính là quên Check-out | số(hour) | quantity |  | 16 giờ | admin | có | policy: chính sách | V1-B |
+| `attendance.earlyCheckinMaxHours` | Nhận Check-in sớm hơn giờ ca tối đa … giờ | số(hour) | quantity |  | 4 giờ | admin | có | policy: chính sách | V1-B |
 | `geofence.outside` | Check-in ngoài vùng GPS | chọn | choice | Chặn (mặc định) · Cho chấm nhưng chờ duyệt [chưa có] | block | admin | chưa | policy: chính sách; không bao giờ lưu toạ độ (cố định) | V2 |
 | `attendance.beyondShiftRule`, `attendance.extraWindowRule`, `attendance.extraSourceRule`, `attendance.futureDaysRule`, `attendance.declaredLeaveRule`, `attendance.undeclaredPunchRule` | Luật chấm công đã chốt (7 điều) | cố định | fixed |  | attendance.beyondShiftRule: cap8; attendance.declaredLeaveRule: declared; attendance.extraSourceRule: calendar … (+3) | locked | — | Chủ dự án chốt ngày 14/10/2026 và 15/10/2026 | Sau |
-| `shift.preset.<code>.in`, `shift.preset.<code>.out` | Ca cố định (6 ca) | bảng | table |  | f1.in: 06:00; f1.out: 15:00; f2.in: 13:00 … (+9) | admin | có | policy: chính sách | V1-B |
+| `shift.preset.<code>.in`, `shift.preset.<code>.out` | Ca cố định (6 ca) | bảng | table |  | f1.in: 06:00; f1.out: 15:00; f2.in: 13:00 … (+9) | admin | chưa | policy: chính sách | V1-B |
 | `time.workHoursPerDay` | Giờ làm việc mỗi công | cố định(hour) | fixed |  | 8 giờ | locked | — | Bộ luật Lao động 2019, Điều 105 (cần pháp chế xác nhận) | Sau |
 | `time.maxSpanHours` | Ca tối đa từ giờ vào đến giờ ra | cố định(hour) | fixed |  | 9 giờ | locked | — | Quy chế công ty | Sau |
 | `time.breakAfterWorkHours`, `time.breakHours` | Làm … giờ thì nghỉ … giờ | cố định(hour) | fixed |  | time.breakAfterWorkHours: 4 giờ; time.breakHours: 1 giờ | locked | — | Bộ luật Lao động 2019, Điều 109 (cần pháp chế xác nhận) | Sau |
@@ -126,7 +126,7 @@ Sinh bởi `npm run params:doc` từ `src/params/registry.data.json` và `src/en
 | `fixed.leave.seniority` | Thâm niên: +1 ngày mỗi 5 năm làm việc | cố định | fixed |  |  | locked | — | Bộ luật Lao động 2019, Điều 114 (cần pháp chế xác nhận) | V2 |
 | `leave.accrual.start` | Phép cộng ngày đầu đi làm | số(day) | quantity |  | 0 ngày | admin | có | Chủ dự án 23/10/2026 (Bộ luật Lao động 45/2019/QH14 Điều 113: theo tỷ lệ tháng làm việc; cần pháp chế xác nhận) | V1-B |
 | `leave.accrual.perMonth` | Phép cộng mỗi tháng tròn | số(day) | quantity |  | 1 ngày | admin | có | ceiling: Bộ luật Lao động 2019, Điều 113 | V1-B |
-| `leave.accrual.birthday` | Phép cộng vào ngày sinh nhật | số(day) | quantity |  | 1 ngày | admin | có | Quy chế phúc lợi GFT (iFourteen: từ cấp Nhân viên trở lên); chủ dự án 26/10/2026 (THAO-LUAN Đ40) | V1-B |
+| `leave.accrual.birthday` | Phép cộng vào ngày sinh nhật | số(day) | quantity |  | 1 ngày | admin | có | Quy chế phúc lợi GFT (iFourteen: từ cấp Nhân viên trở lên); chủ dự án 26/10/2026 | V1-B |
 | `leave.birthdayMode` | Phép sinh nhật hoặc iFourteen | chọn | choice | Cộng vào phép năm (mặc định) · Kho riêng [chưa có] | addToAnnual | admin | chưa | Lead chốt ngày 15/10/2026 giữ phép năm như app và thêm iFourteen; chi tiết chờ lead trả lời | V2 |
 | `fixed.leave.expiry` | Phép hết hạn cuối tháng 1 năm sau, quy tiền vào lương tháng 2 | cố định | fixed |  |  | locked | — | Đề xuất, chờ C&B chốt | Sau |
 | `leave.settleMethod` | Cách quyết toán phép còn lại khi nghỉ việc (luật: phép còn lại được trả) | chọn | choice | Admin nhập tay (mặc định) · Tự tính [chưa có] | manual | admin | chưa | policy: Bộ luật Lao động 2019, Điều 113 khoản 3 | V2 |
@@ -146,8 +146,8 @@ Sinh bởi `npm run params:doc` từ `src/params/registry.data.json` và `src/en
 | Khoá | Nhãn trên màn | Loại | Thành phần | Phương án | Mặc định | editableBy | Nối | Căn cứ · tầng | Đợt |
 |---|---|---|---|---|---|---|---|---|---|
 | `fixed.kpi.cycle` | Chu kỳ KPI: hằng tháng | cố định | fixed |  |  | locked | — | Lead chốt ngày 15/10/2026 | Sau |
-| `kpi.weight.wework`, `kpi.weight.user`, `kpi.weight.peer`, `kpi.weight.manager`, `kpi.weight.self` | Trọng số: Base Wework, người dùng, đồng nghiệp, quản lý trực tiếp, tự đánh giá | bảng | table |  | weight.manager: 12; weight.peer: 18; weight.self: 6 … (+2) | admin | chưa | structure: Quy chế lương 3P; tổng ≠ 100 là cứng | V1-B |
-| `kpi.weworkMin` | Điều kiện đạt: Base Wework từ … điểm | số(percentPoints) | percent |  | 75 % | admin | chưa | Quy chế lương 3P | V1-B |
+| `kpi.weight.wework`, `kpi.weight.user`, `kpi.weight.peer`, `kpi.weight.manager`, `kpi.weight.self` | Trọng số: Base Wework, người dùng, đồng nghiệp, quản lý trực tiếp, tự đánh giá | bảng | table |  | weight.manager: 12; weight.peer: 18; weight.self: 6 … (+2) | admin | có | structure: Quy chế lương 3P; tổng ≠ 100 là cứng | V1-B |
+| `kpi.weworkMin` | Điều kiện đạt: Base Wework từ … điểm | số(percentPoints) | percent |  | 75 % | admin | có | Quy chế lương 3P | V1-B |
 | `type.<type>.kpiPass` | Điều kiện đạt: tổng từ … % | số(percentPoints) | percent |  | ctv.kpiPass: 75 %; nv.kpiPass: 75 % | admin | có | Quy chế lương 3P | V1-B |
 | `kpi.belowPassRule` | Tổng dưới mức đạt | chọn | choice | KPI = 0 (mặc định) · Vẫn trả theo % [chưa có] · Theo bậc [chưa có] | zero | admin | có | Quy chế lương 3P; chờ lead trả lời về cách trả theo bậc | V2 |
 | `kpi.weworkGateRule` | Base Wework dưới mức đạt | chọn | choice | KPI = 0 (mặc định) · Chỉ cảnh báo [chưa có] | zero | admin | có | Quy chế lương 3P; chờ lead trả lời | V2 |
@@ -214,28 +214,28 @@ Sinh bởi `npm run params:doc` từ `src/params/registry.data.json` và `src/en
 
 | Khoá | Nhãn trên màn | Loại | Thành phần | Phương án | Mặc định | editableBy | Nối | Căn cứ · tầng | Đợt |
 |---|---|---|---|---|---|---|---|---|---|
-| `ai.threshold.isatPerMonth` | iSAT: gắn cờ từ … lần mỗi tháng | số(times) | quantity |  | rỗng | admin | có | Đề xuất, chờ C&B chốt | V1-B |
-| `ai.threshold.approvedLeavePerMonth` | "Nghỉ được duyệt": từ … lần mỗi tháng | số(times) | quantity |  | rỗng | admin | có | Đề xuất, chờ C&B chốt | V1-B |
-| `ai.threshold.rejectedLookbackDays` | Khoản cùng loại bị từ chối trong … ngày gần nhất | số(day) | quantity |  | rỗng | admin | có | Đề xuất, chờ C&B chốt | V1-B |
-| `ai.threshold.repeatedEditsRev` | Khoản chờ duyệt đã đổi từ … lần (rev) | số(count) | quantity |  | rỗng | admin | có | Đề xuất, chờ C&B chốt | V1-B |
-| `ai.threshold.presenceGapMin` | Lệch giờ khai và Check-in từ … phút | số(minute) | quantity |  | rỗng | admin | có | Đề xuất, chờ C&B chốt | V1-B |
-| `ai.threshold.otMedianFactor` | OT của một người từ … lần trung vị nhóm | số(count) | quantity |  | rỗng | admin | có | Đề xuất, chờ C&B chốt | V1-B |
-| `ai.threshold.otMedianMinHours` | và ít nhất … giờ OT trong tháng | số(hour) | quantity |  | rỗng | admin | có | Đề xuất, chờ C&B chốt | V1-B |
-| `ai.threshold.otMedianMinPeers` | chỉ so khi có ít nhất … người có OT | số(count) | quantity |  | rỗng | admin | có | Đề xuất, chờ C&B chốt | V1-B |
-| `ai.threshold.impactVnd` | "Tác động tiền lớn" từ … ₫ | số(vnd) | money |  | rỗng | admin | có | Đề xuất, chờ C&B chốt | V1-B |
-| `ai.threshold.slipDiffVnd` | Số sửa trên phiếu lệch từ … ₫ | số(vnd) | money |  | rỗng | admin | có | Đề xuất, chờ C&B chốt | V1-B |
-| `ai.threshold.slipDiffRatio` | và lệch từ … % so với số tự tính | số(ratio) | percent |  | rỗng | admin | có | Đề xuất, chờ C&B chốt | V1-B |
-| `ai.threshold.kpiFullMonths` | Tự chấm KPI 100 % từ … tháng liền | số(month) | quantity |  | rỗng | admin | có | Đề xuất, chờ C&B chốt | V1-B |
-| `ai.threshold.netChangePct` | Thực nhận đổi quá … % so với tháng trước | số(ratio) | percent |  | rỗng | admin | có | Chủ dự án chốt mức 20% | V1-B |
-| `ai.rule.<id>.enabled` | Bật luật cảnh báo | chọn | toggle | Bật (mặc định) · Tắt | rỗng | admin | có | Chính sách công ty, do C&B chọn | V1-B |
+| `ai.threshold.isatPerMonth` | iSAT: gắn cờ từ … lần mỗi tháng | số(times) | quantity |  | rỗng | admin | chưa | Đề xuất, chờ C&B chốt | V1-B |
+| `ai.threshold.approvedLeavePerMonth` | "Nghỉ được duyệt": từ … lần mỗi tháng | số(times) | quantity |  | rỗng | admin | chưa | Đề xuất, chờ C&B chốt | V1-B |
+| `ai.threshold.rejectedLookbackDays` | Khoản cùng loại bị từ chối trong … ngày gần nhất | số(day) | quantity |  | rỗng | admin | chưa | Đề xuất, chờ C&B chốt | V1-B |
+| `ai.threshold.repeatedEditsRev` | Khoản chờ duyệt đã đổi từ … lần (rev) | số(count) | quantity |  | rỗng | admin | chưa | Đề xuất, chờ C&B chốt | V1-B |
+| `ai.threshold.presenceGapMin` | Lệch giờ khai và Check-in từ … phút | số(minute) | quantity |  | rỗng | admin | chưa | Đề xuất, chờ C&B chốt | V1-B |
+| `ai.threshold.otMedianFactor` | OT của một người từ … lần trung vị nhóm | số(count) | quantity |  | rỗng | admin | chưa | Đề xuất, chờ C&B chốt | V1-B |
+| `ai.threshold.otMedianMinHours` | và ít nhất … giờ OT trong tháng | số(hour) | quantity |  | rỗng | admin | chưa | Đề xuất, chờ C&B chốt | V1-B |
+| `ai.threshold.otMedianMinPeers` | chỉ so khi có ít nhất … người có OT | số(count) | quantity |  | rỗng | admin | chưa | Đề xuất, chờ C&B chốt | V1-B |
+| `ai.threshold.impactVnd` | "Tác động tiền lớn" từ … ₫ | số(vnd) | money |  | rỗng | admin | chưa | Đề xuất, chờ C&B chốt | V1-B |
+| `ai.threshold.slipDiffVnd` | Số sửa trên phiếu lệch từ … ₫ | số(vnd) | money |  | rỗng | admin | chưa | Đề xuất, chờ C&B chốt | V1-B |
+| `ai.threshold.slipDiffRatio` | và lệch từ … % so với số tự tính | số(ratio) | percent |  | rỗng | admin | chưa | Đề xuất, chờ C&B chốt | V1-B |
+| `ai.threshold.kpiFullMonths` | Tự chấm KPI 100 % từ … tháng liền | số(month) | quantity |  | rỗng | admin | chưa | Đề xuất, chờ C&B chốt | V1-B |
+| `ai.threshold.netChangePct` | Thực nhận đổi quá … % so với tháng trước | số(ratio) | percent |  | rỗng | admin | chưa | Chủ dự án chốt mức 20% | V1-B |
+| `ai.rule.<id>.enabled` | Bật luật cảnh báo | chọn | toggle | Bật (mặc định) · Tắt | rỗng | admin | chưa | Chính sách công ty, do C&B chọn | V1-B |
 | `fixed.ai.dismissReason` | Bỏ qua cảnh báo bắt buộc ghi lý do | cố định | fixed |  |  | locked | — | Điều khiển bắt buộc của hệ thống |  |
 | `fixed.ai.lock` | AI không chạy thì khoá duyệt cả lô | cố định | fixed |  |  | locked | — | Điều khiển bắt buộc của hệ thống |  |
 | `fixed.ai.local` | AI chỉ chạy trong công ty, chỉ gợi ý | cố định | fixed |  |  | locked | — | Chủ dự án chốt ngày 14/10/2026 |  |
 | `ai.limit.evidenceListMax` | AI: số mục tối đa trong một danh sách ở bằng chứng của phát hiện | số(count) | quantity |  | rỗng | ops | — | Cấu hình kỹ thuật, do bộ phận vận hành đặt | V1-A đọc |
-| `ai.threshold.paramChangePeoplePct` | Công thức hoặc tham số đổi làm đổi thực nhận từ … % số người thì gắn "Cần xem" | số(ratio) | percent |  | rỗng | admin | có | Đề xuất, chờ C&B chốt | V1-B |
-| `ai.threshold.formulaChangeTotalVnd` | Thay đổi cài đặt làm đổi tổng thực nhận từ … ₫ thì gắn "Cần xem" | số(vnd) | money |  | rỗng | admin | có | Đề xuất, chờ C&B chốt | V1-B |
-| `ai.threshold.overrideEntryRoundVnd` | Số sửa phiếu tăng đúng bội của … ₫ thì gắn "giống khoản cộng thêm" | số(vnd) | money |  | rỗng | admin | có | Đề xuất, chờ C&B chốt | V1-B |
-| `ai.threshold.scopeLeakMinPeople` | Thay đổi cho một chức vụ chạm từ … người ngoài chức vụ thì gắn "Cần xem" | số(count) | quantity |  | rỗng | admin | có | Đề xuất, chờ C&B chốt | V1-B |
+| `ai.threshold.paramChangePeoplePct` | Công thức hoặc tham số đổi làm đổi thực nhận từ … % số người thì gắn "Cần xem" | số(ratio) | percent |  | rỗng | admin | chưa | Đề xuất, chờ C&B chốt | V1-B |
+| `ai.threshold.formulaChangeTotalVnd` | Thay đổi cài đặt làm đổi tổng thực nhận từ … ₫ thì gắn "Cần xem" | số(vnd) | money |  | rỗng | admin | chưa | Đề xuất, chờ C&B chốt | V1-B |
+| `ai.threshold.overrideEntryRoundVnd` | Số sửa phiếu tăng đúng bội của … ₫ thì gắn "giống khoản cộng thêm" | số(vnd) | money |  | rỗng | admin | chưa | Đề xuất, chờ C&B chốt | V1-B |
+| `ai.threshold.scopeLeakMinPeople` | Thay đổi cho một chức vụ chạm từ … người ngoài chức vụ thì gắn "Cần xem" | số(count) | quantity |  | rỗng | admin | chưa | Đề xuất, chờ C&B chốt | V1-B |
 
 ## Nhóm 12. Phiếu lương
 

@@ -4,36 +4,36 @@
  */
 
 export interface DailyAttendanceLineProps {
-  date: string;                  // YYYY-MM-DD
-  dayOfWeekText: string;         // e.g. "Thứ 5, 01/10"
-  shiftCode: string;             // 'NORMAL' | 'FLEX' | 'NIGHT' | 'LEAVE' | 'ISAT' | 'UNPAID' | ...
-  shiftLabel: string;            // 'Normal', 'Flex +20%', 'Night +40%', 'Nghỉ phép', 'iSAT', 'Không lương'
-  inOutText: string;             // "08:00–17:00", "08:15–17:00", "Hưởng lương ngày", "Không tính lương"
-  workHours: number;             // e.g. 8, 7.75, 7.67, 0
-  daySalary: number;             // Base salary / standardWorkdays
-  flexAllowancePay: number;      // e.g. 46.154
-  nightAllowancePay: number;     // e.g. 92.308
-  offPaidPay: number;            // 37.500 for night shift
-  otHours: number;               // e.g. 2, 3
-  otPay: number;                 // e.g. 115.385, 173.077
-  otNote?: string;               // e.g. "2 giờ, đến 19:00"
-  deductionHours: number;        // e.g. 0.25, 0.33
-  deductionAmount: number;       // e.g. 7.212, 9.615
-  dailyTotal: number;            // daySalary + flexAllowancePay + nightAllowancePay + offPaidPay + otPay - deductionAmount
+  date: string; // YYYY-MM-DD
+  dayOfWeekText: string; // e.g. "Thứ 5, 01/10"
+  shiftCode: string; // 'NORMAL' | 'FLEX' | 'NIGHT' | 'LEAVE' | 'ISAT' | 'UNPAID' | ...
+  shiftLabel: string; // 'Normal', 'Flex +20%', 'Night +40%', 'Nghỉ phép', 'iSAT', 'Không lương'
+  inOutText: string; // "08:00–17:00", "08:15–17:00", "Hưởng lương ngày", "Không tính lương"
+  workHours: number; // e.g. 8, 7.75, 7.67, 0
+  daySalary: number; // Base salary / standardWorkdays
+  flexAllowancePay: number; // e.g. 46.154
+  nightAllowancePay: number; // e.g. 92.308
+  offPaidPay: number; // 37.500 for night shift
+  otHours: number; // e.g. 2, 3
+  otPay: number; // e.g. 115.385, 173.077
+  otNote?: string; // e.g. "2 giờ, đến 19:00"
+  deductionHours: number; // e.g. 0.25, 0.33
+  deductionAmount: number; // e.g. 7.212, 9.615
+  dailyTotal: number; // daySalary + flexAllowancePay + nightAllowancePay + offPaidPay + otPay - deductionAmount
 }
 
 export interface KpiScores {
-  wework: number;    // Weight: 40% (0.0 to 1.0)
-  user: number;      // Weight: 24%
-  peer: number;      // Weight: 18%
-  manager: number;   // Weight: 12%
-  self: number;      // Weight: 6%
+  wework: number; // Weight: 40% (0.0 to 1.0)
+  user: number; // Weight: 24%
+  peer: number; // Weight: 18%
+  manager: number; // Weight: 12%
+  self: number; // Weight: 6%
 }
 
 export interface OtHoursByRate {
-  x15?: number;      // 150% rate
-  x20?: number;      // 200% rate
-  x30?: number;      // 300% rate
+  x15?: number; // 150% rate
+  x20?: number; // 200% rate
+  x30?: number; // 300% rate
 }
 
 export interface EmployeePayslipProps {
@@ -41,9 +41,9 @@ export interface EmployeePayslipProps {
   fullName: string;
   positionLevelText: string;
   contractStatusText: string;
-  month: string;                     // "YYYY-MM"
-  standardWorkdays?: number;         // default 26
-  baseSalaryPolicy: number;          // e.g. 6,000,000
+  month: string; // "YYYY-MM"
+  standardWorkdays?: number; // default 26
+  baseSalaryPolicy: number; // e.g. 6,000,000
   dailyLines: DailyAttendanceLineProps[];
   otHoursByRate?: OtHoursByRate;
   lateEarlyHours?: number;
@@ -270,28 +270,28 @@ export class EmployeePayslip {
     this.ot15Hours = props.otHoursByRate?.x15 ?? 0;
     this.ot20Hours = props.otHoursByRate?.x20 ?? 0;
     this.ot30Hours = props.otHoursByRate?.x30 ?? 0;
-    this.totalOtHours = (this.ot15Hours + this.ot20Hours + this.ot30Hours) || totalLineOtHours;
+    this.totalOtHours = this.ot15Hours + this.ot20Hours + this.ot30Hours || totalLineOtHours;
 
     this.otPayTotal = Math.round(
-      this.ot15Hours * hourRate * 1.5 +
-      this.ot20Hours * hourRate * 2.0 +
-      this.ot30Hours * hourRate * 3.0
+      this.ot15Hours * hourRate * 1.5 + this.ot20Hours * hourRate * 2.0 + this.ot30Hours * hourRate * 3.0
     );
 
     // Block 4: Allowances
     // Policy values
     this.attendanceAllowancePolicy = Math.round(this.baseSalaryPolicy * 0.25); // 25%
-    this.travelAllowancePolicy = Math.round(this.baseSalaryPolicy * 0.15);     // 15%
-    this.flexAllowancePolicy = Math.round(this.baseSalaryPolicy * 0.20);       // 20%
-    this.offPaidNightPolicy = this.standardWorkdays * 37500;                  // 37.500/night
-    this.nightAllowancePolicy = Math.round(this.baseSalaryPolicy * 0.40);      // 40%
+    this.travelAllowancePolicy = Math.round(this.baseSalaryPolicy * 0.15); // 15%
+    this.flexAllowancePolicy = Math.round(this.baseSalaryPolicy * 0.2); // 20%
+    this.offPaidNightPolicy = this.standardWorkdays * 37500; // 37.500/night
+    this.nightAllowancePolicy = Math.round(this.baseSalaryPolicy * 0.4); // 40%
 
     // Actual values
-    this.attendanceAllowanceActual = Math.round((this.actualWorkDays / this.standardWorkdays) * this.attendanceAllowancePolicy);
+    this.attendanceAllowanceActual = Math.round(
+      (this.actualWorkDays / this.standardWorkdays) * this.attendanceAllowancePolicy
+    );
     this.travelAllowanceActual = Math.round((this.actualWorkDays / this.standardWorkdays) * this.travelAllowancePolicy);
-    this.flexAllowanceActual = Math.round(this.flexShiftCount * 0.20 * dayRate);
+    this.flexAllowanceActual = Math.round(this.flexShiftCount * 0.2 * dayRate);
     this.offPaidNightActual = this.nightShiftCount * 37500;
-    this.nightAllowanceActual = Math.round(this.nightShiftCount * 0.40 * dayRate);
+    this.nightAllowanceActual = Math.round(this.nightShiftCount * 0.4 * dayRate);
     this.totalAllowanceActual =
       this.attendanceAllowanceActual +
       this.travelAllowanceActual +
@@ -309,7 +309,7 @@ export class EmployeePayslip {
     };
 
     const weightedScore =
-      this.kpiScores.wework * 0.40 +
+      this.kpiScores.wework * 0.4 +
       this.kpiScores.user * 0.24 +
       this.kpiScores.peer * 0.18 +
       this.kpiScores.manager * 0.12 +
@@ -320,7 +320,7 @@ export class EmployeePayslip {
     this.kpiActualPay = Math.round(this.kpiMaxSalary * this.kpiTotalScorePct);
 
     // Block 6: Late / Early deductions
-    this.lateEarlyHours = props.lateEarlyHours ?? (Math.round(totalDeductionHours * 100) / 100);
+    this.lateEarlyHours = props.lateEarlyHours ?? Math.round(totalDeductionHours * 100) / 100;
     if (props.lateEarlyDeductionAmount !== undefined) {
       this.lateEarlyDeductionAmount = props.lateEarlyDeductionAmount;
     } else if (Math.abs(this.lateEarlyHours - 0.58) < 0.005) {
@@ -342,9 +342,7 @@ export class EmployeePayslip {
       this.kpiActualPay +
       this.lateEarlyDeductionAmount; // already negative
 
-    this.taxExemptIncome = props.taxExemptIncome ?? (
-      this.flexAllowanceActual + this.travelAllowanceActual + 34615
-    );
+    this.taxExemptIncome = props.taxExemptIncome ?? this.flexAllowanceActual + this.travelAllowanceActual + 34615;
     this.taxableIncome = this.grossIncome - this.taxExemptIncome;
 
     // 10.5% mandatory social, health, and unemployment insurance
@@ -354,11 +352,7 @@ export class EmployeePayslip {
     this.personalIncomeTax = props.personalIncomeTax ?? 0;
     this.advanceDeduction = props.advanceDeduction ?? 0;
 
-    this.netIncome =
-      this.grossIncome -
-      this.insuranceDeduction -
-      this.personalIncomeTax -
-      this.advanceDeduction;
+    this.netIncome = this.grossIncome - this.insuranceDeduction - this.personalIncomeTax - this.advanceDeduction;
 
     // Block 8: Balance
     this.remainingAnnualLeaveDays = props.remainingAnnualLeaveDays ?? 0;

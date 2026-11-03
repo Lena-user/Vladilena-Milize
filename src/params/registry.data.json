@@ -148,7 +148,7 @@
         "max": 10,
         "help": "Không đổi tiền; dùng để nhắc hạn nộp chấm công và để AI gắn cờ khai sau hạn."
       },
-      "wired": true,
+      "wired": false,
       "devNote": {
         "help": "Không đổi tiền; dùng để nhắc và cho cờ AI \"khai sau hạn\"",
         "basis": "chủ dự án 15/10 (LUAT-DU-AN.md khung đầu)",
@@ -3660,7 +3660,7 @@
         "unit": null,
         "help": "Chọn trả đúng số phút hay cắt theo bậc như đi trễ cho làm bù cả ngày."
       },
-      "wired": true,
+      "wired": false,
       "devNote": {
         "help": "Trả đúng phút (mặc định). Cắt theo bậc như đi trễ",
         "basis": "chính sách",
@@ -3707,7 +3707,7 @@
         "max": 24,
         "help": "Lượt Check-in mở quá số giờ này tự đóng thành quên Check-out và chờ Admin xử lý."
       },
-      "wired": false,
+      "wired": true,
       "devNote": {
         "help": "Lượt đóng tự động thành \"quên Check-out\" chờ Admin",
         "basis": "chính sách",
@@ -3754,7 +3754,7 @@
         "max": 12,
         "help": "Check-in sớm hơn giờ ca quá mức này bị từ chối vì ngoài ca cố định."
       },
-      "wired": false,
+      "wired": true,
       "devNote": {
         "help": "Sớm hơn mức này bị từ chối (\"Ngoài ca cố định\")",
         "basis": "chính sách",
@@ -3947,7 +3947,15 @@
         "legalBasis": null
       },
       "component": "process",
-      "wired": true
+      "wired": false,
+      "unwiredKeys": [
+        "shift.preset.f1.out",
+        "shift.preset.f2.out",
+        "shift.preset.g1.out",
+        "shift.preset.g2.out",
+        "shift.preset.n1.out",
+        "shift.preset.n2.out"
+      ]
     },
     {
       "id": "time.workHoursPerDay",
@@ -4329,7 +4337,7 @@
       "keys": ["leave.accrual.birthday"],
       "valueBearing": true,
       "help": "Số ngày phép cộng vào mỗi lần sinh nhật, chỉ cho cấp Nhân viên (type nv) — iFourteen của quy chế phúc lợi; CTV và TTS không có ngày này.",
-      "basis": "Quy chế phúc lợi GFT (iFourteen: từ cấp Nhân viên trở lên); chủ dự án 26/10/2026 (THAO-LUAN Đ40)",
+      "basis": "Quy chế phúc lợi GFT (iFourteen: từ cấp Nhân viên trở lên); chủ dự án 26/10/2026",
       "defaultNote": "1",
       "capability": "config.payroll",
       "phase": "V1-B",
@@ -4989,7 +4997,7 @@
           "message": "Tổng trọng số của năm thành phần KPI phải bằng 100"
         }
       ],
-      "wired": false,
+      "wired": true,
       "devNote": {
         "help": "Tổng điểm = Σ điểm × trọng số; đổi trọng số đổi KPI mọi người",
         "basis": "Quy chế lương 3P; tổng ≠ 100 là cứng",
@@ -5033,7 +5041,7 @@
         "max": 100,
         "help": "Điểm Base Wework dưới mức này thì KPI tháng bằng 0 theo cách xử lý đã chọn."
       },
-      "wired": false,
+      "wired": true,
       "devNote": {
         "help": "Dưới mức này KPI tháng = 0 (theo kpi.weworkGateRule)",
         "basis": "Quy chế lương 3P",
@@ -7208,7 +7216,7 @@
         "max": 31,
         "help": "AI gắn cờ nhân sự khai iSAT từ số lần này trong tháng; không đổi tiền."
       },
-      "wired": true,
+      "wired": false,
       "devNote": {
         "help": "đề xuất (demo ghi 3)",
         "basis": "",
@@ -7253,7 +7261,7 @@
         "max": 31,
         "help": "AI gắn cờ nhân sự khai Nghỉ được duyệt từ số lần này trong tháng; không đổi tiền."
       },
-      "wired": true,
+      "wired": false,
       "devNote": {
         "help": "đề xuất",
         "basis": "",
@@ -7298,7 +7306,7 @@
         "max": 365,
         "help": "AI gắn cờ khoản vừa khai nếu khoản cùng loại bị từ chối trong số ngày gần nhất này; không đổi tiền."
       },
-      "wired": true,
+      "wired": false,
       "devNote": {
         "help": "đề xuất",
         "basis": "",
@@ -7343,7 +7351,7 @@
         "max": 20,
         "help": "AI gắn cờ khoản chờ duyệt đã bị sửa từ số lần này; không đổi tiền."
       },
-      "wired": true,
+      "wired": false,
       "devNote": {
         "help": "đề xuất",
         "basis": "",
@@ -7388,7 +7396,7 @@
         "max": 240,
         "help": "AI gắn cờ khi giờ khai làm thêm lệch giờ Check-in từ số phút này; không đổi tiền."
       },
-      "wired": true,
+      "wired": false,
       "devNote": {
         "help": "đề xuất",
         "basis": "",
@@ -7433,7 +7441,7 @@
         "max": 10,
         "help": "AI gắn cờ nhân sự có OT từ số lần này so với trung vị của nhóm; không đổi tiền."
       },
-      "wired": true,
+      "wired": false,
       "devNote": {
         "help": "đề xuất",
         "basis": "",
@@ -7478,7 +7486,7 @@
         "max": 100,
         "help": "Chỉ gắn cờ OT cao so với nhóm khi người đó có ít nhất số giờ OT này trong tháng."
       },
-      "wired": true,
+      "wired": false,
       "devNote": {
         "help": "đề xuất",
         "basis": "",
@@ -7523,7 +7531,7 @@
         "max": 100,
         "help": "Chỉ so với trung vị khi nhóm có ít nhất số người có OT này."
       },
-      "wired": true,
+      "wired": false,
       "devNote": {
         "help": "đề xuất",
         "basis": "",
@@ -7566,7 +7574,7 @@
         "min": 0,
         "help": "AI gắn cờ khoản làm đổi tiền của một người từ mức này; không đổi tiền."
       },
-      "wired": true,
+      "wired": false,
       "devNote": {
         "help": "đề xuất",
         "basis": "",
@@ -7609,7 +7617,7 @@
         "min": 0,
         "help": "AI gắn cờ số Admin sửa trên phiếu khi lệch so với số tự tính từ mức tiền này, đồng thời từ mức phần trăm ở dòng dưới."
       },
-      "wired": true,
+      "wired": false,
       "devNote": {
         "help": "đề xuất",
         "basis": "",
@@ -7654,7 +7662,7 @@
         "max": 1,
         "help": "Phần trăm lệch so với số tự tính; AI chỉ gắn cờ khi vượt cả mức tiền và mức phần trăm."
       },
-      "wired": true,
+      "wired": false,
       "devNote": {
         "help": "đề xuất (demo ghi 10 %)",
         "basis": "",
@@ -7699,7 +7707,7 @@
         "max": 12,
         "help": "AI gắn cờ nhân sự tự chấm KPI 100% liên tiếp từ số tháng này khi chưa được duyệt."
       },
-      "wired": true,
+      "wired": false,
       "devNote": {
         "help": "đề xuất",
         "basis": "",
@@ -7744,7 +7752,7 @@
         "max": 1,
         "help": "AI gắn cờ khi thực nhận của một người đổi quá mức này so với tháng trước; không đổi tiền."
       },
-      "wired": true,
+      "wired": false,
       "devNote": {
         "help": "đề xuất (D18); luật mới, chạy khi có bản chụp tháng trước",
         "basis": "",
@@ -7795,7 +7803,7 @@
         "unit": null,
         "help": "Bật hay tắt từng luật cảnh báo của AI; luật bị tắt không chạy và được ghi là Admin tắt."
       },
-      "wired": true,
+      "wired": false,
       "devNote": {
         "help": "Bật (mặc định). Tắt: không chạy, ghi skipped: \"Admin tắt\"",
         "basis": "",
@@ -12428,7 +12436,7 @@
         "min": 0.01,
         "max": 1
       },
-      "wired": true,
+      "wired": false,
       "devNote": {
         "help": "đề xuất; luật mới, chạy khi có bản chụp tháng trước",
         "basis": "",
@@ -13123,7 +13131,7 @@
         "min": 0,
         "help": "Khi xem trước một thay đổi, AI gợi ý xem lại nếu tổng thực nhận của mọi người đổi từ mức này; không chặn, không đổi tiền."
       },
-      "wired": true,
+      "wired": false,
       "devNote": {
         "help": "Khi xem trước một thay đổi, AI gợi ý xem lại nếu tổng thực nhận của mọi người đổi từ mức này; không chặn, không đổi tiền.",
         "basis": "",
@@ -13166,7 +13174,7 @@
         "min": 0,
         "help": "AI gợi ý khi số sửa trên phiếu tăng so với số tự tính đúng bội của mức này, vì trông như một khoản cộng thêm; không đổi tiền."
       },
-      "wired": true,
+      "wired": false,
       "devNote": {
         "help": "AI gợi ý khi số sửa trên phiếu tăng so với số tự tính đúng bội của mức này, vì trông như một khoản cộng thêm; không đổi tiền.",
         "basis": "",
@@ -13209,7 +13217,7 @@
         "min": 1,
         "help": "AI gợi ý khi thay đổi dành cho một chức vụ lại làm đổi tiền của người ngoài chức vụ đó; không chặn, không đổi tiền."
       },
-      "wired": true,
+      "wired": false,
       "devNote": {
         "help": "AI gợi ý khi thay đổi dành cho một chức vụ lại làm đổi tiền của người ngoài chức vụ đó; không chặn, không đổi tiền.",
         "basis": "",

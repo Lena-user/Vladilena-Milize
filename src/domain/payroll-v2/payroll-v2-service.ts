@@ -1,8 +1,27 @@
-import { EmployeePayslip, DailyAttendanceLineProps, KpiScores } from './employee-payslip';
+import { EmployeePayslip, DailyAttendanceLineProps, KpiScores, EmployeePayslipSummaryDTO } from './employee-payslip';
 import { PayrollV2Repository } from '../../data/payroll-v2.repository';
 
 export class PayrollV2Service {
   constructor(private readonly repo: PayrollV2Repository) {}
+
+  async generatePeriodPayslips(month: string, employeeIds?: string[]): Promise<EmployeePayslipSummaryDTO[]> {
+    let targets = employeeIds;
+    if (!targets || targets.length === 0) {
+      const staffList = await this.repo.listEligibleEmployees();
+      targets = staffList.map(s => s.uuid);
+    }
+
+    const summaries: EmployeePayslipSummaryDTO[] = [];
+    for (const empId of targets) {
+      try {
+        const payslip = await this.generateMonthlyPayslip(empId, month);
+        summaries.push(payslip.toSummary());
+      } catch {
+        // Skip records that cannot be calculated
+      }
+    }
+    return summaries;
+  }
 
   async generateMonthlyPayslip(employeeId: string, month: string): Promise<EmployeePayslip> {
     const data = await this.repo.getMonthlyData(employeeId, month);
@@ -31,11 +50,11 @@ export class PayrollV2Service {
 
       if (shiftCode === 'FLEX') {
         shiftLabel = 'Flex +20%';
-        flexAllowancePay = Math.round(0.20 * dayRate);
+        flexAllowancePay = Math.round(0.2 * dayRate);
         daySalary = Math.round(dayRate);
       } else if (shiftCode === 'NIGHT') {
         shiftLabel = 'Night +40%';
-        nightAllowancePay = Math.round(0.40 * dayRate);
+        nightAllowancePay = Math.round(0.4 * dayRate);
         offPaidPay = 37500;
         inOutText = '22:00–06:00';
         daySalary = Math.round(dayRate);

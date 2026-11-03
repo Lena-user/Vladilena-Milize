@@ -53,6 +53,21 @@ export interface EmployeeMonthlyRawData {
 export class PayrollV2Repository {
   constructor(private readonly qb: Kysely<Schema>) {}
 
+  async listEligibleEmployees(): Promise<Array<{ uuid: string; username: string; name: string }>> {
+    if (!this.qb) return [];
+    const rows = await this.qb
+      .selectFrom('staff')
+      .select(['uuid', 'username', 'name'])
+      .where('locked_at', 'is', null)
+      .execute();
+
+    return rows.map(r => ({
+      uuid: r.uuid || r.username,
+      username: r.username,
+      name: r.name
+    }));
+  }
+
   async getMonthlyData(employeeId: string, month: string): Promise<EmployeeMonthlyRawData | null> {
     if (!this.qb) return null;
 

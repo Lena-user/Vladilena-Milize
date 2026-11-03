@@ -2,6 +2,7 @@ import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 import { PayrollV2Service } from '../../src/domain/payroll-v2/payroll-v2-service';
 import { PayrollV2Repository, EmployeeMonthlyRawData } from '../../src/data/payroll-v2.repository';
+import { PayrollV2Controller } from '../../src/modules/payroll-v2/payroll-v2.controller';
 
 class MockPayrollV2Repository extends PayrollV2Repository {
   private data: Map<string, EmployeeMonthlyRawData> = new Map();
@@ -16,6 +17,14 @@ class MockPayrollV2Repository extends PayrollV2Repository {
 
   override async getMonthlyData(employeeId: string, month: string): Promise<EmployeeMonthlyRawData | null> {
     return this.data.get(`${employeeId}:${month}`) ?? null;
+  }
+
+  override async listEligibleEmployees(): Promise<Array<{ uuid: string; username: string; name: string }>> {
+    return Array.from(this.data.values()).map(d => ({
+      uuid: d.staff.uuid,
+      username: d.staff.username,
+      name: d.staff.name
+    }));
   }
 }
 
@@ -41,8 +50,8 @@ describe('Payroll V2 Service Integration', () => {
     // 18 Normal days (no late, 8h)
     for (let i = 1; i <= 18; i++) {
       const date = `2026-10-${String(i).padStart(2, '0')}`;
-      const isLateDay1 = (i === 5);
-      const isLateDay2 = (i === 10);
+      const isLateDay1 = i === 5;
+      const isLateDay2 = i === 10;
       timesheets.push({
         workDate: date,
         shiftType: 'NORMAL',
@@ -205,5 +214,50 @@ describe('Payroll V2 Service Integration', () => {
     assert.equal(payslip.advanceDeduction, 2025000);
     assert.equal(payslip.netIncome, 11495904);
     assert.equal(payslip.remainingAnnualLeaveDays, 22);
+  });
+
+  it('PayrollV2Controller handles calculation, single payslip, and period listing endpoints', async () => {
+    const repo = new MockPayrollV2Repository();
+    const service = new PayrollV2Service(repo);
+    const controller = new PayrollV2Controller(service);
+
+    repo.setMonthlyData(EMP_ID, MONTH, {
+      staff: {
+        uuid: EMP_ID,
+        username: 'thaott',
+        name: 'Trần Thị Thu Thảo',
+        positionLevelText: 'NV · Bậc 1',
+        contractStatusText: 'HĐLĐ từ 3 tháng',
+        baseSalary: 6000000,
+        standardWorkdays: 26,
+        kpiMaxSalary: 6000000,
+        remainingAnnualLeaveDays: 22
+      },
+      timesheets: [],
+      requests: []
+    });
+
+    // 1. GET single payslip
+    const mockCtx = { req: {}, seg: ['', 'api', 'v2', 'payroll', MONTH, EMP_ID] } as any;
+    const singleRes = (await controller.getEmployeePayslip(mockCtx, MONTH, EMP_ID)) as any;
+    assert.ok(singleRes.payslip);
+    assert.equal(singleRes.month, MONTH);
+    assert.equal(singleRes.payslip.employeeId, EMP_ID);
+
+    // 2. POST calculate single employee
+    const calcEmpRes = (await controller.calculateEmployee(mockCtx, MONTH, EMP_ID)) as any;
+    assert.equal(calcEmpRes.calculated, true);
+    assert.equal(calcEmpRes.payslip.employeeId, EMP_ID);
+
+    // 3. POST calculate period
+    const calcPeriodRes = (await controller.calculatePeriod(mockCtx, MONTH)) as any;
+    assert.equal(calcPeriodRes.calculated, true);
+    assert.equal(calcPeriodRes.count, 1);
+    assert.equal(calcPeriodRes.items[0].employeeId, EMP_ID);
+
+    // 4. GET period summaries
+    const summaryRes = (await controller.getPeriodSummary(mockCtx, MONTH)) as any;
+    assert.equal(summaryRes.total, 1);
+    assert.equal(summaryRes.items[0].employeeId, EMP_ID);
   });
 });

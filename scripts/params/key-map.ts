@@ -135,10 +135,16 @@ const REGEX_SOURCES = [
     key: 'control.reasonMaxLength',
     mustEqualFirst: true
   },
-  { file: 'src/server.ts', regex: /paging\('limit', (\d+), 1, \d+\)/, key: 'system.page.approvals.default' },
-  { file: 'src/server.ts', regex: /paging\('limit', \d+, 1, (\d+)\)/, key: 'system.page.approvals.max' },
-  { file: 'src/server.ts', regex: /paging\('pageSize', (\d+), \d+\)/, key: 'system.page.corrections.default' },
-  { file: 'src/server.ts', regex: /paging\('pageSize', \d+, (\d+)\)/, key: 'system.page.corrections.max' },
+  {
+    file: 'src/modules/approvals/approvals.controller.ts',
+    regex: /paging\('limit', (\d+), 1, \d+\)/,
+    key: 'system.page.approvals.default'
+  },
+  {
+    file: 'src/modules/approvals/approvals.controller.ts',
+    regex: /paging\('limit', \d+, 1, (\d+)\)/,
+    key: 'system.page.approvals.max'
+  },
   { file: 'src/ops/pg-backup.ts', regex: /const DEFAULT_KEEP = (\d+)/, key: 'system.backup.keep' },
   {
     file: 'src/domain/attendance/geofence-policy.ts',

@@ -231,7 +231,13 @@ function checkDefaults() {
     }
   }
   for (const entry of registry.entries)
-    if (entry.valueBearing && entry.class !== 'removed' && entry.keys.length && !registry.keysOf(entry).length)
+    if (
+      entry.valueBearing &&
+      entry.class !== 'removed' &&
+      !entry.deprecated &&
+      entry.keys.length &&
+      !registry.keysOf(entry).length
+    )
       fail(`registry ${entry.id}: mục mang giá trị mà DEFAULTS không có khoá nào (${entry.keys.join(', ')})`);
   // sàn, trần luật tham chiếu khoá có thật
   for (const entry of registry.entries)

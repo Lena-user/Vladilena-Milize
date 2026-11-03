@@ -1160,5 +1160,21 @@
   "tax.longTermMonths": {
     "value": 3,
     "why": "luật cố định: quy tắc lương duy nhất"
+  },
+  "system.page.corrections.default": {
+    "value": 50,
+    "why": "mặc định phân trang yêu cầu điều chỉnh"
+  },
+  "system.page.corrections.max": {
+    "value": 100,
+    "why": "tối đa phân trang yêu cầu điều chỉnh"
+  },
+  "period.reportDeadlineDay": {
+    "value": 3,
+    "why": "chủ dự án chốt ngày 15/10/2026: hạn nộp chấm công ngày 3"
+  },
+  "attendance.makeupDayStepRule": {
+    "value": "exact",
+    "why": "mặc định đúng phút"
   }
 }

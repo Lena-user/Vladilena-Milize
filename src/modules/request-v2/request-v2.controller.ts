@@ -73,6 +73,22 @@ export class RequestV2Controller {
     }
   }
 
+  @Post('explanation')
+  async createExplanation(@Ctx() c: ApiContext): Promise<unknown> {
+    const body = (await readJson(c.req)) || {};
+    try {
+      const employeeId = body.employeeId || c.me?.uuid || c.me?.username;
+      const request = await this.service.createExplanationRequest({
+        ...body,
+        employeeId
+      });
+      return { created: true, request };
+    } catch (err: any) {
+      if (err instanceof HttpError) throw err;
+      throw new HttpError(400, err.message, { code: 'BAD_REQUEST' });
+    }
+  }
+
   @Get()
   async listRequests(@Ctx() c: ApiContext): Promise<unknown> {
     try {

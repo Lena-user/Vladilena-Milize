@@ -839,10 +839,7 @@
       // giờ bù đã đủ thì các ngày đó không tính, giờ còn thiếu (kể cả giờ thiếu của ngày đi làm trễ) xếp vào ngày willmakeup trước
       const willmakeupCounted = Math.min(r.willmakeup, Math.ceil((r.debt || 0) / HOURS));
       const isatTaken = r.rows.filter(x => x.kind === 'isat').length;
-      const absent = Math.max(
-        0,
-        r.leave + r.unpaid + approvedCounted - unpaidExempt + r.noshow + willmakeupCounted
-      );
+      const absent = Math.max(0, r.leave + r.unpaid + approvedCounted - unpaidExempt + r.noshow + willmakeupCounted);
       const overLimitAttend =
         (T.overLimitHours ?? need('attendance.overLimitHours')) + need('attendance.overLimitTolerance');
       if (T.travel || T.attendance) {
@@ -938,7 +935,8 @@
       const blockSum = (r.blocks || []).reduce((sum, b) => sum + b.amount, 0);
       const entryAdd = r.entries ? DEPS.PayEntriesCalc.sums(r.entries).add : 0;
       const other = r.travel + r.attendance + r.kpiPay + (r.settlePay || 0) + blockSum + entryAdd;
-      const reconciled = Math.abs(r.total - (dayPay + other)) <= (Object.keys(lines).length + 4) / 2;
+      const reconciled =
+        Math.abs(r.total - (dayPay + other)) <= (Object.keys(lines).length + (1 + 1 + 1 + 1)) / (1 + 1);
       r.lines = lines;
       r.total = reconciled ? dayPay + other : roundDong(r.total);
       r.work = reconciled ? dayPay : roundDong(r.work);

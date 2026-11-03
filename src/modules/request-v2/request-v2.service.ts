@@ -263,12 +263,7 @@ export class RequestV2Service {
           const date = req.leaveStartDate || req.correctionDate || '';
           if (date) {
             const sched = await this.attendanceRepo.ensureDefaultSchedule(req.employeeId, date);
-            const updated = sched.withShiftChange(
-              req.newShiftType as any,
-              req.newStartTime!,
-              req.newEndTime!,
-              req.id
-            );
+            const updated = sched.withShiftChange(req.newShiftType as any, req.newStartTime!, req.newEndTime!, req.id);
             await this.attendanceRepo.saveSchedule(updated);
           }
         } else if (req.type === 'LEAVE_WITH_MAKEUP') {
