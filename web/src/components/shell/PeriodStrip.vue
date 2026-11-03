@@ -28,7 +28,7 @@ const go = (month?) => month && router.replace({ query: { ...route.query, thang:
       </button>
     </div>
     <span v-if="showSteps" class="state" :class="period.strip.stateCls">{{ period.strip.state }}</span>
-    <div v-if="showSteps" class="steps" aria-label="Các bước kỳ lương">
+    <div v-if="showSteps" class="steps" role="region" aria-label="Các bước kỳ lương" tabindex="0">
       <template v-for="([st, label, small], i) in period.strip.steps" :key="label">
         <span v-if="i" class="sep" />
         <span class="step" :class="st">
