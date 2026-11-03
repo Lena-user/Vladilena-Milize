@@ -8,10 +8,9 @@ const store = require('../../src/platform/db');
 const Params = require('../../src/engine/payroll-params');
 const PunchRules = require('../../src/engine/punch');
 const ActualHours = require('../../src/engine/actual-hours');
-const { PersonName } = require('../../src/domain/employee/person-name');
-const { PayrollPolicy } = require('../../src/domain/payroll/policy');
+const { PersonName } = require('../../src/domain/employee-v2/person-name');
+const { PayrollPolicy } = require('../../src/params/payroll-preview');
 const { container } = require('../../src/domain/container');
-const { ExplanationService, ExplanationRepository } = require('../../src/domain/explanation');
 
 test('PersonName: họ trước, tên là chữ cuối, viết hoa chữ đầu', () => {
   const khoa = PersonName.parse('Bùi đăng khoa');
@@ -99,54 +98,8 @@ test('hồ sơ: uuid sinh một lần, họ/tên tách sẵn, tài khoản khôn
   await assert.rejects(
     async () => await store.db.prepare("UPDATE staff SET username = 'qa_khac' WHERE username = 'qa_khoa'").run()
   );
-  assert.equal((await container.employees.byUuid(first.uuid, '2026-11')).username, 'qa_khoa');
-});
-
-test('giải trình: duyệt cần đúng rev, giải trình đã duyệt không bị trả lời lại, tự duyệt theo chính sách', async () => {
-  await store.upsertStaff({
-    username: 'qa_gt',
-    name: 'Người giải trình',
-    role: 'staff',
-    type: 'nv',
-    level: 1,
-    passHash: 'x'
-  });
-  const denied: any[] = [];
-  const service = new ExplanationService({
-    repository: new ExplanationRepository({ queryBuilder: store.queryBuilder, transaction: store.transaction }),
-    staffExists: async (u?) => !!(await store.getStaff(u)),
-    clock: () => '2026-11-02T02:00:00.000Z',
-    onSelf: (error?) => denied.push(error.code)
-  });
-  const asked = await service.request({
-    username: 'qa_gt',
-    date: '2026-11-02',
-    prompt: 'Vì sao về sớm?',
-    kind: 'admin',
-    requestedBy: 'admin'
-  });
-  const answered = await service.answer({ id: asked.id, username: 'qa_gt', text: 'Đi khám bệnh' });
-  await assert.rejects(
-    async () => await service.decide({ id: asked.id, by: 'admin', approve: true, expectedRev: answered.rev + 1 }),
-    e => e.code === 'EXPLANATION_STALE' && e.httpStatus === 409
-  );
-  const approved = await service.decide({ id: asked.id, by: 'admin', approve: true, expectedRev: answered.rev });
-  assert.equal(approved.status, 'approved');
-  await assert.rejects(
-    async () => await service.answer({ id: asked.id, username: 'qa_gt', text: 'sửa lại' }),
-    e => e.httpStatus === 409
-  );
-  assert.equal((await service.byId(asked.id)).status, 'approved');
-  const again = await service.request({
-    username: 'qa_gt',
-    date: '2026-11-03',
-    prompt: 'Vì sao?',
-    kind: 'admin',
-    requestedBy: 'admin'
-  });
-  await service.answer({ id: again.id, username: 'qa_gt', text: 'x' });
-  await service.decide({ id: again.id, by: 'qa_gt', approve: true, isSelf: true });
-  assert.deepEqual(denied, ['SELF_DECISION_FORBIDDEN']);
+  const staffFound = (await store.listStaff()).find((s: any) => s.uuid === first.uuid);
+  assert.equal(staffFound?.username, 'qa_khoa');
 });
 
 test('phụ cấp ca theo ca được xếp: ca Night có phụ cấp đêm theo bậc, ca Normal làm giờ đêm thì không', async () => {

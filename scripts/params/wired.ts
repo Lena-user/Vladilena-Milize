@@ -22,7 +22,7 @@ const ENGINE_FILES = [
   'src/engine/payroll-params.ts',
   'src/engine/pay-tail-calc.ts', // phép chọn của bảo hiểm và thuế do Kế toán cấu hình
   'src/domain/period/periods.ts',
-  'src/domain/payroll/payroll-service.ts',
+  'src/params/payroll-preview.ts',
   'src/engine/pay-options-calc.ts', // phương án cách tính: pay.method, attendance.lossMode, shortHoursRounding, advance.basis
   'src/engine/work-schedule.ts', // lịch làm việc: type.<mã>.workdaysMode, dows, workdays
   'src/domain/overtime/rules/isat-monthly-limit-rule.ts', // giới hạn khai: isat.monthlyLimit, tham số nghỉ giữa ca của trần giờ ngày
