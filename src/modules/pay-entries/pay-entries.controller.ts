@@ -2,7 +2,7 @@ import { EVENTS, STORE } from '../../core/tokens';
 import { Controller, Get, Post, Put, Inject } from '@nestjs/common';
 import { Ctx, ApiContext } from '../../http/api-context';
 
-const entries = require('../../domain/payroll/pay-entries');
+const entries = require('../../domain/pay-entries');
 const { HttpError, readJson } = require('../../platform/http');
 const { validMonth } = require('../../domain/input');
 

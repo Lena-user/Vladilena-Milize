@@ -20,7 +20,7 @@ Số route: **120**; đường dẫn không module nào nhận trả 404 sau c�
 | `GET /approvals` | `request.decide.*` | — | [`src/modules/approvals/approvals.controller.ts:33`](../../src/modules/approvals/approvals.controller.ts#L33) `getApprovals` |  |
 | `GET /approvals/count` | `request.decide.*` | — | [`src/modules/approvals/approvals.controller.ts:98`](../../src/modules/approvals/approvals.controller.ts#L98) `getApprovalsCount` |  |
 | `PUT /approvals/decide` | `request.decide.*` | `attendance` (tháng: items[].date) | [`src/modules/approvals/approvals.controller.ts:181`](../../src/modules/approvals/approvals.controller.ts#L181) `putApprovalsDecide` |  |
-| `GET /attendance` | `attendance.read` | — | [`src/modules/attendance/attendance.controller.ts:382`](../../src/modules/attendance/attendance.controller.ts#L382) `getAttendance` |  |
+| `GET /attendance` | `attendance.read` | — | **không có controller** |  |
 | `GET /audit` | `audit.read` | — | [`src/modules/audit/audit.controller.ts:21`](../../src/modules/audit/audit.controller.ts#L21) `getAudit` |  |
 | `GET /audit/verify` | `audit.read` | — | [`src/modules/audit/audit.controller.ts:59`](../../src/modules/audit/audit.controller.ts#L59) `getAuditVerify` |  |
 | `POST /blocks` | `config.payroll` | — | [`src/modules/blocks/blocks.controller.ts:17`](../../src/modules/blocks/blocks.controller.ts#L17) `add` | (config.payroll) { label, method, values \| positions, … } → { code, block, …kết quả save() } |
@@ -30,14 +30,14 @@ Số route: **120**; đường dẫn không module nào nhận trả 404 sau c�
 | `PUT /catalog/positions/:code` | `config.payroll` | — | [`src/modules/catalog/catalog.controller.ts:55`](../../src/modules/catalog/catalog.controller.ts#L55) `savePosition` | { changes, effectiveMonth, reason?, expectedRev }; changes: một phần { name, workdays, flexPct, nightPct, travelPct, attendancePct, regularDows, benefits } |
 | `GET /catalog/shifts` | `config.read` | — | [`src/modules/catalog/catalog.controller.ts:106`](../../src/modules/catalog/catalog.controller.ts#L106) `listShifts` | { shifts: [{ code, preset, name, kind, sort, deprecated, rev }] } |
 | `PUT /catalog/shifts` | `config.payroll` | — | [`src/modules/catalog/catalog.controller.ts:115`](../../src/modules/catalog/catalog.controller.ts#L115) `saveShift` | { code, changes: { name?, kind?, sort?, deprecated? }, expectedRev, reason? } |
-| `GET /employees/:uuid` | `profile.read` | — | [`src/modules/employees/employees.controller.ts:39`](../../src/modules/employees/employees.controller.ts#L39) `view` | ?month= hồ sơ + chức vụ/bậc của tháng + ca được xếp (Employee.view), che trường theo quyền như GET /api/staff |
-| `GET /employees/:uuid/trace` | `audit.read` | — | [`src/modules/employees/employees.controller.ts:50`](../../src/modules/employees/employees.controller.ts#L50) `trace` | ?beforeId=&limit= nhật ký kiểm toán về người này, mới nhất trước (gộp cả dòng cũ ghi theo tài khoản) |
+| `GET /employees/:uuid` | `profile.read` | — | **không có controller** |  |
+| `GET /employees/:uuid/trace` | `audit.read` | — | **không có controller** |  |
 | `GET /entitlements` | `config.read` | — | [`src/modules/positions/positions.controller.ts:26`](../../src/modules/positions/positions.controller.ts#L26) `listEntitlements` | ?month= (config.read) |
 | `GET /events` | đã đăng nhập | — | [`src/modules/system/system.controller.ts:24`](../../src/modules/system/system.controller.ts#L24) `getEvents` |  |
-| `GET /explanations` | đã đăng nhập | — | [`src/modules/explanations/explanations.controller.ts:25`](../../src/modules/explanations/explanations.controller.ts#L25) `list` | [?status=][&user=] nhân sự: của mình; người có attendance.correct (Admin): mọi người (user= lọc một người) |
-| `POST /explanations` | đã đăng nhập | — | [`src/modules/explanations/explanations.controller.ts:45`](../../src/modules/explanations/explanations.controller.ts#L45) `submit` | Ba dạng thân: { sessionId, text } nhân sự giải trình Check-out muộn của CHÍNH MÌNH; { date, text } nhân sự tự giải trình ngày vắng |
-| `POST /explanations/:id/answer` | đã đăng nhập | — | [`src/modules/explanations/explanations.controller.ts:103`](../../src/modules/explanations/explanations.controller.ts#L103) `answer` | { text } nhân sự trả lời yêu cầu của mình |
-| `POST /explanations/:id/decide` | `attendance.correct` | — | [`src/modules/explanations/explanations.controller.ts:112`](../../src/modules/explanations/explanations.controller.ts#L112) `decide` | { approve, note?, expectedRev? } Admin duyệt hoặc không duyệt. Giải trình Check-out muộn: duyệt thì giờ bấm thành giờ Check-out của lượt; |
+| `GET /explanations` | đã đăng nhập | — | **không có controller** |  |
+| `POST /explanations` | đã đăng nhập | — | **không có controller** |  |
+| `POST /explanations/:id/answer` | đã đăng nhập | — | **không có controller** |  |
+| `POST /explanations/:id/decide` | `attendance.correct` | — | **không có controller** |  |
 | `GET /health` | công khai | — | [`src/modules/system/system.controller.ts:17`](../../src/modules/system/system.controller.ts#L17) `getHealth` |  |
 | `GET /holidays` | đã đăng nhập | — | [`src/modules/settings/settings.controller.ts:34`](../../src/modules/settings/settings.controller.ts#L34) `getHolidays` |  |
 | `PUT /holidays` | `config.payroll` | `attendance` (tháng: ngày lễ đổi (hiệu hai tập)) | [`src/modules/settings/settings.controller.ts:41`](../../src/modules/settings/settings.controller.ts#L41) `putHolidays` |  |
@@ -49,9 +49,9 @@ Số route: **120**; đường dẫn không module nào nhận trả 404 sau c�
 | `POST /logout` | công khai | — | [`src/modules/auth/auth.controller.ts:72`](../../src/modules/auth/auth.controller.ts#L72) `postLogout` |  |
 | `GET /me` | công khai | — | [`src/modules/auth/auth.controller.ts:83`](../../src/modules/auth/auth.controller.ts#L83) `getMe` |  |
 | `GET /me/estimate` | đã đăng nhập | — | [`src/modules/sheet/sheet.controller.ts:43`](../../src/modules/sheet/sheet.controller.ts#L43) `getMeEstimate` |  |
-| `GET /ot` | `attendance.correct` | — | [`src/modules/attendance/attendance.controller.ts:183`](../../src/modules/attendance/attendance.controller.ts#L183) `getOt` |  |
-| `POST /ot` | `attendance.correct` | `attendance` (tháng: ngày của lượt) | [`src/modules/attendance/attendance.controller.ts:191`](../../src/modules/attendance/attendance.controller.ts#L191) `postOt` |  |
-| `PUT /ot` | `attendance.correct` | `attendance` (tháng: ngày của lượt) | [`src/modules/attendance/attendance.controller.ts:249`](../../src/modules/attendance/attendance.controller.ts#L249) `putOt` |  |
+| `GET /ot` | `attendance.correct` | — | **không có controller** |  |
+| `POST /ot` | `attendance.correct` | `attendance` (tháng: ngày của lượt) | **không có controller** |  |
+| `PUT /ot` | `attendance.correct` | `attendance` (tháng: ngày của lượt) | **không có controller** |  |
 | `PUT /password` | đã đăng nhập | — | [`src/modules/auth/auth.controller.ts:99`](../../src/modules/auth/auth.controller.ts#L99) `putPassword` |  |
 | `GET /pay-entries` | `salary.read` | — | [`src/modules/pay-entries/pay-entries.controller.ts:32`](../../src/modules/pay-entries/pay-entries.controller.ts#L32) `list` | ?month=&username=&status= (salary.read) → { month, periodStatus, requireApproval, entries } |
 | `POST /pay-entries` | `salary.write` | — | [`src/modules/pay-entries/pay-entries.controller.ts:51`](../../src/modules/pay-entries/pay-entries.controller.ts#L51) `create` | (salary.write) → { entry } |
@@ -76,8 +76,8 @@ Số route: **120**; đường dẫn không module nào nhận trả 404 sau c�
 | `GET /positions` | `config.read` | — | [`src/modules/positions/positions.controller.ts:20`](../../src/modules/positions/positions.controller.ts#L20) `listPositions` | ?month= (config.read) |
 | `POST /positions` | `config.read` | — | [`src/modules/positions/positions.controller.ts:32`](../../src/modules/positions/positions.controller.ts#L32) `addPosition` | thêm chức vụ bằng sao chép |
 | `POST /positions/:code/levels` | `config.payroll` | — | [`src/modules/positions/positions.controller.ts:40`](../../src/modules/positions/positions.controller.ts#L40) `addLevel` | thêm bậc cho một chức vụ |
-| `GET /punch` | đã đăng nhập | — | [`src/modules/attendance/attendance.controller.ts:45`](../../src/modules/attendance/attendance.controller.ts#L45) `getPunch` |  |
-| `POST /punch` | đã đăng nhập | `attendance` (tháng: ngày công của lượt (ca đêm thuộc ngày bắt đầu)) | [`src/modules/attendance/attendance.controller.ts:61`](../../src/modules/attendance/attendance.controller.ts#L61) `postPunch` |  |
+| `GET /punch` | đã đăng nhập | — | **không có controller** |  |
+| `POST /punch` | đã đăng nhập | `attendance` (tháng: ngày công của lượt (ca đêm thuộc ngày bắt đầu)) | **không có controller** |  |
 | `GET /roles` | `roles.manage` | — | [`src/modules/roles/roles.controller.ts:18`](../../src/modules/roles/roles.controller.ts#L18) `list` | danh sách vai trò mặc định + tuỳ chỉnh, khu vực của ma trận, loại yêu cầu duyệt, tài khoản |
 | `POST /roles` | `roles.manage` | — | [`src/modules/roles/roles.controller.ts:24`](../../src/modules/roles/roles.controller.ts#L24) `create` | { label, copyFrom?, code?, caps? \| levels?+extras?, approvals?, scope?, reason? } tạo hoặc sao chép |
 | `PUT /roles/:code` | `roles.manage` | — | [`src/modules/roles/roles.controller.ts:30`](../../src/modules/roles/roles.controller.ts#L30) `update` | { rev, label?, caps? \| levels?+extras?, approvals?, scope?, reason } sửa vai trò tuỳ chỉnh |
@@ -104,7 +104,7 @@ Số route: **120**; đường dẫn không module nào nhận trả 404 sau c�
 | `GET /staff/:u/schedule` | `self-or:profile.read` | — | [`src/modules/staff/staff.controller.ts:645`](../../src/modules/staff/staff.controller.ts#L645) `getStaffSchedule` | ?month= lịch làm việc hiệu lực của một người (self-or:profile.read); kiểm quyền TRƯỚC khi tra tên để không dò được tên đăng nhập |
 | `PUT /staff/shift-bulk` | `profile.write` | — | [`src/modules/sheet/sheet.controller.ts:181`](../../src/modules/sheet/sheet.controller.ts#L181) `putStaffShiftBulk` |  |
 | `GET /team` | `payroll.view` | — | [`src/modules/staff/staff.controller.ts:56`](../../src/modules/staff/staff.controller.ts#L56) `getTeam` |  |
-| `GET /today` | `attendance.read` | — | [`src/modules/attendance/attendance.controller.ts:315`](../../src/modules/attendance/attendance.controller.ts#L315) `getToday` |  |
+| `GET /today` | `attendance.read` | — | **không có controller** |  |
 | `GET /v2/attendance/punches` | `attendance.read` | — | [`src/modules/attendance-v2/attendance-v2.controller.ts:21`](../../src/modules/attendance-v2/attendance-v2.controller.ts#L21) `getPunches` |  |
 | `POST /v2/attendance/punches` | `attendance.read` | — | [`src/modules/attendance-v2/attendance-v2.controller.ts:10`](../../src/modules/attendance-v2/attendance-v2.controller.ts#L10) `recordPunch` |  |
 | `GET /v2/attendance/timesheets` | `attendance.read` | — | [`src/modules/attendance-v2/attendance-v2.controller.ts:36`](../../src/modules/attendance-v2/attendance-v2.controller.ts#L36) `listTimesheets` |  |

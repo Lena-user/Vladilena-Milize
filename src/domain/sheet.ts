@@ -1,16 +1,33 @@
 const store = require('../platform/db');
-const payrollService = require('./payroll/payroll-service'); // nạp đầu vào một tháng, chạy bộ máy dùng chung
 const { rulesFor, vnToday } = require('../platform/request-rules');
 const schedule = require('./schedule'); // lịch làm việc của người (một nguồn)
 const { leaveDates } = require('./leave-days'); // ngày nghỉ phép năm thực sự trừ phép
 
-// Lịch ước tính chỉ chứa các trường người dùng được khai tay. Dữ liệu chấm công cũ
-// vẫn giữ nguyên trong DB, nhưng không mang nguồn/duyệt chấm công vào phép tính.
+const ESTIMATE_FIELDS = ['kind', 'shift', 'in', 'out', 'extraKind', 'extraIn', 'extraOut', 'preset', 'breakMin'];
+function estimateDays(days?) {
+  const out: Record<string, any> = {};
+  for (const [date, entry] of Object.entries<any>(days || {})) {
+    if (!entry || entry.kind === 'pending') continue;
+    out[date] =
+      entry.kind === 'work' || entry.kind === 'makeup'
+        ? Object.fromEntries(ESTIMATE_FIELDS.filter(key => Object.hasOwn(entry, key)).map(key => [key, entry[key]]))
+        : { kind: entry.kind };
+    if (typeof entry.punchNote === 'string' && entry.punchNote) out[date].punchNote = entry.punchNote;
+    if (entry.kind === 'willmakeup') {
+      if (Array.isArray(entry.makeupPlans)) out[date].makeupPlans = entry.makeupPlans;
+      else if (typeof entry.makeupDate === 'string' && entry.makeupDate) out[date].makeupDate = entry.makeupDate;
+    }
+    if (!out[date].extraKind && out[date].extraOut) out[date].extraKind = 'makeup';
+  }
+  return out;
+}
+
+// Lịch ước tính chỉ chứa các trường người dùng được khai tay.
 async function estimateSheet(username?, month?) {
   const sheet = await store.getSheet(username, month);
-  // Chỉ các trường khai tay (một nguồn với bộ máy tính lương): payrollService.estimateDays
-  return { ...sheet, days: payrollService.estimateDays(sheet.days) };
+  return { ...sheet, days: estimateDays(sheet.days) };
 }
+
 // hai ngày giáp ranh của tháng: ngày cuối tháng trước và ngày 1 tháng sau (để kiểm chồng giờ ca đêm qua ranh giới tháng)
 async function neighborDays(username?, month?) {
   const [y, m] = month.split('-').map(Number),
@@ -26,6 +43,7 @@ async function neighborDays(username?, month?) {
   if (b) out[nextFirst] = b;
   return out;
 }
+
 const leaveSummary = async (s?) => {
   const { ledger } = (await rulesFor()).leave;
   const a = ledger(
@@ -37,4 +55,4 @@ const leaveSummary = async (s?) => {
   return { ...rest, balance: a.balance };
 };
 
-export = { estimateSheet, leaveDates, neighborDays, leaveSummary, schedule };
+export = { estimateDays, estimateSheet, leaveDates, neighborDays, leaveSummary, schedule };

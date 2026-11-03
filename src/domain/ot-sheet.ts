@@ -4,8 +4,7 @@
 const store = require('../platform/db');
 const { HttpError } = require('../platform/http');
 const { rulesFor } = require('../platform/request-rules');
-const payrollService = require('./payroll/payroll-service');
-const { estimateSheet } = require('./sheet');
+const { estimateSheet, estimateDays } = require('./sheet');
 const { reconcileMonthApprovals } = require('./approvals');
 const { shiftFor } = require('./overtime/worked-hours').WorkedHours;
 const { checkSheetLimits, checkDayHours } = require('./overtime/hour-limits').HourLimits;
@@ -64,7 +63,7 @@ async function payOnSheet({ session, staff, by }: any) {
     const prevDays = (await estimateSheet(session.username, month)).days;
     const days = { ...sheet.days, [session.date]: next };
     const params = (await rulesFor(month)).params,
-      clean = payrollService.estimateDays(days);
+      clean = estimateDays(days);
     await checkDayHours({ params, clean, prevDays, holidays });
     await checkSheetLimits({ params, month, clean, prevDays, holidays });
     await store.setSheet(session.username, month, days, sheet.kpiPct, sheet.kpiAmt);
