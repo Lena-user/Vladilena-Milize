@@ -4,19 +4,18 @@ import { Controller, Get, Put, Inject } from '@nestjs/common';
 import { Ctx, ApiContext } from '../../http/api-context';
 
 const { AsyncList } = require('../../shared/async-list');
-const { AbsentDay } = require('../../domain/explanation/absent-day');
+const { AbsentDay, explainedByUser } = require('../../domain/timesheet/absent-day');
 
 const { HttpError, readJson } = require('../../platform/http'); // tiện ích HTTP: lỗi, gửi JSON, đọc thân, tiêu đề bảo mật, file tĩnh
 // quy tắc theo tháng của từng yêu cầu: rulesFor(tháng).<mô-đun> dựng bằng create(bộ tham số của tháng đó)
 const { estimateSheet } = require('../../domain/sheet'); // lịch ước tính và ngày phép
 const { sheetForViewer } = require('../../domain/staff'); // hồ sơ gửi ra ngoài, che trường theo quyền
-const { closeStaleFor } = require('../../domain/attendance'); // phiên Check-in/out dùng chung
+const { closeStaleFor } = require('../../domain/timesheet/legacy-presence');
 const { sheetApprovals, listApprovals, tallyApprovals, approvalHttpError } = require('../../domain/approvals'); // khoản tự khai chờ duyệt
 const { isatRefusal } = require('../../domain/isat-rule'); // ngày iSAT đúng thứ và đúng quyền lợi
 // quyền theo năng lực: ROLE_CAPS, ROUTE_CAPS, can()
 // nhật ký kiểm toán: ghi cùng giao dịch với thay đổi
 // báo cho màn đang mở (SSE), phát SAU KHI giao dịch đã COMMIT
-const explanations = require('../../domain/explanation/explanations'); // giải trình Check-out muộn
 const { validMonth, validDate, USERNAME_RE, NOTE_MAX } = require('../../domain/input'); // kiểm dạng tháng, ngày, giờ, tên đăng nhập
 
 @Controller('api')
@@ -119,7 +118,7 @@ export class ApprovalsController {
     const holidays = await this.store.getSetting('holidays', []),
       found = new Map(),
       absentFound: any[] = [];
-    const explained = await explanations.explainedByUser(month); // ngày đã có giải trình (mọi trạng thái): không còn là ngày vắng chưa ai xử lý
+    const explained = await explainedByUser(month); // ngày đã có giải trình (mọi trạng thái): không còn là ngày vắng chưa ai xử lý
     const ActualHours = (await this.rules.rulesFor(month)).actualHours;
     // Quên Check-in/out là việc sửa chấm công: chỉ người có attendance.correct, và chỉ người trong phạm vi của mình
     const watched = await AsyncList.filter(

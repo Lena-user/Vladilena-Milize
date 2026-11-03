@@ -5,10 +5,6 @@ const { warnIf } = require('../../platform/warnings');
 const finiteIn = (value?, min?, max?) =>
   typeof value === 'number' && Number.isFinite(value) && value >= min && value <= max;
 
-// GPS check-in (vùng công ty). Ngoài khu vực công ty, thiếu vị trí hay vị trí kém chính xác: Check-in vẫn được ghi kèm cảnh báo; không lưu
-// toạ độ; không chụp ảnh khuôn mặt. Toạ độ do trình duyệt tự gửi nên có thể bị giả: đây là biện pháp răn đe khi bấm ở xa, không phải bằng chứng
-// có mặt. Toạ độ chỉ dùng để so sánh trong một lần gọi: không ghi vào punches, attendance_sessions, punch_requests, nhật ký hay thông báo lỗi.
-// Phụ thuộc: zone() đọc cài đặt vùng hiện hành; distanceM(lat1, lng1, lat2, lng2) tính khoảng cách mét.
 class GeofencePolicy {
   declare zone: any;
   declare distanceM: any;
@@ -33,16 +29,12 @@ class GeofencePolicy {
     return { lat: b.lat, lng: b.lng, radiusM: b.radiusM, maxAccuracyM };
   }
 
-  // Nhân sự chỉ biết có bật hay không; Admin thấy cả cài đặt. Khách chưa đăng nhập không thấy gì.
   async viewFor(user?) {
     if (!user) return {};
     const g = await this.zone();
     return { geofenceRequired: !!g, ...(user.role === 'admin' ? { geofence: g } : {}) };
   }
 
-  // Kiểm vị trí gửi kèm khi Check-in; không làm gì (trả null) khi chưa bật vùng. Check-in vẫn thành công, trả mã lý do
-  // ('none' | 'low-accuracy' | 'outside') để server ghi vào lượt MỘT cờ boolean entry.outsideZone (tuyệt đối không toạ độ, độ chính xác hay
-  // khoảng cách) và cảnh báo. Số tiền không đổi: GPS không tham gia tính lương; Admin thấy cờ ở màn Chấm công để xem lại.
   async check(location?) {
     const g = await this.zone();
     if (!g) return null;

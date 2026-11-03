@@ -10,8 +10,7 @@ const { HttpError, readJson } = require('../../platform/http'); // tiện ích H
 // quy tắc theo tháng của từng yêu cầu: rulesFor(tháng).<mô-đun> dựng bằng create(bộ tham số của tháng đó)
 const { validMonth, USERNAME_RE } = require('../../domain/input'); // kiểm dạng tháng, ngày, giờ, tên đăng nhập
 const { ownerView, sheetForViewer } = require('../../domain/staff'); // hồ sơ gửi ra ngoài, che trường theo quyền
-const { closeStale } = require('../../domain/attendance'); // phiên Check-in/out dùng chung
-const { sessionsFor } = require('../../domain/attendance/session-view');
+const { closeStale, sessionsFor } = require('../../domain/timesheet/legacy-presence');
 const { KpiScoring } = require('../../domain/kpi/kpi-scoring');
 const { sheetApprovals } = require('../../domain/approvals'); // khoản tự khai chờ duyệt
 const { checkSheetLimits } = require('../../domain/overtime/hour-limits').HourLimits; // trần OT tháng (OT cộng giờ ca chính làm ngày lễ), giới hạn iSAT theo tháng

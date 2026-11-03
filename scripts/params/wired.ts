@@ -132,14 +132,14 @@ const SERVER_COPIES = [
   // `unless` chứng minh nơi đó đã chuyển sang create(params): khớp thì không còn là bản sao.
   {
     pattern: 'attendance.openSessionMaxHours',
-    file: 'src/domain/attendance/attendance-sessions.ts',
+    file: 'src/platform/attendance-sessions.ts',
     re: /require\('\.\.\/public\/punch'\)/,
     unless: /\.create\(/,
     why: 'src/domain/attendance/attendance-sessions.ts dùng punch mặc định (buildDay, forgotDay)'
   },
   {
     pattern: 'attendance.earlyCheckinMaxHours',
-    file: 'src/domain/attendance/attendance-sessions.ts',
+    file: 'src/platform/attendance-sessions.ts',
     re: /require\('\.\.\/public\/punch'\)/,
     unless: /\.create\(/,
     why: 'src/domain/attendance/attendance-sessions.ts dùng punch mặc định (buildDay, forgotDay)'

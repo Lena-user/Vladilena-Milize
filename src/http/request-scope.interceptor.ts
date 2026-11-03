@@ -3,8 +3,7 @@ import { from, lastValueFrom, Observable } from 'rxjs';
 import warnings = require('../platform/warnings');
 import { withRequestWarnings } from './reply';
 import { RULES } from '../core/tokens';
-import { announceAttendance } from '../platform/announce';
-import { announcePunches } from '../domain/attendance';
+import { announceAttendance, announcePunches } from '../platform/announce';
 
 /**
  * Phạm vi của MỘT yêu cầu: cảnh báo gom theo yêu cầu (src/platform/warnings.ts), bộ quy tắc theo tháng dựng một lần (src/platform/request-rules.ts).

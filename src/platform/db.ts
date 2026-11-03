@@ -1388,7 +1388,7 @@ Object.assign(module.exports, {
   }
 });
 const helpers = { now, transaction, bootFail, queryBuilder };
-const sessionsApi = require('../domain/attendance/attendance-sessions')(db, helpers);
+const sessionsApi = require('./attendance-sessions')(db, helpers);
 const approvalsApi = require('../domain/approvals/approvals')(db, helpers);
 Object.assign(module.exports, sessionsApi);
 module.exports.approvals = { ...approvalsApi }; // bản sao: bản gốc (dùng nội bộ lúc khởi tạo) không bị bọc chờ ready

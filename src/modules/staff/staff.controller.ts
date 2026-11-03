@@ -12,8 +12,7 @@ const { HttpError, readJson } = require('../../platform/http'); // tiện ích H
 // quy tắc theo tháng của từng yêu cầu: rulesFor(tháng).<mô-đun> dựng bằng create(bộ tham số của tháng đó)
 const { estimateSheet, schedule } = require('../../domain/sheet'); // lịch ước tính và ngày phép
 const { staffForViewer, sheetForViewer, staffRevision } = require('../../domain/staff'); // hồ sơ gửi ra ngoài, che trường theo quyền
-const { closeStaleFor } = require('../../domain/attendance'); // phiên Check-in/out dùng chung
-const { sessionsFor } = require('../../domain/attendance/session-view');
+const { closeStaleFor, sessionsFor } = require('../../domain/timesheet/legacy-presence');
 const { sheetApprovals, reconcileStaffType } = require('../../domain/approvals'); // khoản tự khai chờ duyệt
 // quyền theo năng lực: ROLE_CAPS, ROUTE_CAPS, can()
 const Roles = require('../../domain/roles/roles'); // vai trò tuỳ chỉnh (dữ liệu ở settings)

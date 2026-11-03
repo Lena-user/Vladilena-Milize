@@ -147,27 +147,27 @@ const REGEX_SOURCES = [
   },
   { file: 'src/ops/pg-backup.ts', regex: /const DEFAULT_KEEP = (\d+)/, key: 'system.backup.keep' },
   {
-    file: 'src/domain/attendance/geofence-policy.ts',
+    file: 'src/domain/attendance-v2/geofence-policy.ts',
     regex: /finiteIn\(b\.radiusM, (\d+), \d+\)/,
     key: 'geofence.radiusM.min'
   },
   {
-    file: 'src/domain/attendance/geofence-policy.ts',
+    file: 'src/domain/attendance-v2/geofence-policy.ts',
     regex: /finiteIn\(b\.radiusM, \d+, (\d+)\)/,
     key: 'geofence.radiusM.max'
   },
   {
-    file: 'src/domain/attendance/geofence-policy.ts',
+    file: 'src/domain/attendance-v2/geofence-policy.ts',
     regex: /finiteIn\(maxAccuracyM, (\d+), \d+\)/,
     key: 'geofence.maxAccuracyM.min'
   },
   {
-    file: 'src/domain/attendance/geofence-policy.ts',
+    file: 'src/domain/attendance-v2/geofence-policy.ts',
     regex: /finiteIn\(maxAccuracyM, \d+, (\d+)\)/,
     key: 'geofence.maxAccuracyM.max'
   },
   {
-    file: 'src/domain/attendance/geofence-policy.ts',
+    file: 'src/domain/attendance-v2/geofence-policy.ts',
     regex: /b\.maxAccuracyM === undefined \? (\d+)/,
     key: 'geofence.maxAccuracyM.default'
   }

@@ -20,4 +20,9 @@ function announceAttendance() {
   for (const month of months) events.emit.attendanceChanged('forgot', month);
 }
 
-export = { attendanceHints, announceSetting, announceAttendance };
+const punchHints = new Set<any>();
+async function announcePunches() {
+  punchHints.clear();
+}
+
+export = { attendanceHints, announceSetting, announceAttendance, punchHints, announcePunches };
