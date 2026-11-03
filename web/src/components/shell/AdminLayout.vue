@@ -29,6 +29,7 @@ const bellOpen = ref(false);
 const menuOpen = ref(false);
 const pwOpen = ref(false);
 const mobileNavOpen = ref(false);
+const mobileViewport = ref(typeof window !== 'undefined' && window.innerWidth < 768);
 const menuButton = ref<HTMLButtonElement | null>(null);
 function closeMobileNav(restoreFocus = false) {
   if (!mobileNavOpen.value) return;
@@ -55,7 +56,8 @@ function onKeydown(event: KeyboardEvent) {
   }
 }
 function onResize() {
-  if (window.innerWidth >= 768) closeMobileNav();
+  mobileViewport.value = window.innerWidth < 768;
+  if (!mobileViewport.value) closeMobileNav();
 }
 watch(mobileNavOpen, open => {
   if (open) nextTick(() => document.querySelector<HTMLElement>('#admin-navigation nav a, #admin-navigation nav button')?.focus());
@@ -103,13 +105,14 @@ function openPassword() {
 
 <template>
   <div class="app">
-    <button ref="menuButton" class="mobile-nav-toggle" type="button" aria-controls="admin-navigation" :aria-expanded="mobileNavOpen" aria-label="Mở điều hướng" @click="mobileNavOpen = !mobileNavOpen">
+    <button ref="menuButton" class="mobile-nav-toggle" type="button" aria-controls="admin-navigation" :aria-expanded="mobileNavOpen" :aria-label="mobileNavOpen ? 'Đóng điều hướng' : 'Mở điều hướng'" @click="mobileNavOpen = !mobileNavOpen">
       <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16" /></svg>
     </button>
     <button v-if="mobileNavOpen" class="nav-scrim" type="button" aria-label="Đóng điều hướng" @click="closeMobileNav(true)" />
     <AdminSidebar
       id="admin-navigation"
       :mobile-open="mobileNavOpen"
+      :mobile-inert="mobileViewport && !mobileNavOpen"
       :active="route.meta.nav as string"
       :me="shell.me"
       :counts="shell.counts"
