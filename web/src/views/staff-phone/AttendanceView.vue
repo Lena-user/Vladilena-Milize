@@ -60,6 +60,14 @@ function setMonth(value?) {
       @next="setMonth(currentData?.nextMonth)"
     />
     <LoadFeedback :loading="loading" :error="error" :has-data="!!currentData" @retry="reload" />
+    <button
+      v-if="error && data && data.month !== month"
+      type="button"
+      class="return-month"
+      @click="setMonth(data.month)"
+    >
+      Quay lại {{ monthLabel(data.month) }}
+    </button>
 
     <template v-if="currentData">
       <section class="sec card">
@@ -201,5 +209,16 @@ function setMonth(value?) {
   margin: 24px 16px 0;
   color: var(--muted);
   font-size: 14px;
+}
+.return-month {
+  min-height: 44px;
+  margin: 4px 16px 0;
+  padding: 0 12px;
+  border: 1px solid var(--control);
+  border-radius: 10px;
+  background: #fff;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
 }
 </style>

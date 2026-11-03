@@ -78,10 +78,13 @@ async function mockStaffApi(
   options: {
     me?: Partial<typeof me>;
     punchGate?: Promise<void>;
-    onPunch?: () => void;
+    onPunch?: (type?: string) => void;
     failAt?: Record<string, number[]>;
     requestGates?: Record<string, Promise<void>>;
     onRequest?: (key: string) => void;
+    punchReply?: (body: any) => unknown;
+    punchState?: () => unknown;
+    punchGates?: Record<string, Promise<void>>;
   } = {}
 ) {
   const hits: Record<string, number> = {};
@@ -109,11 +112,18 @@ async function mockStaffApi(
       return;
     }
     if (path === '/punch' && route.request().method() === 'POST') {
-      options.onPunch?.();
-      if (options.punchGate) await options.punchGate;
+      const postBody = route.request().postDataJSON();
+      options.onPunch?.(postBody.type);
+      const gate = options.punchGates?.[postBody.type] || options.punchGate;
+      if (gate) await gate;
+      const body = options.punchReply ? options.punchReply(postBody) : { ok: true, serverNow: me.serverNow };
+      await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(body) });
+      return;
     }
     const body = path === '/me' ? { ...me, ...options.me } : dataFor(path);
-    await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(body) });
+    const responseBody =
+      path === '/punch' && route.request().method() === 'GET' && options.punchState ? options.punchState() : body;
+    await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(responseBody) });
   });
 }
 
@@ -153,6 +163,30 @@ for (const screen of [
   });
 }
 
+for (const screen of [
+  { path: '/nv/cham-cong', oldMonthContent: '.stats', query: '/sheet?month=2026-10' },
+  { path: '/nv/thu-nhap', oldMonthContent: '.slip', query: '/me/estimate?month=2026-10' }
+]) {
+  test(`${screen.path} can return to the last loaded month after the new month fails`, async ({ page }) => {
+    let releaseRequest: () => void = () => {};
+    const requestGate = new Promise<void>(resolve => (releaseRequest = resolve));
+    await page.setViewportSize({ width: 375, height: 812 });
+    await mockStaffApi(page, { [screen.query]: 1 }, { requestGates: { [screen.query]: requestGate } });
+    await page.goto(screen.path);
+    await expect(page.locator(screen.oldMonthContent)).toBeVisible();
+    await page.getByRole('button', { name: 'Tháng trước' }).click();
+    await expect(page.getByText('Tháng 10/2026')).toBeVisible();
+    await expect(page.locator(screen.oldMonthContent)).toHaveCount(0);
+    releaseRequest();
+    await expect(page.getByRole('alert')).toContainText('Máy chủ trả lỗi 500');
+
+    await page.getByRole('button', { name: /Quay lại Tháng 11\/2026/ }).click();
+    await expect(page.getByText('Tháng 11/2026')).toBeVisible();
+    await expect(page.locator(screen.oldMonthContent)).toBeVisible();
+    await expect(page.getByRole('alert')).toHaveCount(0);
+  });
+}
+
 for (const path of ['/nv/cham-cong', '/nv/thu-nhap']) {
   test(`${path} handles month context 500 with retry and no unhandled rejection`, async ({ page }) => {
     const pageErrors: string[] = [];
@@ -186,6 +220,16 @@ test('home disables check-in while a slow request is pending and prevents duplic
   let releasePunch: () => void = () => {};
   const punchGate = new Promise<void>(resolve => (releasePunch = resolve));
   await page.setViewportSize({ width: 375, height: 812 });
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'geolocation', {
+      configurable: true,
+      value: {
+        getCurrentPosition(success: (position: unknown) => void) {
+          success({ coords: { latitude: 10.7, longitude: 106.6, accuracy: 9 }, timestamp: Date.now() });
+        }
+      }
+    });
+  });
   await mockStaffApi(page, {}, { me: { geofenceRequired: false }, punchGate, onPunch: () => punchPosts++ });
   await page.goto('/nv/hom-nay');
   const checkIn = page.locator('.cta');
@@ -199,6 +243,106 @@ test('home disables check-in while a slow request is pending and prevents duplic
   await firstClick;
   await expect(checkIn).toBeEnabled();
   expect(punchPosts).toBe(1);
+});
+
+test('GPS denied explains the check-in block and sends no punch request', async ({ page }) => {
+  let punchPosts = 0;
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'geolocation', {
+      configurable: true,
+      value: {
+        getCurrentPosition(_success: unknown, failure: (error: { code: number }) => void) {
+          failure({ code: 1 });
+        }
+      }
+    });
+  });
+  await mockStaffApi(page, {}, { onPunch: () => punchPosts++ });
+  await page.goto('/nv/hom-nay');
+  await page.getByRole('button', { name: /Check-in/ }).click();
+  await expect(page.locator('.gps').filter({ hasText: 'Không lấy được vị trí' })).toBeVisible();
+  expect(punchPosts).toBe(0);
+});
+
+test('GPS grant sends coordinates for check-in; check-out sends one request with the open session id', async ({
+  page
+}) => {
+  const punchBodies: any[] = [];
+  let shiftState: 'not-started' | 'working' = 'not-started';
+  let releaseIn: () => void = () => {};
+  let releaseOut: () => void = () => {};
+  const inGate = new Promise<void>(resolve => (releaseIn = resolve));
+  const outGate = new Promise<void>(resolve => (releaseOut = resolve));
+  const postedTypes: string[] = [];
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator, 'geolocation', {
+      configurable: true,
+      value: {
+        getCurrentPosition(success: (position: unknown) => void) {
+          success({ coords: { latitude: 10.7, longitude: 106.6, accuracy: 9 }, timestamp: Date.now() });
+        }
+      }
+    });
+  });
+  await mockStaffApi(
+    page,
+    {},
+    {
+      punchGates: { in: inGate, out: outGate },
+      onPunch: type => postedTypes.push(type || ''),
+      punchReply: body => {
+        punchBodies.push(body);
+        if (body.type === 'in') shiftState = 'working';
+        return { ok: true, serverNow: '2026-11-03T12:01:00.000Z' };
+      },
+      punchState: () =>
+        shiftState === 'working'
+          ? {
+              ...punch,
+              open: { id: 'open-session-1', since: '19:00', at: '2026-11-03T12:00:00.000Z' }
+            }
+          : punch
+    }
+  );
+  await page.goto('/nv/hom-nay');
+  const checkIn = page.locator('.cta');
+  const inClick = checkIn.click();
+  await expect.poll(() => postedTypes.filter(type => type === 'in').length).toBe(1);
+  await expect(checkIn).toBeDisabled();
+  await expect(checkIn).toContainText('Đang xử lý');
+  await checkIn.click({ force: true });
+  expect(postedTypes.filter(type => type === 'in')).toHaveLength(1);
+  releaseIn();
+  await inClick;
+  await expect.poll(() => punchBodies.length).toBe(1);
+  await expect(page.getByRole('button', { name: /Check-out/ })).toBeVisible();
+  expect(punchBodies[0].location).toEqual({ lat: 10.7, lng: 106.6, accuracy: 9 });
+
+  const checkOut = page.locator('.cta');
+  const outClick = checkOut.click();
+  await expect.poll(() => postedTypes.filter(type => type === 'out').length).toBe(1);
+  await expect(checkOut).toBeDisabled();
+  await expect(checkOut).toContainText('Đang xử lý');
+  await checkOut.click({ force: true });
+  expect(postedTypes.filter(type => type === 'out')).toHaveLength(1);
+  releaseOut();
+  await outClick;
+  await expect.poll(() => punchBodies.length).toBe(2);
+  expect(punchBodies[1]).toMatchObject({ type: 'out', sessionId: 'open-session-1' });
+});
+
+test('request deep link closes back to the same path and preserves unrelated query keys', async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await mockStaffApi(page);
+  await page.goto('/nv/yeu-cau?hop=xin-nghi&kb=linh&keep=1');
+  await expect(page.getByRole('dialog')).toBeVisible();
+  await expect(page).toHaveURL(/hop=xin-nghi/);
+  await page.locator('.ph-sheet .sheet-close').click();
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+  await expect(page).toHaveURL(/\/nv\/yeu-cau\?kb=linh&keep=1/);
+  await expect(page.getByText('Yêu cầu của tôi')).toBeVisible();
 });
 
 const phoneScreens = [
