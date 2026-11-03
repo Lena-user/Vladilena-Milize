@@ -125,21 +125,34 @@ async function missingPunchExplained() {
       @saved="punchExplained"
     />
     <ExplanationDialog v-if="answering" :item="answering" @close="answering = null" @saved="reloadExplanations" />
-    <ExplanationDialog v-if="sessionExplaining" :item="sessionExplaining" @close="sessionExplaining = null" @saved="missingPunchExplained" />
+    <ExplanationDialog
+      v-if="sessionExplaining"
+      :item="sessionExplaining"
+      @close="sessionExplaining = null"
+      @saved="missingPunchExplained"
+    />
   </main>
 </template>
 
 <style scoped>
 .pg {
   display: grid;
-  grid-template-columns: 360px 608px 360px;
-  gap: 24px;
-  padding: 24px 32px 40px;
+  grid-template-columns: minmax(300px, 360px) minmax(420px, 608px) minmax(300px, 360px);
+  gap: clamp(16px, 1.7vw, 24px);
+  padding: 24px clamp(16px, 2.2vw, 32px) 40px;
   align-items: start;
+  justify-content: center;
 }
 .col {
   display: flex;
   flex-direction: column;
   gap: 24px;
+}
+@media (max-width: 1135px) {
+  .pg {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 760px;
+    margin-inline: auto;
+  }
 }
 </style>

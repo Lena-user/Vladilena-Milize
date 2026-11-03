@@ -2,7 +2,7 @@
 // Bảng trượt từ dưới lên dùng chung cho màn nhân viên (điện thoại): Teleport vào body, nền mờ,
 // bấm nền hoặc Esc để đóng, kéo thanh nắm/tiêu đề xuống để đóng. Thân ở slot mặc định, huy hiệu cạnh tiêu đề ở #badge.
 //   <BottomSheet title="Đổi mật khẩu" sub="Tài khoản demo_nv4" @close="…"> …thân… </BottomSheet>
-import { onBeforeUnmount, onMounted, ref } from 'vue';
+import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue';
 import { lockScroll, unlockScroll } from '@/components/ui/overlay-lock';
 
 const props = defineProps({
@@ -16,13 +16,48 @@ const root = ref(null);
 const dy = ref(0);
 const dragging = ref(false);
 let startY = 0;
+let returnFocus: HTMLElement | null = null;
 const CLOSE_AT = 90; // kéo xuống quá ngần này (px) thì đóng
+const isTopSheet = () => {
+  const sheets = document.querySelectorAll('.ph-sheet');
+  return sheets.item(sheets.length - 1) === root.value;
+};
 
 const close = () => {
   if (props.dismissable) emit('close');
 };
-const onKey = (e?) => {
-  if (e.key === 'Escape') close();
+const onKey = (e: KeyboardEvent) => {
+  if (!isTopSheet()) return;
+  if (e.key === 'Escape') {
+    if (props.dismissable) {
+      e.preventDefault();
+      close();
+    }
+    return;
+  }
+  if (e.key !== 'Tab' || !root.value) return;
+  const items = [
+    ...root.value.querySelectorAll(
+      'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    )
+  ].filter((el: any) => el.getClientRects().length > 0) as HTMLElement[];
+  if (!items.length) {
+    e.preventDefault();
+    root.value.focus();
+    return;
+  }
+  const first = items[0];
+  const last = items[items.length - 1];
+  if (!root.value.contains(document.activeElement)) {
+    e.preventDefault();
+    (e.shiftKey ? last : first).focus();
+  } else if (e.shiftKey && (document.activeElement === first || document.activeElement === root.value)) {
+    e.preventDefault();
+    last.focus();
+  } else if (!e.shiftKey && document.activeElement === last) {
+    e.preventDefault();
+    first.focus();
+  }
 };
 function down(e?) {
   if (e.button > 0) return;
@@ -41,13 +76,19 @@ function up() {
 }
 
 onMounted(() => {
+  returnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
   lockScroll();
   document.addEventListener('keydown', onKey);
-  root.value?.focus();
+  nextTick(() => {
+    const first = root.value?.querySelector('button, input, select, textarea, a[href]');
+    if (first) first.focus();
+    else root.value?.focus();
+  });
 });
 onBeforeUnmount(() => {
   unlockScroll();
   document.removeEventListener('keydown', onKey);
+  if (returnFocus?.isConnected) returnFocus.focus();
 });
 </script>
 
@@ -71,6 +112,16 @@ onBeforeUnmount(() => {
             {{ title }}
             <slot name="badge" />
           </h2>
+          <button
+            v-if="dismissable"
+            class="sheet-close"
+            type="button"
+            aria-label="Đóng"
+            @pointerdown.stop
+            @click="close"
+          >
+            ×
+          </button>
           <div v-if="sub" class="sub">{{ sub }}</div>
         </div>
         <slot />
@@ -108,6 +159,13 @@ onBeforeUnmount(() => {
   animation: ph-sheet-up 0.22s ease-out;
   transition: transform 0.2s ease;
 }
+@media (prefers-reduced-motion: reduce) {
+  .ph-sheet,
+  .ph-sheet.drag {
+    animation: none;
+    transition: none;
+  }
+}
 .ph-sheet.drag {
   transition: none;
 }
@@ -140,9 +198,28 @@ onBeforeUnmount(() => {
   display: flex;
   align-items: center;
   gap: 10px;
+  padding-right: 52px;
 }
 .ph-sheet h2 .pill {
   margin-left: auto;
+}
+.ph-sheet .sheet-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: #f1f1f1;
+  color: inherit;
+  font: inherit;
+  font-size: 24px;
+  cursor: pointer;
+}
+.ph-sheet :focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
 }
 .ph-sheet .pill.live {
   background: var(--gold-light);

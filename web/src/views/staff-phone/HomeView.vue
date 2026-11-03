@@ -10,10 +10,11 @@ import { useLoad } from '@/composables/useLoad';
 import { getHome, punch } from '@/services/staff-phone';
 import { dayLong, dm, vnd } from '@/utils/format';
 import ExplanationSheet from './components/ExplanationSheet.vue';
+import LoadFeedback from './components/LoadFeedback.vue';
 
 const route = useRoute();
 const kb = computed(() => String(route.query.kb || 'mac-dinh'));
-const { data, reload } = useLoad(
+const { data, loading, error, reload } = useLoad(
   () => getHome(),
   () => kb.value
 );
@@ -71,6 +72,7 @@ async function onExplained() {
 </script>
 
 <template>
+  <LoadFeedback :loading="loading" :error="error" :has-data="!!data" @retry="reload" />
   <div v-if="data && shift" class="home">
     <header class="hero">
       <div class="top">
@@ -102,8 +104,16 @@ async function onExplained() {
           <Icon name="alert" :size="16" />
           <span>{{ punchError }}</span>
         </div>
-        <button type="button" class="cta" :class="cta.cls" :disabled="!cta.action" @click="onCta">
-          <Icon :name="cta.icon" :size="18" />{{ cta.label }} <small>{{ cta.small }}</small>
+        <button
+          type="button"
+          class="cta"
+          :class="cta.cls"
+          :disabled="!cta.action || busy"
+          :aria-busy="busy"
+          @click="onCta"
+        >
+          <Icon :name="cta.icon" :size="18" />{{ busy ? 'Đang xử lý…' : cta.label }}
+          <small v-if="!busy">{{ cta.small }}</small>
         </button>
       </div>
     </header>
@@ -123,8 +133,11 @@ async function onExplained() {
         </div>
         <div class="v est-u">{{ vnd(data.pay.amount) }}<span class="unit">₫</span></div>
         <div class="n">
-          Tính trên {{ data.pay.days }} ngày công đến {{ dm(data.pay.asOf) }} · chưa phải lương chính thức.<template v-if="data.payslipDate"> Phiếu lương
-          chính thức gửi ngày {{ dm(data.payslipDate) }}.</template>
+          Tính trên {{ data.pay.days }} ngày công đến {{ dm(data.pay.asOf) }} · chưa phải lương chính thức.<template
+            v-if="data.payslipDate"
+          >
+            Phiếu lương chính thức gửi ngày {{ dm(data.payslipDate) }}.</template
+          >
         </div>
       </div>
       <div v-for="f in data.facts" :key="f.label" class="kv">
@@ -140,7 +153,9 @@ async function onExplained() {
     </section>
 
     <section class="sec">
-      <div class="h2">Việc cần làm<template v-if="data.requestDeadline"> trước {{ dm(data.requestDeadline) }}</template></div>
+      <div class="h2">
+        Việc cần làm<template v-if="data.requestDeadline"> trước {{ dm(data.requestDeadline) }}</template>
+      </div>
       <div class="card">
         <div v-for="t in data.todo" :key="t.title" class="ok">
           <span class="ico" :class="t.tone"><Icon :name="t.icon" :size="14" :stroke="2.5" /></span>

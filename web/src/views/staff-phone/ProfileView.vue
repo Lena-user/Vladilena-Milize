@@ -5,10 +5,11 @@ import Icon from '@/components/ui/Icon.vue';
 import { useLoad } from '@/composables/useLoad';
 import { getProfile, logout } from '@/services/staff-phone';
 import ChangePasswordSheet from './components/ChangePasswordSheet.vue';
+import LoadFeedback from './components/LoadFeedback.vue';
 import { useHop } from './useHop';
 
 const router = useRouter();
-const { data } = useLoad(() => getProfile());
+const { data, loading, error, reload } = useLoad(() => getProfile());
 const { hop, open, close } = useHop();
 
 async function signOut() {
@@ -18,6 +19,7 @@ async function signOut() {
 </script>
 
 <template>
+  <LoadFeedback :loading="loading" :error="error" :has-data="!!data" @retry="reload" />
   <div v-if="data" class="toi">
     <header class="ph"><h1>Tôi</h1></header>
 

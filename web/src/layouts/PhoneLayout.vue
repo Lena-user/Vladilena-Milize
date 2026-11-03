@@ -17,7 +17,7 @@ const TABS = [
     <div class="wrap">
       <main><slot /></main>
       <nav class="tabbar" aria-label="Điều hướng">
-        <RouterLink v-for="t in TABS" :key="t.to" :to="t.to" class="tb" active-class="on">
+        <RouterLink v-for="t in TABS" :key="t.to" :to="t.to" class="tb" active-class="on" :aria-label="t.label">
           <span class="ib"><Icon :name="t.icon" :size="20" /></span>{{ t.label }}
         </RouterLink>
       </nav>

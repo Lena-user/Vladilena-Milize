@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // Thu nhập: "Tháng này tôi được khoảng bao nhiêu, và vì sao?" → một con số, rồi phiếu lương đọc từ trên xuống.
 // ?kb=thang-10: phiếu chính thức tháng 10; ?kb=ca-dem|ctv|quen-checkout|tts: phiếu của người khác.
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import Icon from '@/components/ui/Icon.vue';
 import { useLoad } from '@/composables/useLoad';
@@ -10,17 +10,24 @@ import { monthLabel } from '@/utils/format';
 import IncomeSlip from './components/IncomeSlip.vue';
 import KpiSelf from './components/KpiSelf.vue';
 import MonthSwitch from './components/MonthSwitch.vue';
+import LoadFeedback from './components/LoadFeedback.vue';
 
 const route = useRoute();
 const kbRaw = computed(() => String(route.query.kb || ''));
 const kb = computed(() => (kbRaw.value === 'thang-10' ? 'mac-dinh' : kbRaw.value || 'mac-dinh'));
 const month = ref('');
-getMonthContext().then(c => (month.value = c.month));
-const { data, loading, error } = useLoad(
-  async () => getIncome(month.value || (await getMonthContext()).month),
-  () => `${month.value}|${kb.value}`
-);
+const { data, loading, error, reload } = useLoad(async () => {
+  if (!month.value) month.value = (await getMonthContext()).month;
+  return getIncome(month.value);
+});
+watch(kb, () => reload());
+const currentData = computed(() => (data.value?.month === month.value ? data.value : null));
 const monthNo = computed(() => Number(month.value.slice(5, 7)));
+function setMonth(value?) {
+  if (!value || value === month.value) return;
+  month.value = value;
+  reload();
+}
 </script>
 
 <template>
@@ -31,18 +38,24 @@ const monthNo = computed(() => Number(month.value.slice(5, 7)));
     </header>
     <MonthSwitch
       :title="monthLabel(month)"
-      :state="data?.stateLabel || ''"
-      :official="!!data?.official"
-      :has-prev="!!data?.prevMonth"
-      :has-next="!!data?.nextMonth"
-      @prev="month = data.prevMonth"
-      @next="month = data.nextMonth"
+      :state="currentData?.stateLabel || ''"
+      :official="!!currentData?.official"
+      :has-prev="!!currentData?.prevMonth"
+      :has-next="!!currentData?.nextMonth"
+      @prev="setMonth(currentData?.prevMonth)"
+      @next="setMonth(currentData?.nextMonth)"
     />
+    <LoadFeedback :loading="loading" :error="error" :has-data="!!currentData" @retry="reload" />
 
-    <template v-if="data && !data.empty && !error">
-      <IncomeSlip :figure="data.figure" :groups="data.groups" :total="data.total" :official="data.official" />
+    <template v-if="currentData && !currentData.empty">
+      <IncomeSlip
+        :figure="currentData.figure"
+        :groups="currentData.groups"
+        :total="currentData.total"
+        :official="currentData.official"
+      />
 
-      <template v-for="(s, i) in data.sections" :key="i">
+      <template v-for="(s, i) in currentData.sections" :key="i">
         <section v-if="s.kind === 'notice'" class="sec">
           <div class="card">
             <div class="note notice">
@@ -80,8 +93,9 @@ const monthNo = computed(() => Number(month.value.slice(5, 7)));
       </template>
       <KpiSelf :month="month" />
     </template>
-    <p v-else-if="error" class="none">{{ error.message }}</p>
-    <p v-else-if="!loading" class="none">Chưa có phiếu thu nhập tháng {{ monthNo }}.</p>
+    <p v-else-if="currentData && currentData.empty && !loading && !error" class="none">
+      Chưa có phiếu thu nhập tháng {{ monthNo }}.
+    </p>
   </div>
 </template>
 

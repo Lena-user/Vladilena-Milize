@@ -139,12 +139,13 @@
 }
 .ph-app .tabbar {
   position: static;
-  height: 76px;
+  min-height: 76px;
+  height: auto;
   background: #fff;
   border-top: 1px solid var(--border);
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  padding: 8px 4px 14px;
+  padding: 8px 4px max(14px, env(safe-area-inset-bottom));
   margin-top: auto;
   flex: none;
 }
@@ -156,6 +157,10 @@
   font-size: 12px;
   line-height: 16px;
   color: var(--muted);
+  min-width: 0;
+  min-height: 48px;
+  justify-content: center;
+  text-decoration: none;
 }
 .ph-app .tb .ib {
   width: 52px;
@@ -170,6 +175,12 @@
 }
 .ph-app .tb.on .ib {
   background: var(--gold-light);
+}
+.ph-app .tb:focus-visible,
+.ph-app button:focus-visible,
+.ph-app a:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
 }
 .ph-app .note {
   display: flex;

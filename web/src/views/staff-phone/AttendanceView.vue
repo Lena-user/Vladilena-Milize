@@ -9,20 +9,23 @@ import AttendanceCalendar from './components/AttendanceCalendar.vue';
 import DayDetailSheet from './components/DayDetailSheet.vue';
 import DayRequestSheet from './components/DayRequestSheet.vue';
 import MonthSwitch from './components/MonthSwitch.vue';
+import LoadFeedback from './components/LoadFeedback.vue';
 import { useHop } from './useHop';
 
 const month = ref('');
-getMonthContext().then(c => (month.value = c.month));
-const { data, loading } = useLoad(
-  async () => getAttendance(month.value || (await getMonthContext()).month),
-  () => month.value
-);
+const { data, loading, error, reload } = useLoad(async () => {
+  if (!month.value) month.value = (await getMonthContext()).month;
+  return getAttendance(month.value);
+});
+const currentData = computed(() => (data.value?.month === month.value ? data.value : null));
 const { hop, close } = useHop();
 
 // Ngày đang xem chi tiết / đang khai: mở từ lịch, từ hộp "Khai ngày này", hoặc từ ?hop=
 const detailDate = ref(null);
 const declareDate = ref(null);
-const shownDetail = computed(() => detailDate.value || (hop.value === 'chi-tiet-ngay' ? data.value?.sheetDate : null));
+const shownDetail = computed(
+  () => detailDate.value || (hop.value === 'chi-tiet-ngay' ? currentData.value?.sheetDate : null)
+);
 
 function closeDetail() {
   detailDate.value = null;
@@ -32,36 +35,44 @@ function declare(date?) {
   closeDetail();
   declareDate.value = date;
 }
-const todayLabel = computed(() => dayLong(data.value.today.date));
+const todayLabel = computed(() => (currentData.value ? dayLong(currentData.value.today.date) : ''));
+function setMonth(value?) {
+  if (!value || value === month.value) return;
+  month.value = value;
+  detailDate.value = null;
+  close();
+  reload();
+}
 </script>
 
 <template>
   <div class="att">
     <header class="ph">
       <h1>Chấm công</h1>
-      <p v-if="data">{{ data.shiftLine }}</p>
+      <p v-if="currentData">{{ currentData.shiftLine }}</p>
     </header>
     <MonthSwitch
       :title="monthLabel(month)"
-      :state="data?.stateLabel || ''"
-      :has-prev="!!data?.prevMonth"
-      :has-next="!!data?.nextMonth"
-      @prev="month = data.prevMonth"
-      @next="month = data.nextMonth"
+      :state="currentData?.stateLabel || ''"
+      :has-prev="!!currentData?.prevMonth"
+      :has-next="!!currentData?.nextMonth"
+      @prev="setMonth(currentData?.prevMonth)"
+      @next="setMonth(currentData?.nextMonth)"
     />
+    <LoadFeedback :loading="loading" :error="error" :has-data="!!currentData" @retry="reload" />
 
-    <template v-if="data">
+    <template v-if="currentData">
       <section class="sec card">
         <div class="stats">
-          <div v-for="s in data.stats" :key="s.label">
+          <div v-for="s in currentData.stats" :key="s.label">
             <b>{{ s.value }}</b>
             <span>{{ s.label }}</span>
           </div>
         </div>
-        <div class="zero"><Icon name="check" :size="16" />{{ data.zeroNote }}</div>
+        <div class="zero"><Icon name="check" :size="16" />{{ currentData.zeroNote }}</div>
       </section>
 
-      <AttendanceCalendar :days="data.days" @select="detailDate = $event" />
+      <AttendanceCalendar :days="currentData.days" @select="detailDate = $event" />
 
       <section class="sec">
         <div class="h2">
@@ -70,12 +81,12 @@ const todayLabel = computed(() => dayLong(data.value.today.date));
         <div class="card">
           <div class="punch">
             <div>
-              <div class="tm">{{ data.today.time }}</div>
-              <div class="s">{{ data.today.note }}</div>
+              <div class="tm">{{ currentData.today.time }}</div>
+              <div class="s">{{ currentData.today.note }}</div>
             </div>
-            <span class="pill live">{{ data.today.statusLabel }}</span>
+            <span class="pill live">{{ currentData.today.statusLabel }}</span>
           </div>
-          <button type="button" class="act" @click="declareDate = data.today.date">
+          <button type="button" class="act" @click="declareDate = currentData.today.date">
             <Icon name="cal" :size="18" />Khai ngày này
           </button>
         </div>
@@ -84,7 +95,7 @@ const todayLabel = computed(() => dayLong(data.value.today.date));
       <section class="sec rc">
         <div class="h2">Gần đây</div>
         <div class="card">
-          <div v-for="r in data.recent" :key="r.date" class="kv">
+          <div v-for="r in currentData.recent" :key="r.date" class="kv">
             <span class="k"
               >{{ dayLong(r.date) }}<small v-if="r.note">{{ r.note }}</small></span
             >
@@ -95,7 +106,7 @@ const todayLabel = computed(() => dayLong(data.value.today.date));
         </div>
       </section>
     </template>
-    <p v-else-if="!loading" class="empty-month">Tháng này chưa có dữ liệu chấm công.</p>
+    <p v-else-if="!loading && !error" class="empty-month">Tháng này chưa có dữ liệu chấm công.</p>
 
     <DayDetailSheet v-if="shownDetail" :date="shownDetail" @close="closeDetail" @declare="declare" />
     <DayRequestSheet v-if="declareDate" :preset="{ date: declareDate, type: 'di-lam' }" @close="declareDate = null" />
