@@ -71,6 +71,13 @@ export const isRatio = (entry?) => !!(entry.ui && entry.ui.component === 'percen
 
 const live = (e?) => e.class !== 'removed';
 const isFixed = (e?) => e.class === 'fixed' || e.readOnly || e.lockReason;
+export const normalizeSettingsSearch = (value?) =>
+  String(value || '')
+    .trim()
+    .toLocaleLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/đ/g, 'd');
 const text = (v?) =>
   v === true ? 'Có' : v === false ? 'Không' : v == null ? '' : Array.isArray(v) ? v.join(', ') : String(v);
 
@@ -165,10 +172,65 @@ export function buildAllSettings(idx?, firstRun?, group?) {
           : entry.class === 'table' || entry.class === 'formula'
             ? 'Bảng'
             : '';
-      detail.readonly.push({ title: baseLabel(entry.label), desc: '', value: shown || 'Khoá' });
+      detail.readonly.push({ key: entry.id, title: baseLabel(entry.label), desc: '', value: shown || 'Khoá' });
     }
   }
   return { intro: { count: firstRun ? firstRun.total : 0 }, groups: sections, detail };
+}
+
+/** Search the already-loaded registry index and return safe, stable deep-link targets. */
+export function searchAllSettings(idx?, query?) {
+  const needle = normalizeSettingsSearch(query);
+  const results: any[] = [];
+  for (const section of SECTIONS) {
+    for (const meta of section.items) {
+      const detail = buildAllSettings(idx, null, meta.key).detail;
+      for (const item of detail.items) {
+        if (!needle || normalizeSettingsSearch(`${item.name} ${item.desc || ''}`).includes(needle))
+          results.push({
+            groupKey: meta.key,
+            groupLabel: meta.name,
+            section: section.section,
+            settingKey: item.key,
+            title: item.name,
+            readonly: false,
+            query: { q: String(query).trim(), group: meta.key, setting: item.key }
+          });
+      }
+      for (const item of detail.readonly) {
+        if (!needle || normalizeSettingsSearch(`${item.title} ${item.desc || ''}`).includes(needle))
+          results.push({
+            groupKey: meta.key,
+            groupLabel: meta.name,
+            section: section.section,
+            settingKey: item.key,
+            title: item.title,
+            readonly: true,
+            query: { q: String(query).trim(), group: meta.key, setting: item.key }
+          });
+      }
+    }
+  }
+  return results;
+}
+
+/** Keep a deep-linked target visible even when the search or local filter would hide it. */
+export function filterAllSettings(detail?, query?, filter = 'all', targetKey = '') {
+  const needle = normalizeSettingsSearch(query);
+  const matches = (value?, key?) => key === targetKey || !needle || normalizeSettingsSearch(value).includes(needle);
+  return {
+    items: (detail?.items || []).filter(
+      item =>
+        (item.key === targetKey || filter !== 'readonly') &&
+        (item.key === targetKey || filter !== 'unconfirmed' || item.badge === 'unconfirmed') &&
+        matches(`${item.name} ${item.desc || ''}`, item.key)
+    ),
+    readonly: (detail?.readonly || []).filter(
+      item =>
+        (['all', 'readonly'].includes(filter) || item.key === targetKey) &&
+        matches(`${item.title} ${item.desc || ''}`, item.key)
+    )
+  };
 }
 
 /** Giá trị gửi lên của một mục sau khi người dùng sửa. */

@@ -2,7 +2,7 @@
 // Mỗi hàm đọc máy chủ rồi đổi phản hồi về đúng hình dạng màn đang dùng (builders/admin-config).
 // Hàm lưu so bản nháp với bản vừa đọc và chỉ gửi các khoá đã đổi, kèm tháng áp dụng và số phiên bản (paramsRev) của lần đọc đó.
 import { api, qs } from '@/services/http';
-import { allSettingsWanted, buildAllSettings } from '@/builders/admin-config/all-settings';
+import { allSettingsWanted, buildAllSettings, searchAllSettings } from '@/builders/admin-config/all-settings';
 import { benefitsWanted, buildBenefits } from '@/builders/admin-config/benefits';
 import { buildAuditPage } from '@/builders/admin-config/audit';
 import { buildPayDrawer, buildPayFormula, drawerWanted } from '@/builders/admin-config/pay';
@@ -49,6 +49,7 @@ const state: Record<string, any> = {
   calendar: null,
   setup: null
 };
+let allSettingsRequestId = 0;
 
 // Bảng khoản: trạng thái từng khoản theo tham số đã chỉnh, số mục chờ xác nhận lấy từ GET /settings/first-run
 export async function getPayFormula() {
@@ -110,10 +111,12 @@ export async function previewBenefits(draft?) {
 
 // ---------- Tất cả cài đặt ----------
 export async function getAllSettings(group = 'ngay-cong') {
+  const requestId = ++allSettingsRequestId;
   const [idx, firstRun] = await Promise.all([readParams(), api('GET', '/settings/first-run')]);
-  const view = buildAllSettings(idx, firstRun, group);
+  const view: any = buildAllSettings(idx, firstRun, group);
+  view.searchResults = searchAllSettings(idx, '');
   for (const item of view.detail.items) item.history = historyOf(idx, item);
-  state.all = { idx, group };
+  if (requestId === allSettingsRequestId) state.all = { idx, group };
   return plain(view);
 }
 
