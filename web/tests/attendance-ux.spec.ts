@@ -1,9 +1,15 @@
 import { expect, test, type Page } from '@playwright/test';
 
 async function mockAttendance(page: Page, emptySummary = false) {
+  const teamRequests: string[] = [];
+  page.on('request', request => {
+    const requestUrl = new URL(request.url());
+    if (requestUrl.pathname === '/api/team') teamRequests.push(requestUrl.href);
+  });
   await page.route('**/api/**', async route => {
     const requestUrl = new URL(route.request().url());
     const path = requestUrl.pathname.replace('/api', '');
+    const requestedMonth = requestUrl.searchParams.get('month') || '2026-11';
     let body: unknown = {};
     if (path === '/me') {
       body = {
@@ -18,23 +24,23 @@ async function mockAttendance(page: Page, emptySummary = false) {
     else if (path.startsWith('/alerts')) body = { missingPunches: [] };
     else if (path.startsWith('/team'))
       body = {
-        month: '2026-11',
+        month: requestedMonth,
         rows: emptySummary
           ? []
           : [
               {
                 staff: { username: 'employee-1', name: 'Ánh Nguyễn', type: 'nv', shiftCode: 'day' },
                 days: {},
-                attendanceSessions: [{ id: 'punch-1', date: '2026-11-03', status: 'pending' }]
+                attendanceSessions: [{ id: 'punch-1', date: `${requestedMonth}-03`, status: 'pending' }]
               },
               {
                 staff: { username: 'employee-2', name: 'Bình Trần Nhân Sự Có Tên Dài', type: 'nv', shiftCode: 'day' },
                 days: {},
-                attendanceSessions: [{ id: 'punch-2', date: '2026-11-03', status: 'rejected' }]
+                attendanceSessions: [{ id: 'punch-2', date: `${requestedMonth}-03`, status: 'rejected' }]
               }
             ]
       };
-    else if (path === '/today') body = { today: '2026-11-03', rows: [] };
+    else if (path === '/today') body = { today: `${requestedMonth}-03`, rows: [] };
     else if (path === '/settings/shifts')
       body = { shifts: [{ code: 'day', name: 'Ca ngày', in: '08:00', out: '17:00' }] };
     else if (path === '/holidays') body = { dates: [] };
@@ -52,13 +58,14 @@ async function mockAttendance(page: Page, emptySummary = false) {
       };
     await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(body) });
   });
+  return teamRequests;
 }
 
 for (const width of [375, 768, 1024, 1440]) {
   test(`timesheet stays in a keyboard-scrollable region at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
     await mockAttendance(page);
-    await page.goto('/admin/cham-cong?thang=2026-11&filter=all&q=needle');
+    await page.goto('/admin/cham-cong?thang=2026-11&extra=needle');
     const region = page.getByRole('region', { name: /Bảng công tháng 11/ });
     await expect(region).toBeVisible();
     if (width <= 1100) await expect(page.locator('#timesheet-scroll-help')).toBeVisible();
@@ -105,7 +112,7 @@ for (const width of [375, 768, 1024, 1440]) {
     await expect(dialog).toBeVisible();
     await expect(dialog).toContainText('Ánh Nguyễn');
     await expect(dialog.locator('input, button').first()).toBeFocused();
-    await expect(page).toHaveURL(/thang=2026-11.*filter=all.*q=needle.*hop=chi-tiet-ngay/);
+    await expect(page).toHaveURL(/thang=2026-11.*extra=needle.*hop=chi-tiet-ngay/);
 
     await page.evaluate(() => {
       const url = new URL(location.href);
@@ -119,7 +126,7 @@ for (const width of [375, 768, 1024, 1440]) {
     await page.keyboard.press('Escape');
     await expect(dialog).toHaveCount(0);
     await expect(opener).toBeFocused();
-    await expect(page).toHaveURL(/thang=2026-11.*filter=all.*q=needle/);
+    await expect(page).toHaveURL(/thang=2026-11.*extra=needle/);
     await expect(page).not.toHaveURL(/hop=|nv=|ngay=/);
   });
 }
@@ -153,4 +160,120 @@ test('Today title action remains available when monthly attendance summary is em
   await expect(today).toBeVisible();
   await today.click();
   await expect(page.getByRole('dialog', { name: 'Chấm công hôm nay' })).toBeVisible();
+});
+
+test('31-day month keeps every date and both employee identities reachable at the scroll end', async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await mockAttendance(page);
+  await page.goto('/admin/cham-cong?thang=2026-10');
+
+  const region = page.getByRole('region', { name: /Bảng công tháng 10/ });
+  await expect(region).toBeVisible();
+  await expect(region.locator('thead th')).toHaveCount(34);
+  await region.focus();
+  await page.keyboard.press('End');
+  await expect(region.getByRole('columnheader', { name: '31 T7' })).toBeVisible();
+  await expect(region.getByRole('columnheader', { name: 'Chờ xử lý' })).toBeVisible();
+  const fixedEmployee = await region
+    .locator('tbody td:first-child')
+    .first()
+    .evaluate(cell => {
+      const box = cell.getBoundingClientRect();
+      const regionBox = cell.closest('[role="region"]')!.getBoundingClientRect();
+      return { left: box.left, right: box.right, regionLeft: regionBox.left, regionRight: regionBox.right };
+    });
+  expect(fixedEmployee.left).toBeGreaterThanOrEqual(fixedEmployee.regionLeft);
+  expect(fixedEmployee.right).toBeLessThanOrEqual(fixedEmployee.regionRight);
+  await expect(region.locator('tbody td:first-child').first()).toContainText('Ánh Nguyễn');
+  await expect(region.locator('tbody td:first-child').nth(1)).toContainText('Bình Trần Nhân Sự Có Tên Dài');
+});
+
+test('filter and search URL state survives dialog, reload, back and forward', async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  const teamRequests = await mockAttendance(page);
+  await page.goto('/admin/cham-cong?thang=2026-11&filter=pending&q=%C3%81nh&extra=keep');
+
+  await expect(page.getByLabel('Lọc nhân sự')).toHaveValue('pending');
+  const search = page.getByRole('textbox', { name: 'Tìm nhân sự' });
+  await expect(search).toHaveValue('Ánh');
+  await expect(page.locator('.timesheet-scroll tbody tr')).toHaveCount(1);
+
+  const initialTeamRequests = teamRequests.length;
+  await page.getByLabel('Lọc nhân sự').selectOption('all');
+  await expect.poll(() => new URL(page.url()).searchParams.get('q')).toBe('Ánh');
+  await expect.poll(() => new URL(page.url()).searchParams.get('filter')).toBeNull();
+  await expect(page.getByLabel('Lọc nhân sự')).toHaveValue('all');
+  await expect(page.locator('.timesheet-scroll tbody tr')).toHaveCount(1);
+
+  await search.fill('Bình');
+  await expect.poll(() => new URL(page.url()).searchParams.get('q')).toBe('Bình');
+  await expect(page.locator('.timesheet-scroll tbody tr')).toContainText('Bình Trần Nhân Sự Có Tên Dài');
+  expect(teamRequests.length).toBeGreaterThan(initialTeamRequests);
+  for (const request of teamRequests) {
+    const apiUrl = new URL(request);
+    expect(apiUrl.searchParams.get('month')).toBe('2026-11');
+    expect(apiUrl.searchParams.has('filter')).toBe(false);
+    expect(apiUrl.searchParams.has('q')).toBe(false);
+  }
+
+  const opener = page.getByRole('button', { name: 'Bình Trần Nhân Sự Có Tên Dài, ngày 3: Lượt bị từ chối' });
+  await opener.focus();
+  await page.keyboard.press('Enter');
+  await expect(page).toHaveURL(/hop=chi-tiet-ngay/);
+  const urlWithDialog = new URL(page.url());
+  expect(urlWithDialog.searchParams.get('thang')).toBe('2026-11');
+  expect(urlWithDialog.searchParams.get('q')).toBe('Bình');
+  expect(urlWithDialog.searchParams.get('extra')).toBe('keep');
+  expect(urlWithDialog.searchParams.get('nv')).toBe('employee-2');
+  expect(urlWithDialog.searchParams.get('ngay')).toBe('2026-11-03');
+
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+  await expect(opener).toBeFocused();
+  const urlAfterClose = new URL(page.url());
+  expect(urlAfterClose.searchParams.get('thang')).toBe('2026-11');
+  expect(urlAfterClose.searchParams.get('q')).toBe('Bình');
+  expect(urlAfterClose.searchParams.get('extra')).toBe('keep');
+  expect(urlAfterClose.searchParams.has('hop')).toBe(false);
+  expect(urlAfterClose.searchParams.has('nv')).toBe(false);
+  expect(urlAfterClose.searchParams.has('ngay')).toBe(false);
+
+  await page.reload();
+  await expect(search).toHaveValue('Bình');
+  await expect(page.getByLabel('Lọc nhân sự')).toHaveValue('all');
+  await expect(page.locator('.timesheet-scroll tbody tr')).toContainText('Bình Trần Nhân Sự Có Tên Dài');
+
+  await page.evaluate(() => {
+    const url = new URL(location.href);
+    url.searchParams.set('filter', 'pending');
+    url.searchParams.set('q', 'Ánh');
+    history.pushState(history.state, '', url);
+    window.dispatchEvent(new PopStateEvent('popstate'));
+  });
+  await expect(page.getByLabel('Lọc nhân sự')).toHaveValue('pending');
+  await expect(search).toHaveValue('Ánh');
+  await expect(page.locator('.timesheet-scroll tbody tr')).toContainText('Ánh Nguyễn');
+
+  await page.goBack();
+  await expect(page.getByLabel('Lọc nhân sự')).toHaveValue('all');
+  await expect(search).toHaveValue('Bình');
+  await expect(page.locator('.timesheet-scroll tbody tr')).toContainText('Bình Trần Nhân Sự Có Tên Dài');
+  await page.goForward();
+  await expect(page.getByLabel('Lọc nhân sự')).toHaveValue('pending');
+  await expect(search).toHaveValue('Ánh');
+  await expect(page.locator('.timesheet-scroll tbody tr')).toContainText('Ánh Nguyễn');
+
+  await page.evaluate(() => {
+    const url = new URL(location.href);
+    url.searchParams.set('filter', 'not-a-filter');
+    url.searchParams.delete('q');
+    history.pushState(history.state, '', url);
+    window.dispatchEvent(new PopStateEvent('popstate'));
+  });
+  await expect(page.getByLabel('Lọc nhân sự')).toHaveValue('all');
+  await expect(search).toHaveValue('');
+  await expect(page.locator('.timesheet-scroll tbody tr')).toHaveCount(2);
+  await expect.poll(() => new URL(page.url()).searchParams.get('filter')).toBeNull();
+  await expect.poll(() => new URL(page.url()).searchParams.get('q')).toBeNull();
+  await expect.poll(() => new URL(page.url()).searchParams.get('extra')).toBe('keep');
 });

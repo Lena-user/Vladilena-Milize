@@ -39,19 +39,34 @@ const SESSION_LABEL: Record<string, string> = {
   q: 'Lượt bị từ chối'
 };
 
-const filter = ref(
-  ['all', 'pending', 'tts', 'ctv', 'nv'].includes(String(route.query.filter)) ? String(route.query.filter) : 'all'
-);
-const q = ref('');
+const validFilters = ['all', 'pending', 'tts', 'ctv', 'nv'];
+const filter = ref(validFilters.includes(String(route.query.filter)) ? String(route.query.filter) : 'all');
+const q = ref(typeof route.query.q === 'string' ? route.query.q : '');
 const page = ref(1);
 watch([month, filter, q], () => (page.value = 1));
 watch(
-  () => route.query.filter,
-  val => {
-    if (val && ['all', 'pending', 'tts', 'ctv', 'nv'].includes(String(val))) {
-      filter.value = String(val);
+  () => [route.query.filter, route.query.q],
+  ([routeFilter, routeQ]) => {
+    const nextFilter = typeof routeFilter === 'string' && validFilters.includes(routeFilter) ? routeFilter : 'all';
+    const nextQ = typeof routeQ === 'string' ? routeQ : '';
+    if (filter.value !== nextFilter) filter.value = nextFilter;
+    if (q.value !== nextQ) q.value = nextQ;
+  },
+  { immediate: true }
+);
+watch(
+  [filter, q],
+  ([nextFilter, nextQ]) => {
+    const query = { ...route.query };
+    if (nextFilter === 'all') delete query.filter;
+    else query.filter = nextFilter;
+    if (nextQ) query.q = nextQ;
+    else delete query.q;
+    if (query.filter !== route.query.filter || query.q !== route.query.q) {
+      router.replace({ query });
     }
-  }
+  },
+  { immediate: true }
 );
 const { data, reload } = useLoad(
   () => getTimesheet(month.value, { filter: filter.value, q: q.value, page: page.value }),
