@@ -1,8 +1,14 @@
 import { expect, test, type Page } from '@playwright/test';
 
-async function mockSettingsApi(page: Page, delayParams = false, reverseParams = false) {
+async function mockSettingsApi(
+  page: Page,
+  delayParams = false,
+  reverseParams = false,
+  concurrentEdit = false
+) {
   let paramsReads = 0;
   let putRevision: number | null = null;
+  let putChanges: { key: string; value: unknown }[] = [];
   const paramCompletions: number[] = [];
   await page.route('**/api/**', async route => {
     const path = new URL(route.request().url()).pathname.replace('/api', '');
@@ -16,6 +22,7 @@ async function mockSettingsApi(page: Page, delayParams = false, reverseParams = 
         serverNow: '2026-11-03T12:00:00.000Z'
       };
     } else if (path === '/settings/first-run') body = { total: 0, items: [] };
+    else if (path === '/positions') body = { positions: [] };
     else if (path === '/settings/params' && route.request().method() === 'GET') {
       const readNumber = ++paramsReads;
       if (reverseParams && readNumber === 2) await new Promise(resolve => setTimeout(resolve, 450));
@@ -24,7 +31,7 @@ async function mockSettingsApi(page: Page, delayParams = false, reverseParams = 
       paramCompletions.push(readNumber);
       body = {
         month: '2026-11',
-        paramsRev: reverseParams ? readNumber : 1,
+        paramsRev: reverseParams ? readNumber : concurrentEdit && readNumber > 1 ? 2 : 1,
         groups: [
           {
             entries: [
@@ -36,6 +43,28 @@ async function mockSettingsApi(page: Page, delayParams = false, reverseParams = 
                 wired: true,
                 instances: [{ key: 'pay.method', value: 'monthly', status: 'unset' }],
                 rules: { options: [{ value: 'monthly', label: 'Hàng tháng' }, { value: 'daily', label: 'Theo ngày' }] }
+              },
+              {
+                id: 'type.<type>.workdays',
+                group: 2,
+                label: 'Số ngày công',
+                class: 'number',
+                wired: true,
+                ui: { unit: 'day' },
+                instances: [
+                  {
+                    key: 'type.nv.workdays',
+                    value: 22,
+                    status: 'unset',
+                    label: 'Số ngày công (Nhân viên)'
+                  },
+                  {
+                    key: 'type.ctv.workdays',
+                    value: concurrentEdit && readNumber > 1 ? 24 : 30,
+                    status: 'unset',
+                    label: 'Số ngày công (Chuyên trách viên)'
+                  }
+                ]
               },
               {
                 id: 'system.tax-code',
@@ -50,12 +79,19 @@ async function mockSettingsApi(page: Page, delayParams = false, reverseParams = 
         ]
       };
     } else if (path === '/settings/params' && route.request().method() === 'PUT') {
-      putRevision = route.request().postDataJSON().expectedRev;
+      const payload = route.request().postDataJSON();
+      putRevision = payload.expectedRev;
+      putChanges = payload.changes;
       body = { ok: true, paramsRev: putRevision, saved: ['pay.method'] };
     }
     await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(body) });
   });
-  return { putRevision: () => putRevision, paramsReads: () => paramsReads, paramCompletions: () => [...paramCompletions] };
+  return {
+    putRevision: () => putRevision,
+    putChanges: () => putChanges,
+    paramsReads: () => paramsReads,
+    paramCompletions: () => [...paramCompletions]
+  };
 }
 
 test('search opens a matching setting in another group by mouse and keyboard', async ({ page }) => {
@@ -120,39 +156,143 @@ test('group-only search keeps a read-only deep-link target visible and resets re
 test('out-of-order group reads cannot replace the active settings revision used by save', async ({ page }) => {
   const api = await mockSettingsApi(page, false, true);
   await page.goto('/admin/cai-dat/tat-ca?group=ngay-cong');
-  await page.locator('[data-setting-key="pay.method"] .c button').filter({ hasText: 'Theo ngày' }).click();
   await page.locator('.gl .chip').filter({ hasText: 'Chấm công' }).click();
   await expect.poll(api.paramsReads).toBe(2);
   await page.locator('.gl .chip').filter({ hasText: 'Lương theo ngày công' }).click();
   await expect.poll(api.paramsReads).toBe(3);
   await expect(page).toHaveURL(/group=ngay-cong/);
   await expect.poll(api.paramCompletions).toEqual([1, 3, 2]);
+  await page.locator('[data-setting-key="pay.method"] .c button').filter({ hasText: 'Theo ngày' }).click();
   await expect(page.locator('[data-setting-key="pay.method"] .c button.on')).toContainText('Theo ngày');
   await page.getByRole('button', { name: 'Xem trước và lưu' }).click();
   await expect.poll(api.putRevision).toBe(3);
 });
 
-test('dirty drafts survive rapid group changes and back navigation; route leave can be cancelled or confirmed', async ({ page }) => {
-  await mockSettingsApi(page, true);
-  await page.goto('/admin/cai-dat/tat-ca?q=ph%C6%B0%C6%A1ng%20th%E1%BB%A9c&group=ngay-cong&setting=pay.method');
-  await page.locator('[data-setting-key="pay.method"] .c button').filter({ hasText: 'Theo ngày' }).click();
-  await page.locator('.gl .chip').filter({ hasText: 'Chấm công' }).click();
-  await page.locator('.gl .chip').filter({ hasText: 'Nghỉ và phép' }).click();
-  await expect(page).toHaveURL(/group=nghi-phep/);
-  await page.waitForTimeout(250);
-  await page.goBack();
-  await page.waitForTimeout(250);
-  await page.goBack();
-  await expect(page).toHaveURL(/group=ngay-cong.*setting=pay.method/);
-  await expect(page.locator('[data-setting-key="pay.method"] .c button.on')).toContainText('Theo ngày');
+test('dirty group change cancel preserves query and values; confirmed discard uses fresh revision without overwriting another edit', async ({ page }) => {
+  const api = await mockSettingsApi(page, false, false, true);
+  await page.goto('/admin/cai-dat/tat-ca?q=ng%C3%A0y%20c%C3%B4ng&group=ngay-cong&setting=type.%3Ctype%3E.workdays');
+  const x = page.getByLabel('Số ngày công · Nhân viên');
+  const y = page.getByLabel('Số ngày công · Chuyên trách viên');
+  await page.getByRole('button', { name: 'Sửa được', exact: true }).click();
+  await x.fill('23');
+  await y.fill('31');
 
   const beforeCancel = page.url();
+  const attendance = page.locator('.gl .chip').filter({ hasText: 'Chấm công' });
   page.once('dialog', dialog => dialog.dismiss());
-  await page.locator('nav.sub a').first().click();
+  await attendance.click();
   await expect(page).toHaveURL(beforeCancel);
-  await expect(page.locator('[data-setting-key="pay.method"] .c button.on')).toContainText('Theo ngày');
+  await expect(x).toHaveValue('23');
+  await expect(y).toHaveValue('31');
+  await expect(page.getByRole('button', { name: 'Sửa được', exact: true })).toHaveClass(/on/);
+  await expect(attendance).toBeFocused();
 
   page.once('dialog', dialog => dialog.accept());
-  await page.locator('nav.sub a').first().click();
-  await expect(page).not.toHaveURL(/\/tat-ca/);
+  await attendance.click();
+  await expect(page).toHaveURL(/q=ng%C3%A0y(?:\+|%20)c%C3%B4ng.*group=cham-cong/);
+  await page.locator('.gl .chip').filter({ hasText: 'Lương theo ngày công' }).click();
+  await expect(page).toHaveURL(/q=ng%C3%A0y(?:\+|%20)c%C3%B4ng.*group=ngay-cong/);
+  await expect(page.getByLabel('Số ngày công · Nhân viên')).toHaveValue('22');
+  await expect(y).toHaveValue('24');
+
+  await x.fill('23');
+  await page.getByRole('button', { name: 'Xem trước và lưu' }).click();
+  await expect.poll(api.putRevision).toBe(2);
+  await expect.poll(api.putChanges).toEqual([{ key: 'type.nv.workdays', value: 23 }]);
+});
+
+test('browser back and forward guard dirty query-driven group changes', async ({ page }) => {
+  await mockSettingsApi(page);
+  await page.goto('/admin/cai-dat/tat-ca?q=ng%C3%A0y%20c%C3%B4ng&group=ngay-cong');
+  const workdays = page.getByLabel('Số ngày công · Nhân viên');
+  await page.locator('.gl .chip').filter({ hasText: 'Chấm công' }).click();
+  await expect(page).toHaveURL(/group=cham-cong/);
+  await page.locator('.gl .chip').filter({ hasText: 'Lương theo ngày công' }).click();
+  await expect(page).toHaveURL(/group=ngay-cong/);
+  await workdays.fill('23');
+
+  page.once('dialog', dialog => dialog.dismiss());
+  await page.goBack();
+  await expect(page).toHaveURL(/group=ngay-cong/);
+  await expect(workdays).toHaveValue('23');
+
+  page.once('dialog', dialog => dialog.accept());
+  await page.goBack();
+  await expect(page).toHaveURL(/group=cham-cong/);
+  await page.goForward();
+  await expect(page).toHaveURL(/group=ngay-cong/);
+  await expect(page.getByLabel('Số ngày công · Nhân viên')).toHaveValue('22');
+});
+
+test('adding a position asks before discarding an in-progress settings draft', async ({ page }) => {
+  await mockSettingsApi(page);
+  await page.goto('/admin/cai-dat/tat-ca?q=ph%C6%B0%C6%A1ng%20th%E1%BB%A9c&group=ngay-cong');
+  const option = page.locator('[data-setting-key="pay.method"] .c button').filter({ hasText: 'Theo ngày' });
+  await option.click();
+  const beforeCancel = page.url();
+
+  page.once('dialog', dialog => dialog.dismiss());
+  await page.getByRole('button', { name: 'Thêm chức vụ' }).click();
+  await expect(page).toHaveURL(beforeCancel);
+  await expect(page.locator('[data-setting-key="pay.method"] .c button.on')).toContainText('Theo ngày');
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+
+  page.once('dialog', dialog => dialog.accept());
+  await page.getByRole('button', { name: 'Thêm chức vụ' }).click();
+  await expect(page).toHaveURL(/q=ph%C6%B0%C6%A1ng(?:\+|%20)th%E1%BB%A9c.*group=ngay-cong.*hop=them-chuc-vu/);
+  await expect(page.getByRole('dialog', { name: 'Thêm chức vụ' })).toBeVisible();
+  await expect(page.locator('[data-setting-key="pay.method"] .c button.on')).toContainText('Hàng tháng');
+});
+
+test('same-group item focus and chip keep drafts; reset/save leave no stale dirty prompt', async ({ page }) => {
+  const api = await mockSettingsApi(page);
+  await page.goto('/admin/cai-dat/tat-ca?q=ph%C6%B0%C6%A1ng%20th%E1%BB%A9c&group=ngay-cong');
+  const option = page.locator('[data-setting-key="pay.method"] .c button').filter({ hasText: 'Theo ngày' });
+  await option.click();
+  let prompts = 0;
+  page.on('dialog', dialog => {
+    prompts += 1;
+    void dialog.dismiss();
+  });
+
+  await page.locator('.gl .chip').filter({ hasText: 'Lương theo ngày công' }).click();
+  await page.locator('.result').filter({ hasText: 'Phương thức trả lương' }).click();
+  await expect(page.locator('[data-setting-key="pay.method"] .c button.on')).toContainText('Theo ngày');
+  await expect.poll(() => prompts).toBe(0);
+
+  await page.getByRole('button', { name: 'Huỷ', exact: true }).click();
+  await expect(page.locator('[data-setting-key="pay.method"] .c button.on')).toContainText('Hàng tháng');
+  await option.click();
+  await page.getByRole('button', { name: 'Xem trước và lưu' }).click();
+  await expect.poll(api.putRevision).toBe(1);
+  await page.locator('.gl .chip').filter({ hasText: 'Chấm công' }).click();
+  await expect(page).toHaveURL(/group=cham-cong/);
+  await expect.poll(() => prompts).toBe(0);
+});
+
+test('add position guards dirty drafts; same-group navigation, reset, and save do not prompt later', async ({ page }) => {
+  await mockSettingsApi(page);
+  await page.goto('/admin/cai-dat/tat-ca?q=ph%C6%B0%C6%A1ng%20th%E1%BB%A9c&group=ngay-cong');
+  const option = page.locator('[data-setting-key="pay.method"] .c button').filter({ hasText: 'Theo ngày' });
+  await option.click();
+  let prompts = 0;
+  page.on('dialog', dialog => {
+    prompts += 1;
+    void dialog.dismiss();
+  });
+
+  await page.locator('.gl .chip').filter({ hasText: 'Lương theo ngày công' }).click();
+  await expect(page.locator('[data-setting-key="pay.method"] .c button.on')).toContainText('Theo ngày');
+  await page.locator('.result').filter({ hasText: 'Phương thức trả lương' }).click();
+  await expect(page.locator('[data-setting-key="pay.method"] .c button.on')).toContainText('Theo ngày');
+  await expect.poll(() => prompts).toBe(0);
+
+  await page.getByRole('button', { name: 'Huỷ', exact: true }).click();
+  await expect(page.locator('[data-setting-key="pay.method"] .c button.on')).toContainText('Hàng tháng');
+  await page.locator('[data-setting-key="pay.method"] .c button').filter({ hasText: 'Theo ngày' }).click();
+  await page.getByRole('button', { name: 'Xem trước và lưu' }).click();
+  await expect.poll(() => prompts).toBe(0);
+  await page.locator('.gl .chip').filter({ hasText: 'Chấm công' }).click();
+  await expect(page).toHaveURL(/group=cham-cong/);
+  await expect.poll(() => prompts).toBe(0);
 });

@@ -2,7 +2,7 @@
 // Cài đặt › Tất cả cài đặt: tìm trong mọi nhóm, mở đúng mục để xem hoặc sửa.
 // ?q=<từ khoá> điền sẵn ô tìm (từ ô "Tìm cài đặt" ở đầu trang) · ?hop=them-chuc-vu mở hộp thêm chức vụ.
 import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue';
-import { onBeforeRouteLeave, useRoute, useRouter } from 'vue-router';
+import { onBeforeRouteLeave, onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router';
 import Icon from '@/components/ui/Icon.vue';
 import { useLoad } from '@/composables/useLoad';
 import { getAllSettings, saveAllSettings } from '@/services/admin-settings';
@@ -47,7 +47,6 @@ const { data, loading, error, reload } = useLoad(
 );
 const form = useDraft(() => data.value && data.value.detail);
 const { draft } = form;
-const draftGroup = ref(group.value);
 const { hop, open, close } = useHop(['them-chuc-vu']);
 
 const q = ref(String(route.query.q || ''));
@@ -70,35 +69,36 @@ const searchResults = computed(
       r => !needle.value || normalizeSettingsSearch(`${r.title} ${r.groupLabel} ${r.section}`).includes(normalizeSettingsSearch(needle.value))
     ) || []
 );
-const draftsByGroup = new Map<string, any>();
-function snapshotDraft(key = group.value) {
-  if (draft.value)
-    draftsByGroup.set(draftGroup.value || key, {
-      draft: JSON.parse(JSON.stringify(draft.value)),
-      dirty: form.changes.value > 0 || !!draftsByGroup.get(draftGroup.value || key)?.dirty
-    });
+function hasUnsavedChanges() {
+  return form.changes.value > 0;
 }
-function selectGroup(next) {
-  snapshotDraft();
+function confirmDiscardDraft() {
+  if (!hasUnsavedChanges()) return true;
+  if (form.saving.value) return false;
+  if (!window.confirm('Bạn có thay đổi chưa lưu. Bỏ bản nháp này và tiếp tục?')) return false;
+  form.reset();
+  return true;
+}
+async function selectGroup(next) {
+  if (next === group.value) return true;
   const query = { ...route.query };
   delete query.setting;
-  router.push({ query: { ...query, group: next } });
+  await router.push({ query: { ...query, group: next } });
+  return group.value === next;
 }
+const routeGroup = value => (validGroups.includes(String(value)) ? String(value) : 'ngay-cong');
+onBeforeRouteUpdate((to, from) => {
+  if (routeGroup(to.query.group) === routeGroup(from.query.group)) return true;
+  return confirmDiscardDraft();
+});
 watch(() => route.query.group, async value => {
   const target = validGroups.includes(String(value)) ? String(value) : 'ngay-cong';
   if (target !== group.value) {
-    snapshotDraft(draftGroup.value);
     group.value = target;
   }
 });
 watch([() => data.value?.detail, () => route.query.setting], async ([detail, targetSetting]) => {
   if (!detail || detail.key !== group.value) return;
-  const savedDraft = draftsByGroup.get(group.value);
-  if (savedDraft) {
-    form.draft.value = savedDraft.draft;
-    draftsByGroup.delete(group.value);
-  }
-  draftGroup.value = group.value;
   const setting = String(targetSetting || '');
   if (setting) {
     if (detail.readonly.some(item => item.key === setting)) filter.value = 'readonly';
@@ -114,21 +114,21 @@ watch([() => data.value?.detail, () => route.query.setting], async ([detail, tar
   }
 });
 function openResult(result) {
-  snapshotDraft();
-  filter.value = 'all';
   router.push({ query: { ...route.query, ...result.query, q: needle.value } });
 }
 onBeforeRouteLeave(() => {
-  const dirty = form.changes.value > 0 || [...draftsByGroup.values()].some(item => item.dirty);
-  if (dirty && !window.confirm('Bạn có thay đổi chưa lưu. Rời trang sẽ bỏ bản nháp này. Bạn có muốn tiếp tục?')) return false;
+  return confirmDiscardDraft();
 });
 function guardUnload(event) {
-  if (!form.changes.value && ![...draftsByGroup.values()].some(item => item.dirty)) return;
+  if (!hasUnsavedChanges()) return;
   event.preventDefault();
   event.returnValue = '';
 }
 window.addEventListener('beforeunload', guardUnload);
 onBeforeUnmount(() => window.removeEventListener('beforeunload', guardUnload));
+function addPosition() {
+  if (confirmDiscardDraft()) open('them-chuc-vu');
+}
 const items = computed(() => {
   if (!draft.value) return [];
   return filterAllSettings(draft.value, needle.value, filter.value, String(route.query.setting || '')).items;
@@ -159,9 +159,11 @@ function onReverted() {
 
 const detailCard = ref(null);
 function showUnconfirmed() {
-  selectGroup('ngay-cong');
-  filter.value = 'unconfirmed';
-  detailCard.value && detailCard.value.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  selectGroup('ngay-cong').then(selected => {
+    if (!selected) return;
+    filter.value = 'unconfirmed';
+    detailCard.value && detailCard.value.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
 }
 </script>
 
@@ -192,7 +194,7 @@ function showUnconfirmed() {
       <div class="card-h">
         <h2>Tất cả cài đặt</h2>
         <span class="cap">Chọn một nhóm để xem và sửa từng mục</span>
-        <button type="button" class="r btn sm" @click="open('them-chuc-vu')"><Icon name="plus" />Thêm chức vụ</button>
+        <button type="button" class="r btn sm" @click="addPosition"><Icon name="plus" />Thêm chức vụ</button>
       </div>
       <label class="srch">
         <Icon name="search" />
