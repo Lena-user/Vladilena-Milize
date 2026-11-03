@@ -4,12 +4,35 @@ export interface PersonNameProps {
   fullName?: string | null;
 }
 
+const SPACES = /\s+/u;
+const LOCALE = 'vi';
+
+export const titleWord = (word?: string) =>
+  word ? word.charAt(0).toLocaleUpperCase(LOCALE) + word.slice(1).toLocaleLowerCase(LOCALE) : '';
+
+export const titleCase = (text?: string) =>
+  String(text || '')
+    .trim()
+    .split(SPACES)
+    .filter(Boolean)
+    .map(titleWord)
+    .join(' ');
+
 export class PersonName {
   readonly familyName: string;
   readonly givenName: string;
   readonly fullName: string;
 
-  constructor(props: PersonNameProps = {}) {
+  constructor(arg1?: PersonNameProps | string, arg2?: string) {
+    if (typeof arg1 === 'string' || arg2 !== undefined) {
+      // Legacy signature: constructor(familyName?: string, givenName?: string)
+      this.familyName = titleCase(arg1 as string);
+      this.givenName = titleCase(arg2);
+      this.fullName = [this.familyName, this.givenName].filter(Boolean).join(' ');
+      return;
+    }
+
+    const props = arg1 || {};
     const rawFamily = props.familyName != null ? String(props.familyName).trim().replace(/\s+/g, ' ') : '';
     const rawGiven = props.givenName != null ? String(props.givenName).trim().replace(/\s+/g, ' ') : '';
     const hasFamilyOrGiven =
@@ -17,15 +40,18 @@ export class PersonName {
       Boolean(props.givenName != null && String(props.givenName).trim());
 
     if (hasFamilyOrGiven) {
-      this.familyName = rawFamily;
-      this.givenName = rawGiven;
+      this.familyName = titleCase(rawFamily);
+      this.givenName = titleCase(rawGiven);
       this.fullName = [this.familyName, this.givenName].filter(Boolean).join(' ');
     } else {
       const rawFull = props.fullName != null ? String(props.fullName).trim().replace(/\s+/g, ' ') : '';
       if (!rawFull) {
-        throw new Error('Họ tên nhân viên không được để trống');
+        this.familyName = '';
+        this.givenName = '';
+        this.fullName = '';
+        return;
       }
-      const words = rawFull.split(' ').filter(Boolean);
+      const words = titleCase(rawFull).split(' ').filter(Boolean);
       if (words.length <= 1) {
         this.familyName = '';
         this.givenName = words[0] || '';
@@ -33,12 +59,8 @@ export class PersonName {
       } else {
         this.givenName = words[words.length - 1];
         this.familyName = words.slice(0, -1).join(' ');
-        this.fullName = rawFull;
+        this.fullName = [this.familyName, this.givenName].join(' ');
       }
-    }
-
-    if (!this.fullName) {
-      throw new Error('Họ tên nhân viên không được để trống');
     }
   }
 
@@ -50,6 +72,16 @@ export class PersonName {
     return new PersonName({ familyName, givenName });
   }
 
+  static parse(fullName?: string): PersonName {
+    return PersonName.fromFullName(fullName || '');
+  }
+
+  static from({ familyName, givenName, fullName }: any): PersonName {
+    if ((familyName && String(familyName).trim()) || (givenName && String(givenName).trim()))
+      return new PersonName({ familyName, givenName });
+    return PersonName.fromFullName(fullName || '');
+  }
+
   withChanges(patch: { familyName?: string; givenName?: string; fullName?: string }): PersonName {
     if (patch.fullName !== undefined && patch.familyName === undefined && patch.givenName === undefined) {
       return new PersonName({ fullName: patch.fullName });
@@ -58,6 +90,10 @@ export class PersonName {
       familyName: patch.familyName !== undefined ? patch.familyName : this.familyName,
       givenName: patch.givenName !== undefined ? patch.givenName : this.givenName,
     });
+  }
+
+  isEmpty(): boolean {
+    return !this.givenName;
   }
 
   toJSON(): { familyName: string; givenName: string; fullName: string } {

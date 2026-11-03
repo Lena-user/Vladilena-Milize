@@ -24,7 +24,7 @@ const { AsyncLocalStorage } = require('node:async_hooks');
 const { warnIf, optionalReason } = require('./warnings'); // warnings.js không require src/platform/db
 const config = require('./config'); // hằng số kỹ thuật có tên (không số trong mã)
 const { AsyncList } = require('../shared/async-list');
-const { PersonName, titleCase } = require('../domain/employee/person-name'); // lớp thuần, không require src/platform/db
+const { PersonName, titleCase } = require('../domain/employee-v2/person-name'); // lớp thuần, không require src/platform/db
 
 // Ứng dụng chỉ nhận URL kết nối tới một database PostgreSQL cụ thể. Test runner tự tạo
 // database riêng và truyền URL đó qua DATABASE_URL; cấu hình legacy không chọn database.

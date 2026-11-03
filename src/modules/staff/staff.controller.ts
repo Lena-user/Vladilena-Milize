@@ -23,7 +23,7 @@ const Positions = require('../../params/positions'); // chức vụ là dữ li�
 const { activeCodesOf, withLeave } = require('../../domain/positions'); // cờ quyền lợi và chức vụ
 // báo cho màn đang mở (SSE), phát SAU KHI giao dịch đã COMMIT
 // các lớp của src/domain (danh mục ca, sổ phép, nhân viên theo uuid)
-const { PersonName } = require('../../domain/employee/person-name'); // họ trước, tên sau
+const { PersonName } = require('../../domain/employee-v2/person-name'); // họ trước, tên sau
 const warnings = require('../../platform/warnings'); // cảnh báo thay cho chặn
 const { validMonth, validDate, USERNAME_RE } = require('../../domain/input'); // kiểm dạng tháng, ngày, giờ, tên đăng nhập
 const { warnIf, selfDecision } = warnings;
