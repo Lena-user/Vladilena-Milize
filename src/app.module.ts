@@ -9,7 +9,6 @@ import { NotFoundModule } from './http/not-found.controller';
 import { AuthModule } from './modules/auth';
 import { SystemModule } from './modules/system';
 import { SettingsModule } from './modules/settings';
-import { SheetModule } from './modules/sheet';
 import { KpiModule } from './modules/kpi';
 import { ApprovalsModule } from './modules/approvals';
 import { AttendanceV2Module } from './modules/attendance-v2';
@@ -35,7 +34,6 @@ const FEATURE_MODULES = [
   SystemModule,
   AuthModule,
   SettingsModule,
-  SheetModule,
   KpiModule,
   ApprovalsModule,
   AttendanceV2Module,

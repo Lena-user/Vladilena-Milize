@@ -18,13 +18,15 @@ const WorkSchedule = require('../../engine/work-schedule');
 const PunchRules = require('../../engine/punch');
 const PayrollCalendar = require('../../engine/payroll-calendar');
 const { allowanceTotalOf } = require('./period-allowance'); // tổng phụ cấp (thành phần ③) của một bản chụp
-const { formulasOf } = require('../payroll/slip-formulas'); // công thức dưới từng dòng Chi tiết của phiếu Admin
 const { errorSummaryOf, staleOf } = require('./period-stale'); // phiếu lỗi gom theo mã; kỳ đã tính mà đầu vào hoặc tham số đổi sau đó
 const payEntries = require('../pay-entries');
-const explanations = require('../explanation/explanations');
-const { AbsentDay } = require('../explanation/absent-day');
+const {
+  formulasOf,
+  explanations,
+  AbsentDay,
+  closeStaleIn
+} = require('../../platform/legacy-estimate');
 const sharedCache = require('../../ops/shared-cache'); // phép tính nặng chỉ-đọc dùng chung giữa các yêu cầu
-const { closeStaleIn } = require('../timesheet/legacy-presence');
 const { isatRefusal } = require('../isat-rule'); // ngày iSAT đúng thứ và đúng quyền lợi
 const { warn, selfDecision, optionalReason } = require('../../platform/warnings');
 const { CHECKLIST_TEXT, soften, warnNegativeNet, warnLockChecklist, autoCounts } = require('./period-warnings'); // câu cảnh báo của kỳ lương

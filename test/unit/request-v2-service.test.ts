@@ -239,6 +239,100 @@ describe('RequestV2Service', () => {
       assert.ok(dtoAdapted.otEndTime);
     });
 
+    test('createOvertimeRequest enforces DAY_HOURS_CAP, OT_MONTH_CAP, and anti-overlap', async () => {
+      const repo = new InMemoryRequestV2Repository();
+      const service = new RequestV2Service(repo);
+
+      // 1. Throws DAY_HOURS_CAP when ot hours > 4
+      await assert.rejects(
+        () =>
+          service.createOvertimeRequest({
+            employeeId: EMP_ID,
+            title: 'Tăng ca quá nhiều',
+            reason: 'Chạy deadline',
+            otDate: '2026-11-10',
+            hours: 5.0
+          }),
+        /không được vượt quá 4 giờ/
+      );
+
+      // 2. Thêm đơn hợp lệ vào ngày 2026-11-10 (4h)
+      await service.createOvertimeRequest({
+        employeeId: EMP_ID,
+        title: 'Tăng ca chuẩn',
+        reason: 'Chạy việc',
+        otDate: '2026-11-10',
+        hours: 4.0
+      });
+
+      // 3. Throws anti-overlap when same date requested
+      await assert.rejects(
+        () =>
+          service.createOvertimeRequest({
+            employeeId: EMP_ID,
+            title: 'Tăng ca trùng ngày',
+            reason: 'Trùng',
+            otDate: '2026-11-10',
+            hours: 2.0
+          }),
+        /Đã có đơn làm thêm giờ vào ngày 2026-11-10/
+      );
+
+      // 4. Thêm dồn 9 ngày nữa mỗi ngày 4h -> tổng 40h tháng 11
+      for (let day = 11; day <= 19; day++) {
+        await service.createOvertimeRequest({
+          employeeId: EMP_ID,
+          title: `Tăng ca ngày ${day}`,
+          reason: 'Cày cuốc',
+          otDate: `2026-11-${day}`,
+          hours: 4.0
+        });
+      }
+
+      // 5. Thêm ngày 20 thêm 1h -> tổng 41h -> Throws OT_MONTH_CAP (> 40h)
+      await assert.rejects(
+        () =>
+          service.createOvertimeRequest({
+            employeeId: EMP_ID,
+            title: 'Tăng ca vượt trần tháng',
+            reason: 'Vượt trần',
+            otDate: '2026-11-20',
+            hours: 1.0
+          }),
+        /không được vượt quá 40 giờ theo Luật Lao động/
+      );
+    });
+
+    test('createLeaveRequest enforces anti-overlap', async () => {
+      const repo = new InMemoryRequestV2Repository();
+      const service = new RequestV2Service(repo);
+
+      await service.createLeaveRequest({
+        employeeId: EMP_ID,
+        title: 'Nghỉ phép đợt 1',
+        reason: 'Du lịch',
+        leaveType: 'PAID',
+        startDate: '2026-11-20',
+        endDate: '2026-11-25',
+        daysCount: 5
+      });
+
+      // Throws when overlapping with 2026-11-20..2026-11-25
+      await assert.rejects(
+        () =>
+          service.createLeaveRequest({
+            employeeId: EMP_ID,
+            title: 'Nghỉ phép đè ngày',
+            reason: 'Trùng',
+            leaveType: 'UNPAID',
+            startDate: '2026-11-24',
+            endDate: '2026-11-28',
+            daysCount: 4
+          }),
+        /Đã có đơn nghỉ phép trùng trong khoảng thời gian/
+      );
+    });
+
     test('createAdvanceRequest creates and persists flat ADVANCE request', async () => {
       const repo = new InMemoryRequestV2Repository();
       const service = new RequestV2Service(repo);

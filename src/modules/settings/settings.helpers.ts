@@ -2,10 +2,13 @@ import { Inject, Injectable } from '@nestjs/common';
 import { RULES, STORE } from '../../core/tokens';
 
 // quy tắc theo tháng của từng yêu cầu: rulesFor(tháng).<mô-đun> dựng bằng create(bộ tham số của tháng đó)
-const { actualOtHours, estimateHolidayOtHours, actualHolidayOtHours } =
-  require('../../domain/overtime/worked-hours').WorkedHours; // giờ ca, OT, giờ làm ngày lễ
-const { estimateSheet } = require('../../domain/sheet'); // lịch ước tính và ngày phép
-const { OtLimits } = require('../../domain/overtime/ot-limits'); // trần giờ làm: MỘT nguồn đọc từ bộ tham số của tháng
+const {
+  actualOtHours,
+  estimateHolidayOtHours,
+  actualHolidayOtHours,
+  estimateSheet,
+  OtLimits
+} = require('../../platform/legacy-estimate');
 
 // So cả hai lịch trước khi ghi. Xung đột cũ không liên quan giữ nguyên;
 // xung đột mới phải xử lý trước ở luồng lịch ước tính / chấm công của nó.

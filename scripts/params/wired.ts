@@ -25,7 +25,6 @@ const ENGINE_FILES = [
   'src/params/payroll-preview.ts',
   'src/engine/pay-options-calc.ts', // phương án cách tính: pay.method, attendance.lossMode, shortHoursRounding, advance.basis
   'src/engine/work-schedule.ts', // lịch làm việc: type.<mã>.workdaysMode, dows, workdays
-  'src/domain/overtime/rules/isat-monthly-limit-rule.ts', // giới hạn khai: isat.monthlyLimit, tham số nghỉ giữa ca của trần giờ ngày
   // Sáu mô-đun luật dùng chung nhận params qua create(params). Bảng FALLBACK của chúng là bản chép chuyển tiếp bằng DEFAULTS
   // (scripts/params/check-fallbacks.ts kiểm): không tính là nơi đọc và không tính là bản sao chạy thật
   ...['actual-hours', 'approval-view', 'kpi-score', 'punch', 'leave', 'payroll-calendar'].map(m => `src/engine/${m}.ts`)

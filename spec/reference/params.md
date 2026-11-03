@@ -135,7 +135,7 @@ Sinh bởi `npm run params:doc` từ `src/params/registry.data.json` và `src/en
 | `holiday.compensatory` | Nghỉ bù khi ngày lễ trùng ngày nghỉ hằng tuần | chọn | choice | Admin thêm tay (mặc định) · App đề xuất [chưa có] | manual | admin | chưa | Bộ luật Lao động 2019, Điều 112 khoản 3 (cần pháp chế xác nhận) | V2 |
 | `fixed.leave.unit` | Đơn vị nghỉ: cả ngày | cố định | fixed |  |  | locked | — | Đề xuất, chờ C&B chốt | Sau |
 | `leave.ifourteen.days` | Phép sinh nhật hoặc iFourteen (kho riêng) | số(day) | quantity |  | 0 ngày | admin | chưa | Lead chốt ngày 15/10/2026 thêm iFourteen; chi tiết chờ lead trả lời | V2 |
-| `isat.monthlyLimit` | Giới hạn iSAT mỗi tháng | số(times) | quantity |  | trống | admin | có | policy: chính sách | V2 |
+| `isat.monthlyLimit` | Giới hạn iSAT mỗi tháng | số(times) | quantity |  | trống | admin | chưa | policy: chính sách | V2 |
 | `holidays` | Ngày nghỉ lễ | bảng | table |  | [] | admin | — | Bộ luật Lao động 2019, Điều 112 về số ngày nghỉ lễ (cần pháp chế xác nhận) | V1-B |
 | `table.requestTypes` | Danh mục loại nghỉ và loại yêu cầu | bảng | table |  |  | admin | — | Chủ dự án chốt ngày 14/10/2026 |  |
 | `leave.expiry.month` | Phép năm hết hạn vào cuối tháng | số(month) | quantity |  | 1 tháng | admin | có | Chủ dự án 23/10/2026; Bộ luật Lao động 45/2019/QH14 Điều 113 khoản 3 (cần pháp chế xác nhận) | V1-B |

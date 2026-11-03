@@ -121,6 +121,23 @@ export class RequestV2Service {
       daysCount: input.daysCount
     });
 
+    // Chống trùng lặp thời gian nghỉ phép với các đơn đang chờ hoặc đã duyệt
+    const existingLeaves = await this.repo.list({
+      employeeId: input.employeeId,
+      type: 'LEAVE'
+    });
+    const start = req.leaveStartDate!;
+    const end = req.leaveEndDate!;
+    for (const item of existingLeaves) {
+      if (item.status === 'PENDING' || item.status === 'APPROVED') {
+        const itemStart = item.leaveStartDate!;
+        const itemEnd = item.leaveEndDate || itemStart;
+        if (start <= itemEnd && end >= itemStart) {
+          throw new Error(`Đã có đơn nghỉ phép trùng trong khoảng thời gian ${start} đến ${end}`);
+        }
+      }
+    }
+
     await this.repo.save(req);
     return req.toJSON();
   }
@@ -184,6 +201,35 @@ export class RequestV2Service {
   async createOvertimeRequest(input: CreateOvertimeInput): Promise<SystemRequestDTO> {
     const otDate = input.otDate || input.targetDate || '';
     const hours = input.hours ?? input.otHours ?? 0;
+
+    // 1. Trần giờ ngày: ca chính (8h) + OT tối đa 12h/ngày -> giờ OT tối đa 4h/ngày
+    if (hours > 4) {
+      throw new Error(`Giờ làm thêm một ngày không được vượt quá 4 giờ (tổng giờ làm việc ngày không quá 12 giờ)`);
+    }
+
+    // 2. Chống trùng ngày đăng ký làm thêm
+    const existingOt = await this.repo.list({
+      employeeId: input.employeeId,
+      type: 'OVERTIME'
+    });
+    for (const item of existingOt) {
+      if ((item.status === 'PENDING' || item.status === 'APPROVED') && item.otDate === otDate) {
+        throw new Error(`Đã có đơn làm thêm giờ vào ngày ${otDate}`);
+      }
+    }
+
+    // 3. Trần OT tháng: tối đa 40 giờ theo Điều 107 Bộ luật Lao động
+    const month = otDate.slice(0, 7);
+    let totalMonthOt = 0;
+    for (const item of existingOt) {
+      if ((item.status === 'PENDING' || item.status === 'APPROVED') && item.otDate?.startsWith(month)) {
+        totalMonthOt += item.otHours || 0;
+      }
+    }
+    if (totalMonthOt + hours > 40) {
+      throw new Error(`Tổng số giờ làm thêm trong tháng ${month} không được vượt quá 40 giờ theo Luật Lao động (đã có ${totalMonthOt}h, đăng ký thêm ${hours}h)`);
+    }
+
     let startTime = input.startTime;
     let endTime = input.endTime;
 

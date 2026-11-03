@@ -4,13 +4,11 @@ import { Controller, Get, Put, Inject } from '@nestjs/common';
 import { Ctx, ApiContext } from '../../http/api-context';
 
 const { AsyncList } = require('../../shared/async-list');
-const { AbsentDay, explainedByUser } = require('../../domain/timesheet/absent-day');
+const { AbsentDay, explainedByUser, estimateSheet, closeStaleFor } = require('../../platform/legacy-estimate');
 
 const { HttpError, readJson } = require('../../platform/http'); // tiện ích HTTP: lỗi, gửi JSON, đọc thân, tiêu đề bảo mật, file tĩnh
 // quy tắc theo tháng của từng yêu cầu: rulesFor(tháng).<mô-đun> dựng bằng create(bộ tham số của tháng đó)
-const { estimateSheet } = require('../../domain/sheet'); // lịch ước tính và ngày phép
 const { sheetForViewer } = require('../../domain/staff'); // hồ sơ gửi ra ngoài, che trường theo quyền
-const { closeStaleFor } = require('../../domain/timesheet/legacy-presence');
 const { sheetApprovals, listApprovals, tallyApprovals, approvalHttpError } = require('../../domain/approvals'); // khoản tự khai chờ duyệt
 const { isatRefusal } = require('../../domain/isat-rule'); // ngày iSAT đúng thứ và đúng quyền lợi
 // quyền theo năng lực: ROLE_CAPS, ROUTE_CAPS, can()
