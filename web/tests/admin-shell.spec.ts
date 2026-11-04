@@ -8,7 +8,14 @@ async function mockAdminApi(page: Page) {
       body = {
         user: { username: 'demo_admin', name: 'Demo Admin', role: 'admin' },
         roles: ['admin'],
-        caps: ['config.read', 'payroll.calculate', 'payroll.approve', 'attendance.correct', 'attendance.lock', 'audit.read'],
+        caps: [
+          'config.read',
+          'payroll.calculate',
+          'payroll.approve',
+          'attendance.correct',
+          'attendance.lock',
+          'audit.read'
+        ],
         payrollSubject: true,
         serverNow: '2026-11-03T12:00:00.000Z'
       };
@@ -104,7 +111,9 @@ for (const width of [375, 768, 1024]) {
     await expect(steps).toHaveAttribute('role', 'region');
 
     const status = period.locator('.state');
-    await status.evaluate(el => { el.textContent = 'Trạng thái kỳ lương đang chờ hoàn tất phê duyệt và kiểm tra lần cuối'; });
+    await status.evaluate(el => {
+      el.textContent = 'Trạng thái kỳ lương đang chờ hoàn tất phê duyệt và kiểm tra lần cuối';
+    });
     const metrics = await page.evaluate(() => {
       const rect = (selector: string) => {
         const box = document.querySelector(selector)!.getBoundingClientRect();

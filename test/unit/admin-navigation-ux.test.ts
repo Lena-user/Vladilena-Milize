@@ -5,7 +5,14 @@ import { ADMIN_SIDEBAR_GROUPS, SETTINGS_NAV } from '../../web/src/views/admin/se
 test('rendered admin sidebar keeps all established destinations and operation label', () => {
   const items = ADMIN_SIDEBAR_GROUPS.flatMap(([, links]) => links);
   const paths = items.map(([, , , path]) => path);
-  for (const path of ['/admin/tong-quan', '/admin/yeu-cau', '/admin/cham-cong', '/admin/kpi', '/admin/bang-luong', '/admin/nhan-su']) {
+  for (const path of [
+    '/admin/tong-quan',
+    '/admin/yeu-cau',
+    '/admin/cham-cong',
+    '/admin/kpi',
+    '/admin/bang-luong',
+    '/admin/nhan-su'
+  ]) {
     assert.ok(paths.includes(path), `missing rendered sidebar destination ${path}`);
   }
   assert.equal(items.find(([, , , path]) => path === '/admin/kpi')?.[2], 'Đánh giá KPI');

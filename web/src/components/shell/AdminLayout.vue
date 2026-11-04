@@ -43,11 +43,16 @@ function onKeydown(event: KeyboardEvent) {
     return;
   }
   if (event.key !== 'Tab') return;
-  const focusable = Array.from(document.querySelectorAll<HTMLElement>('#admin-navigation a[href], #admin-navigation button:not([disabled])'));
+  const focusable = Array.from(
+    document.querySelectorAll<HTMLElement>('#admin-navigation a[href], #admin-navigation button:not([disabled])')
+  );
   if (!focusable.length) return;
   const first = focusable[0];
   const last = focusable[focusable.length - 1];
-  if (event.shiftKey && (document.activeElement === first || !document.querySelector('#admin-navigation')?.contains(document.activeElement))) {
+  if (
+    event.shiftKey &&
+    (document.activeElement === first || !document.querySelector('#admin-navigation')?.contains(document.activeElement))
+  ) {
     event.preventDefault();
     last.focus();
   } else if (!event.shiftKey && document.activeElement === last) {
@@ -60,7 +65,10 @@ function onResize() {
   if (!mobileViewport.value) closeMobileNav();
 }
 watch(mobileNavOpen, open => {
-  if (open) nextTick(() => document.querySelector<HTMLElement>('#admin-navigation nav a, #admin-navigation nav button')?.focus());
+  if (open)
+    nextTick(() =>
+      document.querySelector<HTMLElement>('#admin-navigation nav a, #admin-navigation nav button')?.focus()
+    );
 });
 onMounted(() => {
   window.addEventListener('keydown', onKeydown);
@@ -105,10 +113,35 @@ function openPassword() {
 
 <template>
   <div class="app">
-    <button ref="menuButton" class="mobile-nav-toggle" type="button" aria-controls="admin-navigation" :aria-expanded="mobileNavOpen" :aria-label="mobileNavOpen ? 'Đóng điều hướng' : 'Mở điều hướng'" @click="mobileNavOpen = !mobileNavOpen">
-      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16" /></svg>
+    <button
+      ref="menuButton"
+      class="mobile-nav-toggle"
+      type="button"
+      aria-controls="admin-navigation"
+      :aria-expanded="mobileNavOpen"
+      :aria-label="mobileNavOpen ? 'Đóng điều hướng' : 'Mở điều hướng'"
+      @click="mobileNavOpen = !mobileNavOpen"
+    >
+      <svg
+        aria-hidden="true"
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="round"
+      >
+        <path d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
     </button>
-    <button v-if="mobileNavOpen" class="nav-scrim" type="button" aria-label="Đóng điều hướng" @click="closeMobileNav(true)" />
+    <button
+      v-if="mobileNavOpen"
+      class="nav-scrim"
+      type="button"
+      aria-label="Đóng điều hướng"
+      @click="closeMobileNav(true)"
+    />
     <AdminSidebar
       id="admin-navigation"
       :mobile-open="mobileNavOpen"

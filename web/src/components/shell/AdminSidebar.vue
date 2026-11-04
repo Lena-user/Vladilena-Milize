@@ -39,7 +39,15 @@ const groups = computed(() => ADMIN_SIDEBAR_GROUPS);
         <template v-for="([grp, items], gi) in groups" :key="gi">
           <div v-if="grp" class="grp">{{ grp }}</div>
           <template v-for="[key, icon, label, to] in items" :key="key">
-            <RouterLink v-if="to" :to="linkTarget(to)" class="item" :class="{ on: key === active }" :aria-current="key === active ? 'page' : undefined" :tabindex="mobileInert ? -1 : undefined" @click="emit('navigate')">
+            <RouterLink
+              v-if="to"
+              :to="linkTarget(to)"
+              class="item"
+              :class="{ on: key === active }"
+              :aria-current="key === active ? 'page' : undefined"
+              :tabindex="mobileInert ? -1 : undefined"
+              @click="emit('navigate')"
+            >
               <Icon :name="icon" />
               <span>{{ label }}</span>
               <span v-if="key === 'duyet' && counts.requests" class="cnt">{{ counts.requests }}</span>
@@ -53,11 +61,27 @@ const groups = computed(() => ADMIN_SIDEBAR_GROUPS);
         </template>
       </nav>
       <div class="side-foot">
-        <RouterLink :to="linkTarget('/admin/cai-dat')" class="item" :class="{ on: active === 'cai-dat' }" :aria-current="active === 'cai-dat' ? 'page' : undefined" :tabindex="mobileInert ? -1 : undefined" @click="emit('navigate')">
+        <RouterLink
+          :to="linkTarget('/admin/cai-dat')"
+          class="item"
+          :class="{ on: active === 'cai-dat' }"
+          :aria-current="active === 'cai-dat' ? 'page' : undefined"
+          :tabindex="mobileInert ? -1 : undefined"
+          @click="emit('navigate')"
+        >
           <Icon name="sliders" />
           <span>Cài đặt</span>
         </RouterLink>
-        <button type="button" class="me" aria-haspopup="menu" :tabindex="mobileInert ? -1 : undefined" @click="emit('open-menu'); emit('navigate')">
+        <button
+          type="button"
+          class="me"
+          aria-haspopup="menu"
+          :tabindex="mobileInert ? -1 : undefined"
+          @click="
+            emit('open-menu');
+            emit('navigate');
+          "
+        >
           <span class="av" style="background: var(--gold-light); color: #212121">{{ me.initials }}</span>
           <div>
             <b>{{ me.name }}</b>
