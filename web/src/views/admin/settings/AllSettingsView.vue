@@ -63,10 +63,19 @@ const FILTERS = [
 ];
 
 const needle = computed(() => q.value.trim().toLowerCase());
+const browsingGroups = ref(false);
+watch(needle, (value, previous) => {
+  if (!value || !previous) browsingGroups.value = false;
+});
+const showGroupBrowser = computed(() => !needle.value || browsingGroups.value);
 const searchResults = computed(
   () =>
     data.value?.searchResults?.filter(
-      r => !needle.value || normalizeSettingsSearch(`${r.title} ${r.groupLabel} ${r.section}`).includes(normalizeSettingsSearch(needle.value))
+      r =>
+        !needle.value ||
+        normalizeSettingsSearch(`${r.title} ${r.groupLabel} ${r.section}`).includes(
+          normalizeSettingsSearch(needle.value)
+        )
     ) || []
 );
 function hasUnsavedChanges() {
@@ -91,12 +100,15 @@ onBeforeRouteUpdate((to, from) => {
   if (routeGroup(to.query.group) === routeGroup(from.query.group)) return true;
   return confirmDiscardDraft();
 });
-watch(() => route.query.group, async value => {
-  const target = validGroups.includes(String(value)) ? String(value) : 'ngay-cong';
-  if (target !== group.value) {
-    group.value = target;
+watch(
+  () => route.query.group,
+  async value => {
+    const target = validGroups.includes(String(value)) ? String(value) : 'ngay-cong';
+    if (target !== group.value) {
+      group.value = target;
+    }
   }
-});
+);
 watch([() => data.value?.detail, () => route.query.setting], async ([detail, targetSetting]) => {
   if (!detail || detail.key !== group.value) return;
   const setting = String(targetSetting || '');
@@ -174,12 +186,14 @@ function showUnconfirmed() {
     </template>
     <template #sub>
       <template v-if="data">
-        Đang áp dụng cho tháng {{ monthShort(period.month) }} · <b>{{ data.intro.count }} mục</b> còn dùng mặc định của
-        app, chờ bạn xác nhận
+        <template v-if="data.intro.count > 0">
+          Đang áp dụng cho tháng {{ monthShort(period.month) }} · <b>{{ data.intro.count }} mục</b> còn dùng mặc định
+          của app, chờ bạn xác nhận
+        </template>
       </template>
     </template>
 
-    <div v-if="data" class="first">
+    <div v-if="data && data.intro.count > 0" class="first">
       <div class="note gold">
         <Icon name="spark" />
         <div>
@@ -207,7 +221,9 @@ function showUnconfirmed() {
       </label>
       <div v-if="needle" class="results" aria-live="polite">
         <p class="result-label">
-          {{ searchResults.length ? `${searchResults.length} kết quả trên mọi nhóm` : 'Không có kết quả trên mọi nhóm' }}
+          {{
+            searchResults.length ? `${searchResults.length} kết quả trên mọi nhóm` : 'Không có kết quả trên mọi nhóm'
+          }}
         </p>
         <button
           v-for="result in searchResults"
@@ -216,11 +232,24 @@ function showUnconfirmed() {
           class="result"
           @click="openResult(result)"
         >
-          <span><b>{{ result.title }}</b><small>{{ result.section }} · {{ result.groupLabel }}</small></span>
+          <span
+            ><b>{{ result.title }}</b
+            ><small>{{ result.section }} · {{ result.groupLabel }}</small></span
+          >
           <small>{{ result.readonly ? 'Chỉ đọc' : 'Mở mục' }}</small>
         </button>
       </div>
-      <div class="gl">
+      <button
+        v-if="needle"
+        type="button"
+        class="browse-groups"
+        aria-controls="settings-group-browser"
+        :aria-expanded="browsingGroups"
+        @click="browsingGroups = !browsingGroups"
+      >
+        Duyệt nhóm cài đặt
+      </button>
+      <div v-show="showGroupBrowser" id="settings-group-browser" class="gl">
         <template v-for="g in data.groups" :key="g.section">
           <div class="lb">{{ g.section }}</div>
           <div class="chs">
@@ -374,6 +403,23 @@ function showUnconfirmed() {
   color: var(--muted);
   font-size: 12px;
 }
+.browse-groups {
+  display: block;
+  min-height: 40px;
+  margin: 0 24px 12px;
+  padding: 0 10px;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  color: var(--muted);
+  font-size: 13px;
+  text-align: left;
+}
+.browse-groups:hover,
+.browse-groups:focus-visible {
+  color: var(--text);
+  outline: 2px solid var(--control);
+  outline-offset: 1px;
+}
 .load-state {
   margin: 12px 0;
   padding: 16px 24px;
@@ -406,15 +452,37 @@ function showUnconfirmed() {
   font-size: 14px;
 }
 @media (max-width: 1200px) {
-  .card-h { flex-wrap: wrap; }
-  .card-h .r { flex-wrap: wrap; max-width: 100%; }
+  .card-h {
+    flex-wrap: wrap;
+  }
+  .card-h .r {
+    flex-wrap: wrap;
+    max-width: 100%;
+  }
 }
 @media (max-width: 640px) {
-  .first { align-items: stretch; flex-direction: column; }
-  .srch { margin: 8px 14px 2px; }
-  .results, .gl { padding-left: 14px; padding-right: 14px; }
-  .result { align-items: flex-start; }
-  .ro { padding: 12px 14px; }
+  .first {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .srch {
+    margin: 8px 14px 2px;
+  }
+  .results,
+  .gl {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+  .browse-groups {
+    margin-left: 14px;
+    margin-right: 14px;
+  }
+  .result {
+    align-items: flex-start;
+  }
+  .ro {
+    padding: 12px 14px;
+  }
 }
 .ro span {
   color: var(--muted);
