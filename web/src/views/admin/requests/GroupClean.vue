@@ -90,6 +90,7 @@ const toggle = (id?) =>
 <style scoped>
 .grp-h {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 12px;
   padding: 20px 24px 14px;
@@ -107,6 +108,7 @@ const toggle = (id?) =>
 .grp-h .r {
   margin-left: auto;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 16px;
 }
@@ -125,5 +127,19 @@ const toggle = (id?) =>
   gap: 12px;
   padding: 16px 24px;
   color: var(--muted);
+}
+@media (max-width: 700px) {
+  .grp-h {
+    padding: 16px;
+  }
+  .grp-h .r {
+    margin-left: 0;
+    width: 100%;
+    gap: 8px;
+  }
+  .sel-bar {
+    flex: 1 1 100%;
+    justify-content: space-between;
+  }
 }
 </style>

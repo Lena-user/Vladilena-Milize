@@ -31,11 +31,21 @@ const ISSUE_CHIPS = [
 const LOCS = [...TYPE_CHIPS, ...ISSUE_CHIPS].map(c => c[0]);
 const loc = computed(() => (LOCS.includes(route.query.loc as string) ? route.query.loc : 'all'));
 const setLoc = (key?) => router.replace({ query: { ...route.query, loc: key === 'all' ? undefined : key } });
+function profileTo(username: string) {
+  return { path: '/admin/nhan-su', query: { ...route.query, hop: 'sua-ho-so', nv: username } };
+}
+function openProfile(username: string) {
+  router.push(profileTo(username));
+}
+function scrollStaffTable(event: KeyboardEvent, direction: number) {
+  const region = event.currentTarget as HTMLElement;
+  region.scrollLeft += direction * Math.max(80, region.clientWidth * 0.35);
+}
 
 const q = ref('');
 const page = ref(1);
 watch([loc, q], () => (page.value = 1));
-const { data, reload } = useLoad(
+const { data, reload, loading, error } = useLoad(
   () => getStaffList({ loc: loc.value, q: q.value, page: page.value }),
   () => [loc.value, q.value, page.value].join('|')
 );
@@ -106,7 +116,7 @@ const footText = computed(() => {
   </div>
 
   <section class="card">
-    <div class="tools" style="padding-top: 20px">
+    <div class="tools staff-tools" style="padding-top: 20px">
       <button
         v-for="[key, label] in TYPE_CHIPS"
         :key="key"
@@ -130,111 +140,120 @@ const footText = computed(() => {
       </button>
       <SearchBox v-model="q" style="margin-left: auto; width: 200px" />
     </div>
-    <table class="tbl ns">
-      <colgroup>
-        <col style="width: 56px" />
-        <col style="width: 236px" />
-        <col style="width: 196px" />
-        <col style="width: 186px" />
-        <col style="width: 112px" />
-        <col style="width: 230px" />
-        <col />
-      </colgroup>
-      <thead>
-        <tr>
-          <th class="cbc">
-            <button
-              type="button"
-              class="cb"
-              :class="{ on: allOn }"
-              role="checkbox"
-              :aria-checked="allOn"
-              aria-label="Chọn tất cả"
-              @click="toggleAll"
-            >
-              <Icon v-if="allOn" name="check" :size="12" :stroke="3" />
-            </button>
-          </th>
-          <th>Nhân sự</th>
-          <th>Loại · bậc</th>
-          <th>Ca cố định</th>
-          <th>Bắt đầu làm</th>
-          <th>Hợp đồng · bảo hiểm</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="r in rows"
-          :key="r.username"
-          class="open"
-          :class="{ sel: selected.includes(r.username) }"
-          tabindex="0"
-          @click="profileUser = r.username"
-          @keydown.enter="profileUser = r.username"
-        >
-          <td class="cbc">
-            <button
-              type="button"
-              class="cb"
-              :class="{ on: selected.includes(r.username) }"
-              role="checkbox"
-              :aria-checked="selected.includes(r.username)"
-              :aria-label="`Chọn ${r.name}`"
-              @click.stop="toggle(r.username)"
-              @keydown.enter.stop
-            >
-              <Icon v-if="selected.includes(r.username)" name="check" :size="12" :stroke="3" />
-            </button>
-          </td>
-          <td>
-            <div class="who">
-              <span class="av">{{ initials(r.name) }}</span>
-              <div>
-                <div class="t">{{ r.name }}</div>
-                <div class="u">{{ r.username }}</div>
+    <div v-if="loading && !data" class="list-state" role="status">Đang tải danh sách nhân sự…</div>
+    <div v-else-if="error && !data" class="list-state error-state" role="alert">
+      <span>Không thể tải danh sách nhân sự.</span>
+      <button type="button" class="btn sm" @click="reload">Thử lại</button>
+    </div>
+    <div
+      v-else-if="data"
+      class="staff-table-scroll"
+      role="region"
+      aria-label="Danh sách nhân sự"
+      tabindex="0"
+      @keydown.left.prevent="scrollStaffTable($event, -1)"
+      @keydown.right.prevent="scrollStaffTable($event, 1)"
+    >
+      <table class="tbl ns">
+        <colgroup>
+          <col style="width: 56px" />
+          <col style="width: 236px" />
+          <col style="width: 196px" />
+          <col style="width: 186px" />
+          <col style="width: 112px" />
+          <col style="width: 230px" />
+          <col />
+        </colgroup>
+        <thead>
+          <tr>
+            <th class="cbc">
+              <button
+                type="button"
+                class="cb"
+                :class="{ on: allOn }"
+                role="checkbox"
+                :aria-checked="allOn"
+                aria-label="Chọn tất cả"
+                @click="toggleAll"
+              >
+                <Icon v-if="allOn" name="check" :size="12" :stroke="3" />
+              </button>
+            </th>
+            <th>Nhân sự</th>
+            <th>Loại · bậc</th>
+            <th>Ca cố định</th>
+            <th>Bắt đầu làm</th>
+            <th>Hợp đồng · bảo hiểm</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="r in rows" :key="r.username" class="open" :class="{ sel: selected.includes(r.username) }">
+            <td class="cbc">
+              <button
+                type="button"
+                class="cb"
+                :class="{ on: selected.includes(r.username) }"
+                role="checkbox"
+                :aria-checked="selected.includes(r.username)"
+                :aria-label="`Chọn ${r.name}`"
+                @click.stop="toggle(r.username)"
+                @keydown.enter.stop
+              >
+                <Icon v-if="selected.includes(r.username)" name="check" :size="12" :stroke="3" />
+              </button>
+            </td>
+            <td>
+              <div class="who">
+                <span class="av">{{ initials(r.name) }}</span>
+                <div>
+                  <RouterLink class="profile-link" :to="profileTo(r.username)" :aria-label="`Mở hồ sơ của ${r.name}`">
+                    {{ r.name }}
+                  </RouterLink>
+                  <div class="u">{{ r.username }}</div>
+                </div>
               </div>
-            </div>
-          </td>
-          <td>
-            <div class="two">
-              <div class="a" :class="{ bad: r.typeBad }">{{ r.typeLabel }}</div>
-              <div class="b">{{ r.level }}</div>
-            </div>
-          </td>
-          <td>
-            <div class="two">
-              <div class="a" :class="{ bad: !r.shift }">{{ r.shiftName }}</div>
-              <div class="b">{{ r.shiftHours }}</div>
-            </div>
-          </td>
-          <td>
-            <template v-if="r.start">{{ dmy(r.start) }}</template>
-            <span v-else class="soft">Không cần</span>
-          </td>
-          <td>
-            <div class="two">
-              <div class="a">{{ r.contractLabel }}</div>
-              <div class="b">{{ r.insuranceLabel }}</div>
-            </div>
-          </td>
-          <td style="text-align: right">
-            <span class="act">
-              <span v-if="r.locked" class="pill p-draft">Đã khoá</span>
-              <template v-if="r.issue">
-                <span class="pill p-err">Cần sửa</span>
-                <button type="button" class="link" style="margin-left: 8px" @click.stop="profileUser = r.username">
-                  {{ r.issue }}
-                </button>
-              </template>
-            </span>
-          </td>
-        </tr>
-        <tr v-if="data && !rows.length">
-          <td colspan="7" class="none">Không có nhân sự nào phù hợp</td>
-        </tr>
-      </tbody>
-    </table>
+            </td>
+            <td>
+              <div class="two">
+                <div class="a" :class="{ bad: r.typeBad }">{{ r.typeLabel }}</div>
+                <div class="b">{{ r.level }}</div>
+              </div>
+            </td>
+            <td>
+              <div class="two">
+                <div class="a" :class="{ bad: !r.shift }">{{ r.shiftName }}</div>
+                <div class="b">{{ r.shiftHours }}</div>
+              </div>
+            </td>
+            <td>
+              <template v-if="r.start">{{ dmy(r.start) }}</template>
+              <span v-else class="soft">Không cần</span>
+            </td>
+            <td>
+              <div class="two">
+                <div class="a">{{ r.contractLabel }}</div>
+                <div class="b">{{ r.insuranceLabel }}</div>
+              </div>
+            </td>
+            <td style="text-align: right">
+              <span class="act">
+                <span v-if="r.locked" class="pill p-draft">Đã khoá</span>
+                <template v-if="r.issue">
+                  <span class="pill p-err">Cần sửa</span>
+                  <button type="button" class="link" style="margin-left: 8px" @click="openProfile(r.username)">
+                    {{ r.issue }}
+                  </button>
+                </template>
+              </span>
+            </td>
+          </tr>
+          <tr v-if="data && !rows.length">
+            <td colspan="7" class="none">Không có nhân sự nào phù hợp</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <div v-if="loc === 'chua-co-ca'" class="note" style="margin: 16px 24px 20px">
       <Icon name="info" />
       <div>Chọn nhiều người rồi bấm <b>Gán ca cho nhiều người</b> để gán cùng một ca.</div>
@@ -248,6 +267,49 @@ const footText = computed(() => {
 </template>
 
 <style scoped>
+.title {
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+.title .acts {
+  margin-left: 0;
+  flex-wrap: wrap;
+  max-width: 100%;
+}
+.staff-tools {
+  flex-wrap: wrap;
+  align-items: center;
+  padding-inline: 24px;
+  gap: 8px;
+}
+.staff-tools :deep(.search) {
+  margin-left: auto;
+  width: min(220px, 100%);
+}
+.staff-table-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scrollbar-gutter: stable;
+}
+.list-state {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 24px;
+  color: var(--muted);
+}
+.error-state {
+  color: var(--err-ink);
+}
+.staff-table-scroll:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+.staff-table-scroll .tbl {
+  min-width: 1040px;
+}
 .ns td {
   height: 58px;
 }
@@ -276,15 +338,23 @@ const footText = computed(() => {
 .ns .soft {
   color: var(--muted);
 }
-.ns tr.open {
-  cursor: pointer;
-}
 .ns tr.open:hover td {
   background: #fafafa;
 }
-.ns tr.open:focus-visible {
-  outline: 2px solid var(--text);
-  outline-offset: -2px;
+.profile-link {
+  display: inline-block;
+  color: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 4px;
+}
+.profile-link:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+.profile-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 .act {
   display: inline-flex;
@@ -302,5 +372,14 @@ td.none {
   color: var(--muted);
   font-size: 13px;
   height: 80px;
+}
+@media (max-width: 700px) {
+  .staff-tools :deep(.search) {
+    width: 100%;
+    margin-left: 0;
+  }
+  .staff-tools .vr {
+    display: none;
+  }
 }
 </style>
