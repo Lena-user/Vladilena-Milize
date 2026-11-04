@@ -11,11 +11,12 @@ import { dayLong, dm } from '@/utils/format';
 import AdvanceSheet from './components/AdvanceSheet.vue';
 import DayRequestSheet from './components/DayRequestSheet.vue';
 import ExplanationSheet from './components/ExplanationSheet.vue';
+import LoadFeedback from './components/LoadFeedback.vue';
 import { useHop } from './useHop';
 
 const route = useRoute();
 const kb = computed(() => String(route.query.kb || 'mac-dinh'));
-const { data, reload } = useLoad(
+const { data, loading, error, reload } = useLoad(
   () => getRequests(),
   () => kb.value
 );
@@ -58,6 +59,7 @@ async function cancel(item?) {
 </script>
 
 <template>
+  <LoadFeedback :loading="loading" :error="error" :has-data="!!data" @retry="reload" />
   <div v-if="data" class="req">
     <header class="ph">
       <h1>Yêu cầu</h1>

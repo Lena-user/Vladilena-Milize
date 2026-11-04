@@ -118,8 +118,10 @@ async function reject(r?) {
 }
 function setScope(next?) {
   if (next === scope.value) return;
-  const q = route.query.thang ? { thang: route.query.thang } : {};
-  router.push({ path: next === 'thang' ? '/admin/yeu-cau' : '/admin/yeu-cau/moi-thang', query: q });
+  router.push({
+    path: next === 'thang' ? '/admin/yeu-cau' : '/admin/yeu-cau/moi-thang',
+    query: { ...route.query }
+  });
 }
 </script>
 
@@ -230,6 +232,7 @@ function setScope(next?) {
 <style scoped>
 .ctl {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 12px;
   margin: -4px 0 20px;
@@ -249,9 +252,24 @@ function setScope(next?) {
 }
 .sumc {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 16px;
   padding: 18px 24px;
+}
+@media (max-width: 700px) {
+  .ctl .seg {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+  .ctl .search {
+    margin-left: 0 !important;
+    flex: 1 1 100%;
+  }
+  .sumc {
+    padding: 16px;
+    gap: 10px;
+  }
 }
 .sumc h2 {
   margin: 0;

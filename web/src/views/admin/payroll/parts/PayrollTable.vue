@@ -197,6 +197,22 @@ button.aic {
   padding-right: 0;
   width: 44px;
 }
+.tbl th:nth-child(2),
+.tbl td:nth-child(2),
+.tbl.v-draft10 th:first-child,
+.tbl.v-draft10 td:first-child,
+.tbl.v-draft11 th:first-child,
+.tbl.v-draft11 td:first-child,
+.tbl.v-final th:first-child,
+.tbl.v-final td:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background: var(--surface, #fff);
+}
+.tbl thead th {
+  z-index: 2;
+}
 .v-draft11 .w-name {
   width: 34%;
 }

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 // Tổng quan (tong-quan): kỳ lương còn gì chặn trước khi chốt công, yêu cầu chờ, chỉ số chính, mốc sắp tới.
+import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import Icon from '@/components/ui/Icon.vue';
 import { useLoad } from '@/composables/useLoad';
@@ -24,6 +25,17 @@ async function reject(r?: any) {
   await rejectRequest(r.id);
   reload();
 }
+
+const showAllBlockers = ref(false);
+const blockerRows = computed(() => data.value?.blockers.rows || []);
+const visibleBlockers = computed(() => {
+  const actionable = blockerRows.value.filter(row => row.count > 0);
+  return showAllBlockers.value ? actionable.concat(blockerRows.value.filter(row => row.count === 0)) : actionable;
+});
+function blockerTo(path: string) {
+  const separator = path.includes('?') ? '&' : '?';
+  return `${path}${separator}thang=${encodeURIComponent(data.value.month)}`;
+}
 </script>
 
 <template>
@@ -37,9 +49,7 @@ async function reject(r?: any) {
         </p>
       </div>
       <div class="acts">
-        <RouterLink to="/admin/bang-luong" class="btn pri">
-          <Icon name="cash" />Mở bảng lương
-        </RouterLink>
+        <RouterLink to="/admin/bang-luong" class="btn pri"> <Icon name="cash" />Mở bảng lương </RouterLink>
       </div>
     </div>
 
@@ -104,28 +114,51 @@ async function reject(r?: any) {
             />
           </div>
           <div class="seg-legend">
-            <span class="leg-item"><i class="dot done" />Đã duyệt <b>{{ data.periodCard?.approved || 0 }}</b></span>
-            <span class="leg-item"><i class="dot pend" />Chờ duyệt <b>{{ data.periodCard?.pending || 0 }}</b></span>
-            <span class="leg-item"><i class="dot draft" />Nháp <b>{{ data.periodCard?.draft || 0 }}</b></span>
-            <span v-if="data.periodCard?.error" class="leg-item"><i class="dot err" />Lỗi <b>{{ data.periodCard.error }}</b></span>
+            <span class="leg-item"
+              ><i class="dot done" />Đã duyệt <b>{{ data.periodCard?.approved || 0 }}</b></span
+            >
+            <span class="leg-item"
+              ><i class="dot pend" />Chờ duyệt <b>{{ data.periodCard?.pending || 0 }}</b></span
+            >
+            <span class="leg-item"
+              ><i class="dot draft" />Nháp <b>{{ data.periodCard?.draft || 0 }}</b></span
+            >
+            <span v-if="data.periodCard?.error" class="leg-item"
+              ><i class="dot err" />Lỗi <b>{{ data.periodCard.error }}</b></span
+            >
           </div>
         </div>
 
         <div v-if="data.blocking > 0" class="blk-banner">
           <Icon name="alert" :size="16" />
-          <span>Phát hiện <b>{{ data.blocking }} nhóm việc</b> cần xử lý trước khi chốt công và khoá kỳ lương.</span>
+          <span
+            >Phát hiện <b>{{ data.blocking }} nhóm việc</b> cần xử lý trước khi chốt công và khoá kỳ lương.</span
+          >
         </div>
 
-        <div v-for="b in data.blockers.rows" :key="b.key" class="row">
+        <div v-if="!data.blocking" class="empty-row blocker-empty">
+          Không có việc cần xử lý trước khi chốt công tháng này.
+        </div>
+        <div v-for="b in visibleBlockers" :key="b.key" class="row">
           <span class="cnt">{{ b.count }}</span>
           <div>
             <div class="t">{{ b.title }}</div>
             <div class="s">{{ b.sub }}</div>
           </div>
-          <RouterLink :to="b.action.to" class="btn sm">
+          <RouterLink :to="blockerTo(b.action.to)" class="btn sm">
             {{ b.action.label }}
             <Icon name="arrow" :size="14" />
           </RouterLink>
+        </div>
+        <div v-if="blockerRows.some(b => b.count === 0)" class="blocker-toggle">
+          <button
+            type="button"
+            class="link"
+            :aria-expanded="showAllBlockers"
+            @click="showAllBlockers = !showAllBlockers"
+          >
+            {{ showAllBlockers ? 'Ẩn nhóm không phát sinh' : 'Hiện các nhóm còn lại' }}
+          </button>
         </div>
         <div class="foot">
           <span class="note">{{ data.blockers.note }}</span>
@@ -151,9 +184,7 @@ async function reject(r?: any) {
               <button type="button" class="btn sm pri" @click="approve(r)">Duyệt</button>
             </div>
           </div>
-          <div v-if="!data.approvals.items.length" class="empty-row">
-            Không có yêu cầu nào chờ duyệt.
-          </div>
+          <div v-if="!data.approvals.items.length" class="empty-row">Không có yêu cầu nào chờ duyệt.</div>
           <div class="foot">
             <RouterLink to="/admin/yeu-cau/moi-thang" class="link">
               Xem tất cả {{ data.approvals.total }} việc →
@@ -187,7 +218,7 @@ async function reject(r?: any) {
 <style scoped>
 .ov-grid {
   display: grid;
-  grid-template-columns: 1.65fr 1fr;
+  grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr);
   gap: 24px;
   align-items: start;
 }
@@ -269,10 +300,18 @@ async function reject(r?: any) {
   height: 100%;
   transition: width 0.3s ease;
 }
-.seg-done { background: #2e7d32; }
-.seg-pend { background: #e0a82e; }
-.seg-draft { background: #9e9e9e; }
-.seg-err { background: #d32f2f; }
+.seg-done {
+  background: #2e7d32;
+}
+.seg-pend {
+  background: #e0a82e;
+}
+.seg-draft {
+  background: #9e9e9e;
+}
+.seg-err {
+  background: #d32f2f;
+}
 .seg-legend {
   display: flex;
   flex-wrap: wrap;
@@ -296,13 +335,31 @@ async function reject(r?: any) {
   border-radius: 999px;
   display: inline-block;
 }
-.leg-item .dot.done { background: #2e7d32; }
-.leg-item .dot.pend { background: #e0a82e; }
-.leg-item .dot.draft { background: #9e9e9e; }
-.leg-item .dot.err { background: #d32f2f; }
+.leg-item .dot.done {
+  background: #2e7d32;
+}
+.leg-item .dot.pend {
+  background: #e0a82e;
+}
+.leg-item .dot.draft {
+  background: #9e9e9e;
+}
+.leg-item .dot.err {
+  background: #d32f2f;
+}
 .blk .row {
   grid-template-columns: 56px 1fr auto;
   min-height: 60px;
+}
+.blocker-empty {
+  margin: 4px 24px 12px;
+  padding: 16px 0;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+.blocker-toggle {
+  padding: 12px 24px 4px;
+  text-align: right;
 }
 .blk .cnt {
   font-size: 24px;
@@ -380,5 +437,28 @@ async function reject(r?: any) {
 .kpi .of {
   color: var(--muted);
   font-weight: 500;
+}
+@media (max-width: 800px) {
+  .ov-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+  .ov-side {
+    gap: 16px;
+  }
+}
+@media (max-width: 480px) {
+  .blk .row {
+    grid-template-columns: 40px minmax(0, 1fr);
+    gap: 8px;
+    padding: 8px 16px;
+  }
+  .blk .row > .btn {
+    grid-column: 2;
+    justify-self: start;
+  }
+  .blocker-empty {
+    margin-inline: 16px;
+  }
 }
 </style>

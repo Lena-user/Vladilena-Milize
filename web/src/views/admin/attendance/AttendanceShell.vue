@@ -20,12 +20,20 @@ const { data: summary } = useLoad(
 
 const todayOpen = ref(false);
 const otOpen = ref(false);
+const todayPushed = ref(false);
+let todayHistoryPosition: number | null = null;
 
 watch(
   () => route.query.hop,
   hop => {
-    if (hop === 'hom-nay') todayOpen.value = true;
-    if (hop === 'duyet-ot') otOpen.value = true;
+    const wasTodayOpen = todayOpen.value;
+    todayOpen.value = hop === 'hom-nay';
+    otOpen.value = hop === 'duyet-ot';
+    if (hop === 'hom-nay') {
+      todayPushed.value = todayHistoryPosition !== null && window.history.state?.position === todayHistoryPosition;
+    } else if (wasTodayOpen) {
+      todayPushed.value = false;
+    }
   },
   { immediate: true }
 );
@@ -33,9 +41,21 @@ watch(
 function closeToday() {
   todayOpen.value = false;
   if (route.query.hop === 'hom-nay') {
+    if (todayPushed.value && window.history.state?.position === todayHistoryPosition) {
+      todayPushed.value = false;
+      router.back();
+      return;
+    }
     const { hop, ...rest } = route.query;
     router.replace({ query: rest });
   }
+}
+
+function openToday() {
+  router.push({ query: { ...route.query, hop: 'hom-nay' } }).then(() => {
+    todayHistoryPosition = window.history.state?.position ?? null;
+    todayPushed.value = true;
+  });
 }
 
 function closeOt() {
@@ -48,7 +68,7 @@ function closeOt() {
 </script>
 
 <template>
-  <div class="title">
+  <div class="title attendance-title">
     <div>
       <h1>Chấm công</h1>
       <p v-if="summary && !summary.empty">
@@ -58,13 +78,8 @@ function closeOt() {
       <p v-else-if="summary">Chưa có dữ liệu chấm công của tháng này</p>
     </div>
     <div class="acts">
-      <button
-        v-if="summary && !summary.empty"
-        type="button"
-        class="btn"
-        @click="todayOpen = true"
-      >
-        <Icon name="cal" />Hôm nay ({{ summary.inShift }} đang trong ca)
+      <button type="button" class="btn" @click="openToday">
+        <Icon name="cal" />Hôm nay<span v-if="summary && !summary.empty"> ({{ summary.inShift }} đang trong ca)</span>
       </button>
       <RouterLink
         v-if="summary && !summary.empty"
@@ -81,3 +96,21 @@ function closeOt() {
   <TodayDialog v-if="todayOpen" @close="closeToday" />
   <OvertimeDialog v-if="otOpen" @close="closeOt" />
 </template>
+
+<style scoped>
+@media (max-width: 1100px) {
+  .attendance-title {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  .attendance-title > div:first-child {
+    min-width: 0;
+    flex: 1 1 100%;
+  }
+  .attendance-title .acts {
+    width: 100%;
+    margin-left: 0;
+    flex-wrap: wrap;
+  }
+}
+</style>

@@ -8,7 +8,7 @@ import { useLoad } from '@/composables/useLoad';
 import { getKpiSummary } from '@/services/admin-kpi';
 import { usePeriodStore } from '@/stores/period';
 import { vnd } from '@/utils/format';
-import { LINKS } from '@/views/admin/attendance/links';
+import { KPI_HISTORY_ROUTE, KPI_RULES_LINK } from '@/builders/admin-kpi/kpi';
 
 const route = useRoute();
 const period = usePeriodStore();
@@ -29,13 +29,14 @@ const query = computed(() => ({ thang: route.query.thang }));
     <div>
       <h1>Đánh giá KPI</h1>
       <p v-if="summary && !summary.empty">
-        Tháng {{ monthNo }} · <b>{{ summary.passed }} người</b> đạt, <b>{{ summary.incomplete }} người</b> chưa chấm đủ
+        Tháng {{ monthNo }} · <b>{{ summary.passed }}/{{ summary.total }} người</b> đạt,
+        <b>{{ summary.incomplete }} người</b> chưa chấm đủ
         <template v-if="summary.scoreWindow">· điểm thường có từ {{ summary.scoreWindow }}</template>
       </p>
       <p v-else-if="summary">Chưa có dữ liệu KPI của tháng này</p>
     </div>
     <div class="acts">
-      <RouterLink class="btn" :to="LINKS.kpiRules"><Icon name="sliders" />Điều kiện nhận lương KPI</RouterLink>
+      <RouterLink class="btn" :to="KPI_RULES_LINK.path"><Icon name="sliders" />{{ KPI_RULES_LINK.label }}</RouterLink>
     </div>
   </div>
 
@@ -81,7 +82,7 @@ const query = computed(() => ({ thang: route.query.thang }));
       <RouterLink class="tab" :to="{ path: '/admin/kpi', query }" exact-active-class="on">
         Nhập điểm <small v-if="!summary.empty">{{ summary.tabs.scores }}</small>
       </RouterLink>
-      <RouterLink class="tab" :to="{ path: '/admin/kpi/lich-su', query }" exact-active-class="on">
+      <RouterLink class="tab" :to="{ path: KPI_HISTORY_ROUTE, query }" exact-active-class="on">
         Lịch sử sửa điểm <small v-if="!summary.empty && summary.tabs.history != null">{{ summary.tabs.history }}</small>
       </RouterLink>
     </div>

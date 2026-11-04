@@ -35,7 +35,7 @@ const filter = ref('all');
 const q = ref('');
 const page = ref(1);
 watch([month, filter, q], () => (page.value = 1));
-const { data } = useLoad(
+const { data, loading, error, reload } = useLoad(
   () => getToday(month.value, { filter: filter.value, q: q.value, page: page.value }),
   () => [month.value, filter.value, q.value, page.value].join('|')
 );
@@ -75,6 +75,12 @@ const footText = computed(() => {
       <SearchBox v-model="q" style="margin-left: auto; width: 220px" />
     </div>
 
+    <p v-if="loading && data" class="load-state" role="status">Đang cập nhật dữ liệu chấm công hôm nay…</p>
+    <div v-else-if="error && data" class="load-error" role="alert">
+      Không tải được dữ liệu chấm công hôm nay mới nhất. Dữ liệu đang hiển thị có thể đã cũ.
+      <button type="button" class="link" @click="reload">Thử lại</button>
+    </div>
+
     <table class="tbl">
       <colgroup>
         <col />
@@ -97,6 +103,15 @@ const footText = computed(() => {
         </tr>
       </thead>
       <tbody>
+        <tr v-if="loading && !data">
+          <td colspan="7" class="none" role="status">Đang tải dữ liệu chấm công hôm nay…</td>
+        </tr>
+        <tr v-else-if="error && !data">
+          <td colspan="7" class="none" role="alert">
+            Không tải được dữ liệu chấm công hôm nay.
+            <button type="button" class="link" @click="reload">Thử lại</button>
+          </td>
+        </tr>
         <tr v-for="r in rows" :key="r.id">
           <td>
             <div class="who">
@@ -117,7 +132,9 @@ const footText = computed(() => {
             <span v-if="r.lateMin" class="late">{{ r.lateMin }}'</span>
           </td>
           <td>
-            <span class="pill" :class="STATUS[r.status]?.[0] || 'p-draft'">{{ STATUS[r.status]?.[1] || r.status }}</span>
+            <span class="pill" :class="STATUS[r.status]?.[0] || 'p-draft'">{{
+              STATUS[r.status]?.[1] || r.status
+            }}</span>
           </td>
           <td class="n" :class="{ z: !r.count }">{{ r.count }}</td>
         </tr>
@@ -129,7 +146,7 @@ const footText = computed(() => {
       </tbody>
     </table>
 
-    <PagerBar :text="footText" :page="data?.page || 1" :pages="data?.pages || 1" @page="page = $event" />
+    <PagerBar v-if="data" :text="footText" :page="data.page" :pages="data.pages" @page="page = $event" />
 
     <template #footer>
       <span class="sp" />
@@ -141,6 +158,21 @@ const footText = computed(() => {
 <style scoped>
 .tbl td {
   height: 52px;
+}
+.load-state,
+.load-error {
+  margin: 0 0 12px;
+  font-size: 13px;
+}
+.load-state {
+  color: var(--muted);
+}
+.load-error {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  color: var(--err-ink);
 }
 .tbl td.z {
   color: #a3a3a3;

@@ -100,6 +100,16 @@ const est = computed(() => (props.estimated ? 'est' : ''));
 .wide td:first-child {
   padding-left: 24px;
 }
+.wide th:first-child,
+.wide td:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background: var(--surface, #fff);
+}
+.wide thead th {
+  z-index: 2;
+}
 .wide td.z {
   color: #9e9e9e;
 }

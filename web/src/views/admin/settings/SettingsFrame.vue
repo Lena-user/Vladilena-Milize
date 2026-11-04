@@ -19,7 +19,9 @@ const { data: badges } = useLoad(() => getSettingsBadges());
 const q = ref('');
 function search() {
   const text = q.value.trim();
-  router.push({ path: PATHS.tatCa, query: text ? { q: text } : {} });
+  const month = router.currentRoute.value.query.thang;
+  const query = { ...(month ? { thang: month } : {}), ...(text ? { q: text } : {}) };
+  router.push({ path: PATHS.tatCa, query });
 }
 </script>
 
@@ -70,5 +72,29 @@ function search() {
 .ssearch input {
   flex: 1;
   color: var(--text);
+}
+@media (max-width: 1200px) {
+  .set {
+    min-width: 0;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+  nav.sub {
+    min-width: 0;
+    max-width: 100%;
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding: 8px;
+  }
+  nav.sub .g {
+    display: none;
+  }
+  nav.sub .it {
+    flex: 0 0 auto;
+  }
+  .main {
+    min-width: 0;
+  }
 }
 </style>

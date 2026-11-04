@@ -17,47 +17,61 @@ defineProps({
 </script>
 
 <template>
-  <table class="q">
-    <colgroup>
-      <col v-for="(w, i) in widths" :key="i" :style="w ? { width: w + 'px' } : null" />
-    </colgroup>
-    <thead>
-      <tr>
-        <th v-if="lead" class="cbc"><slot name="head-lead" /></th>
-        <th v-for="h in heads" :key="h">{{ h }}</th>
-        <th />
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="r in items" :key="r.id" :class="{ sel: selected.includes(r.id) }">
-        <td v-if="lead" class="cbc"><slot name="lead" :r="r" /></td>
-        <td>
-          <div class="who">
-            <span class="av">{{ initials(r.name) }}</span>
-            <div>
-              <div class="t">{{ r.name }}</div>
-              <div class="s">{{ roleLine(r) }}</div>
+  <div class="request-table-scroll" role="region" aria-label="Danh sách yêu cầu" tabindex="0">
+    <table class="q">
+      <colgroup>
+        <col v-for="(w, i) in widths" :key="i" :style="w ? { width: w + 'px' } : null" />
+      </colgroup>
+      <thead>
+        <tr>
+          <th v-if="lead" class="cbc"><slot name="head-lead" /></th>
+          <th v-for="h in heads" :key="h">{{ h }}</th>
+          <th />
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="r in items" :key="r.id" :class="{ sel: selected.includes(r.id) }">
+          <td v-if="lead" class="cbc"><slot name="lead" :r="r" /></td>
+          <td>
+            <div class="who">
+              <span class="av">{{ initials(r.name) }}</span>
+              <div>
+                <div class="t">{{ r.name }}</div>
+                <div class="s">{{ roleLine(r) }}</div>
+              </div>
             </div>
-          </div>
-        </td>
-        <td>
-          <div class="k">{{ r.kind }}</div>
-          <div class="ks">{{ dmy(r.date) }}</div>
-        </td>
-        <td>
-          <div>{{ r.detail }}</div>
-          <div class="ks">{{ sentLabel(r.sentAt) }}</div>
-        </td>
-        <td :class="extraClass"><slot name="extra" :r="r" /></td>
-        <td class="act"><slot name="act" :r="r" /></td>
-      </tr>
-    </tbody>
-  </table>
+          </td>
+          <td>
+            <div class="k">{{ r.kind }}</div>
+            <div class="ks">{{ dmy(r.date) }}</div>
+          </td>
+          <td>
+            <div>{{ r.detail }}</div>
+            <div class="ks">{{ sentLabel(r.sentAt) }}</div>
+          </td>
+          <td :class="extraClass"><slot name="extra" :r="r" /></td>
+          <td class="act"><slot name="act" :r="r" /></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
 
 <style scoped>
 .q {
   table-layout: fixed;
+  min-width: 920px;
+  width: 100%;
+}
+.request-table-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scrollbar-gutter: stable;
+}
+.request-table-scroll:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
 }
 .q td {
   height: 64px;

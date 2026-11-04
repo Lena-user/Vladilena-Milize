@@ -215,8 +215,6 @@ const payslipName = computed(() => rows.value.find(r => r.username === phieu.val
       </div>
     </div>
 
-    <PayrollFormula :formula="data.formula" />
-
     <section class="card">
       <div class="card-h">
         <h2>Bảng lương tháng {{ monthNo }}{{ wide ? ' · đủ cột' : '' }}</h2>
@@ -260,15 +258,17 @@ const payslipName = computed(() => rows.value.find(r => r.username === phieu.val
         @approve="openHop('phe-duyet-50')"
       />
 
-      <PayrollWideTable v-if="wide" :rows="rows" :estimated="!final" @open="openPayslip" />
-      <PayrollTable
-        v-else
-        :rows="rows"
-        :variant="ui.variant"
-        :selected="selected"
-        @open="openPayslip"
-        @toggle="toggle"
-      />
+      <div class="table-scroll" role="region" aria-label="Bảng lương, cuộn ngang để xem đủ cột" tabindex="0">
+        <PayrollWideTable v-if="wide" :rows="rows" :estimated="!final" @open="openPayslip" />
+        <PayrollTable
+          v-else
+          :rows="rows"
+          :variant="ui.variant"
+          :selected="selected"
+          @open="openPayslip"
+          @toggle="toggle"
+        />
+      </div>
       <div v-if="!rows.length && !loading" class="none">Không có phiếu nào khớp.</div>
 
       <div class="foot">
@@ -293,6 +293,8 @@ const payslipName = computed(() => rows.value.find(r => r.username === phieu.val
         </span>
       </div>
     </section>
+
+    <PayrollFormula :formula="data.formula" />
 
     <ExtrasCard v-if="ui.extras" :month="month" :version="reloadTick" @add="openHop('them-khoan')" />
   </template>
@@ -374,5 +376,14 @@ const payslipName = computed(() => rows.value.find(r => r.username === phieu.val
 .state-msg {
   padding: 40px 0;
   color: var(--muted);
+}
+.table-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+}
+.table-scroll:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
 }
 </style>

@@ -299,7 +299,9 @@ test('OverviewView & overview.ts: buildOverview trả periodCard đầy đủ v�
 
 test('Bỏ màn Phép còn lại, đổi tiêu đề thành Chấm công, xoá thanh legend và làm gọn tag ô ngày trên Bảng công', () => {
   const sidebar = fs.readFileSync(path.join(__dirname, '../../web/src/components/shell/AdminSidebar.vue'), 'utf8');
-  assert.ok(sidebar.includes("'Chấm công'"));
+  const sidebarNav = fs.readFileSync(path.join(__dirname, '../../web/src/views/admin/settings/nav.ts'), 'utf8');
+  assert.ok(sidebar.includes('ADMIN_SIDEBAR_GROUPS'), 'AdminSidebar lấy nhãn từ cấu hình điều hướng dùng chung');
+  assert.ok(sidebarNav.includes("['cham-cong', 'clock', 'Chấm công', '/admin/cham-cong']"));
   assert.ok(!sidebar.includes("'Chấm công & phép'"));
 
   const shell = fs.readFileSync(path.join(__dirname, '../../web/src/views/admin/attendance/AttendanceShell.vue'), 'utf8');
@@ -390,9 +392,9 @@ test('Tinh gọn Chấm công: không còn thanh tab con, mở Hôm nay dạng m
   assert.ok(!shell.includes('btn-sub'), 'AttendanceShell không dùng class btn-sub');
 
   const tsView = fs.readFileSync(path.join(__dirname, '../../web/src/views/admin/attendance/TimesheetView.vue'), 'utf8');
-  assert.ok(tsView.includes('TodayDialog'), 'TimesheetView có nạp TodayDialog');
-  assert.ok(tsView.includes('todayOpen'), 'TimesheetView có cờ mở popup Hôm nay');
-  assert.ok(tsView.includes('<Icon name="cal" />Hôm nay'), 'TimesheetView dùng icon cal cho nút Hôm nay');
+  assert.ok(!tsView.includes('<TodayDialog') && !tsView.includes('todayOpen'), 'TimesheetView không tạo dialog Today trùng');
+  assert.ok(tsView.includes("query: { ...route.query, hop: 'hom-nay' }"), 'TimesheetView mở dialog qua query hop dùng chung');
+  assert.ok(tsView.includes('@click="openToday"'), 'ngày hiện tại mở dialog Today qua AttendanceShell');
   assert.ok(!tsView.includes('btn-sub'), 'TimesheetView không dùng class btn-sub');
 
   const bell = fs.readFileSync(path.join(__dirname, '../../web/src/components/shell/BellPopover.vue'), 'utf8');

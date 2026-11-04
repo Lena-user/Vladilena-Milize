@@ -58,7 +58,7 @@ const footText = computed(() => {
         >Lượt Check-in/out mới nhất của từng người theo giờ máy chủ · cập nhật lúc {{ data.updatedAt }}</span
       >
     </div>
-    <div class="tools">
+    <div class="tools attendance-tools">
       <button
         v-for="[key, label, cnt] in CHIPS"
         :key="key"
@@ -71,59 +71,66 @@ const footText = computed(() => {
       </button>
       <SearchBox v-model="q" style="margin-left: auto; width: 220px" />
     </div>
-    <table class="tbl">
-      <colgroup>
-        <col />
-        <col style="width: 220px" />
-        <col style="width: 90px" />
-        <col style="width: 90px" />
-        <col style="width: 90px" />
-        <col style="width: 160px" />
-        <col style="width: 90px" />
-      </colgroup>
-      <thead>
-        <tr>
-          <th>Nhân sự</th>
-          <th>Ca</th>
-          <th class="n">Vào</th>
-          <th class="n">Ra</th>
-          <th class="n">Trễ</th>
-          <th>Trạng thái</th>
-          <th class="n">Số lượt</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="r in rows" :key="r.id">
-          <td>
-            <div class="who">
-              <span class="av">{{ initials(r.name) }}</span>
-              <div>
-                <div class="t">{{ r.name }}</div>
-                <div class="s">{{ r.sub }}</div>
+    <div
+      class="attendance-table-scroll"
+      role="region"
+      :aria-label="`${data && !data.empty ? heading : 'Hôm nay'} · danh sách chấm công, cuộn ngang để xem đủ cột`"
+      tabindex="0"
+    >
+      <table class="tbl">
+        <colgroup>
+          <col />
+          <col style="width: 220px" />
+          <col style="width: 90px" />
+          <col style="width: 90px" />
+          <col style="width: 90px" />
+          <col style="width: 160px" />
+          <col style="width: 90px" />
+        </colgroup>
+        <thead>
+          <tr>
+            <th>Nhân sự</th>
+            <th>Ca</th>
+            <th class="n">Vào</th>
+            <th class="n">Ra</th>
+            <th class="n">Trễ</th>
+            <th>Trạng thái</th>
+            <th class="n">Số lượt</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="r in rows" :key="r.id">
+            <td>
+              <div class="who">
+                <span class="av">{{ initials(r.name) }}</span>
+                <div>
+                  <div class="t">{{ r.name }}</div>
+                  <div class="s">{{ r.sub }}</div>
+                </div>
               </div>
-            </div>
-          </td>
-          <td>
-            <template v-if="r.shiftLabel">{{ r.shiftLabel }}</template>
-            <span v-else class="bad">Chưa có ca</span>
-          </td>
-          <td class="n" :class="{ z: !r.checkIn }">{{ r.checkIn || '—' }}</td>
-          <td class="n" :class="{ z: !r.checkOut }">{{ r.checkOut || '—' }}</td>
-          <td class="n">
-            <span v-if="r.lateMin" class="late">{{ r.lateMin }}'</span>
-          </td>
-          <td>
-            <span class="pill" :class="STATUS[r.status][0]">{{ STATUS[r.status][1] }}</span>
-          </td>
-          <td class="n" :class="{ z: !r.count }">{{ r.count }}</td>
-        </tr>
-        <tr v-if="data && !rows.length">
-          <td colspan="7" class="none">
-            {{ data.empty ? 'Chưa có dữ liệu chấm công của tháng này' : 'Không có nhân sự nào phù hợp' }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
+            </td>
+            <td>
+              <template v-if="r.shiftLabel">{{ r.shiftLabel }}</template>
+              <span v-else class="bad">Chưa có ca</span>
+            </td>
+            <td class="n" :class="{ z: !r.checkIn }">{{ r.checkIn || '—' }}</td>
+            <td class="n" :class="{ z: !r.checkOut }">{{ r.checkOut || '—' }}</td>
+            <td class="n">
+              <span v-if="r.lateMin" class="late">{{ r.lateMin }}'</span>
+            </td>
+            <td>
+              <span class="pill" :class="STATUS[r.status][0]">{{ STATUS[r.status][1] }}</span>
+            </td>
+            <td class="n" :class="{ z: !r.count }">{{ r.count }}</td>
+          </tr>
+          <tr v-if="data && !rows.length">
+            <td colspan="7" class="none">
+              {{ data.empty ? 'Chưa có dữ liệu chấm công của tháng này' : 'Không có nhân sự nào phù hợp' }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <PagerBar :text="footText" :page="data?.page || 1" :pages="data?.pages || 1" @page="page = $event" />
   </section>
 </template>
@@ -131,6 +138,22 @@ const footText = computed(() => {
 <style scoped>
 .tbl td {
   height: 56px;
+  min-width: 72px;
+}
+.attendance-tools {
+  flex-wrap: wrap;
+}
+.attendance-table-scroll {
+  max-width: 100%;
+  overflow: auto;
+  overscroll-behavior-inline: contain;
+}
+.attendance-table-scroll:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: -2px;
+}
+.attendance-table-scroll .tbl {
+  min-width: 900px;
 }
 .tbl td.z {
   color: #a3a3a3;

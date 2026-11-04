@@ -1,8 +1,8 @@
 <script setup lang="ts">
 // Tab Bảng công: dấu khai loại ngày và dấu lượt Check-in/out hiển thị riêng trong từng ô.
 // Bấm vào ô → hộp chi tiết ngày (xem lượt Check-in/out, sửa giờ). ?hop=chi-tiet-ngay mở sẵn một ô.
-import { computed, ref, watch } from 'vue';
-import { useRoute } from 'vue-router';
+import { computed, nextTick, ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { useLoad } from '@/composables/useLoad';
 import { getTimesheet } from '@/services/admin-attendance';
 import { usePeriodStore } from '@/stores/period';
@@ -11,18 +11,17 @@ import Icon from '@/components/ui/Icon.vue';
 import BulkPunchDialog from './BulkPunchDialog.vue';
 import { dowShort, initials } from '@/utils/format';
 import DayDetailDialog from './DayDetailDialog.vue';
-import TodayDialog from './TodayDialog.vue';
 import PagerBar from './PagerBar.vue';
 import SearchBox from './SearchBox.vue';
-import { useHop } from './useHop';
 
 const route = useRoute();
+const router = useRouter();
 const period = usePeriodStore();
 const month = computed(() => period.month);
 const session = useSessionStore();
 const canBulk = computed(() => session.caps.includes('request.decide.*'));
 const bulkOpen = ref(false);
-const todayOpen = ref(false);
+const dayOpener = ref<HTMLElement | null>(null);
 
 const CHIPS = [
   ['all', 'Tất cả', 'all'],
@@ -38,19 +37,34 @@ const SESSION_LABEL: Record<string, string> = {
   q: 'Lượt bị từ chối'
 };
 
-const filter = ref(
-  ['all', 'pending', 'tts', 'ctv', 'nv'].includes(String(route.query.filter)) ? String(route.query.filter) : 'all'
-);
-const q = ref('');
+const validFilters = ['all', 'pending', 'tts', 'ctv', 'nv'];
+const filter = ref(validFilters.includes(String(route.query.filter)) ? String(route.query.filter) : 'all');
+const q = ref(typeof route.query.q === 'string' ? route.query.q : '');
 const page = ref(1);
 watch([month, filter, q], () => (page.value = 1));
 watch(
-  () => route.query.filter,
-  val => {
-    if (val && ['all', 'pending', 'tts', 'ctv', 'nv'].includes(String(val))) {
-      filter.value = String(val);
+  () => [route.query.filter, route.query.q],
+  ([routeFilter, routeQ]) => {
+    const nextFilter = typeof routeFilter === 'string' && validFilters.includes(routeFilter) ? routeFilter : 'all';
+    const nextQ = typeof routeQ === 'string' ? routeQ : '';
+    if (filter.value !== nextFilter) filter.value = nextFilter;
+    if (q.value !== nextQ) q.value = nextQ;
+  },
+  { immediate: true }
+);
+watch(
+  [filter, q],
+  ([nextFilter, nextQ]) => {
+    const query = { ...route.query };
+    if (nextFilter === 'all') delete query.filter;
+    else query.filter = nextFilter;
+    if (nextQ) query.q = nextQ;
+    else delete query.q;
+    if (query.filter !== route.query.filter || query.q !== route.query.q) {
+      router.replace({ query });
     }
-  }
+  },
+  { immediate: true }
 );
 const { data, reload } = useLoad(
   () => getTimesheet(month.value, { filter: filter.value, q: q.value, page: page.value }),
@@ -73,7 +87,7 @@ const days = computed(() => {
       n: i + 1,
       wd: hol ? 'Lễ' : dowShort(date),
       cls: [sun ? 'sun' : '', hol ? 'hol' : ''].filter(Boolean).join(' '),
-      thCls: [sun ? 'sun' : '', hol ? 'hol' : '', today ? 'today' : '', fut ? 'fut' : ''].filter(Boolean).join(' '),
+      thCls: [sun ? 'sun' : '', hol ? 'hol' : '', today ? 'today' : '', fut ? 'fut' : ''].filter(Boolean).join(' ')
     };
   });
 });
@@ -129,18 +143,51 @@ const footText = computed(() => {
 
 // Hộp chi tiết ngày
 const picked = ref(null); // { id, date }
-const { open: hopOpen, close: hopClose } = useHop('chi-tiet-ngay');
 watch(
-  hopOpen,
-  o => {
-    if (o)
-      picked.value = { id: String(route.query.nv || 'u01'), date: String(route.query.ngay || `${month.value}-04`) };
+  () => [route.query.hop, route.query.nv, route.query.ngay],
+  ([hop, personId, date]) => {
+    picked.value = hop === 'chi-tiet-ngay' && personId && date ? { id: String(personId), date: String(date) } : null;
   },
   { immediate: true }
 );
+watch(picked, value => {
+  nextTick(() => {
+    if (value) {
+      const dialogs = document.querySelectorAll<HTMLElement>('[role="dialog"]');
+      dialogs[dialogs.length - 1]?.querySelector<HTMLElement>('input, button')?.focus();
+    } else {
+      dayOpener.value?.focus();
+    }
+  });
+});
 function closeDialog() {
   picked.value = null;
-  hopClose();
+  if (route.query.hop === 'chi-tiet-ngay') {
+    const { hop, nv, ngay, ...rest } = route.query;
+    router.replace({ query: rest });
+  }
+}
+function openDay(row: any, day: any, event: MouseEvent) {
+  dayOpener.value = event.currentTarget as HTMLElement;
+  picked.value = { id: row.id, date: day.date };
+  router.replace({ query: { ...route.query, hop: 'chi-tiet-ngay', nv: row.id, ngay: day.date } });
+}
+function openToday() {
+  router.push({ query: { ...route.query, hop: 'hom-nay' } });
+}
+function scrollGrid(event: KeyboardEvent) {
+  if (event.target !== event.currentTarget) return;
+  const region = event.currentTarget as HTMLElement;
+  if (event.key === 'ArrowRight' || event.key === 'ArrowLeft' || event.key === 'Home' || event.key === 'End') {
+    event.preventDefault();
+    if (event.key === 'Home') region.scrollLeft = 0;
+    else if (event.key === 'End') region.scrollLeft = region.scrollWidth;
+    else
+      region.scrollBy({
+        left: event.key === 'ArrowRight' ? 160 : -160,
+        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
+      });
+  }
 }
 function onBulkSaved() {
   reload();
@@ -158,7 +205,7 @@ function onSaved() {
         <h2>{{ heading }}</h2>
         <span class="cap">{{ range }}</span>
       </div>
-      <div class="color-note" aria-label="Chú thích màu trạng thái">
+      <div class="color-note" role="group" aria-label="Chú thích màu trạng thái">
         <span class="c-item"><span class="c-dot d-ok" />Có mặt</span>
         <span class="c-item"><span class="c-dot d-leave" />Nghỉ</span>
         <span class="c-item"><span class="c-dot d-extra" />Làm thêm</span>
@@ -166,105 +213,127 @@ function onSaved() {
         <span class="c-item"><span class="c-dot d-rejected" />Vắng</span>
       </div>
     </div>
-    <div class="tools">
-      <button
-        v-for="[key, label, cnt] in CHIPS"
-        :key="key"
-        type="button"
-        class="chip"
-        :class="{ on: filter === key }"
-        @click="filter = key"
-      >
-        {{ label }} <small v-if="cnt && data?.counts?.[cnt] != null">{{ data.counts[cnt] }}</small>
-      </button>
+    <div class="tools attendance-tools">
+      <div class="attendance-filter-chips">
+        <button
+          v-for="[key, label, cnt] in CHIPS"
+          :key="key"
+          type="button"
+          class="chip"
+          :class="{ on: filter === key }"
+          @click="filter = key"
+        >
+          {{ label }} <small v-if="cnt && data?.counts?.[cnt] != null">{{ data.counts[cnt] }}</small>
+        </button>
+      </div>
+      <label class="attendance-mobile-filter">
+        <span>Lọc nhân sự</span>
+        <select v-model="filter">
+          <option v-for="[key, label, cnt] in CHIPS" :key="key" :value="key">
+            {{ label }}<template v-if="cnt && data?.counts?.[cnt] != null"> ({{ data.counts[cnt] }})</template>
+          </option>
+        </select>
+      </label>
       <SearchBox v-model="q" style="margin-left: auto" />
-      <button type="button" class="btn" title="Xem chấm công hôm nay" @click="todayOpen = true">
-        <Icon name="cal" />Hôm nay
-      </button>
       <button v-if="canBulk" type="button" class="btn" @click="bulkOpen = true">
         <Icon name="clock" />Chấm công hàng loạt
       </button>
     </div>
-    <table class="bc">
-      <colgroup>
-        <col style="width: 200px" />
-        <col v-for="c in days" :key="c.date" style="width: 26px" />
-        <col style="width: 55px" />
-        <col style="width: 55px" />
-      </colgroup>
-      <thead>
-        <tr>
-          <th>Nhân sự</th>
-          <th
-            v-for="c in days"
-            :key="c.date"
-            :class="c.thCls"
-            :style="c.thCls.includes('today') ? 'cursor: pointer' : undefined"
-            :title="c.thCls.includes('today') ? 'Xem chấm công hôm nay' : undefined"
-            @click="c.thCls.includes('today') ? (todayOpen = true) : undefined"
-          >
-            <span class="dn">{{ c.n }}</span
-            ><span class="wd">{{ c.wd }}</span>
-          </th>
-          <th class="sum">Có mặt</th>
-          <th class="sum">Chờ xử lý</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="r in rows" :key="r.id">
-          <td>
-            <div class="who">
-              <span class="av">{{ initials(r.name) }}</span>
-              <div>
-                <div class="t">{{ r.name }}</div>
-                <div class="s" :class="{ bad: r.noShift }" :title="r.shiftTooltip">{{ r.sub }}</div>
-                <RouterLink
-                  v-if="r.noShift"
-                  class="link"
-                  :to="{ path: '/admin/nhan-su', query: { thang: route.query.thang, loc: 'chua-co-ca' } }"
-                  @click.stop
-                  >Gán ca</RouterLink
-                >
+    <p id="timesheet-scroll-help" class="grid-hint">Cuộn ngang hoặc dùng phím ←/→, Home/End để xem đủ ngày.</p>
+    <div
+      class="timesheet-scroll"
+      role="region"
+      :aria-label="`${heading} · ${range} · bảng chấm công, cuộn ngang để xem đủ ngày`"
+      tabindex="0"
+      aria-describedby="timesheet-scroll-help"
+      @keydown="scrollGrid"
+    >
+      <table class="bc">
+        <colgroup>
+          <col style="width: 200px" />
+          <col v-for="c in days" :key="c.date" style="width: 26px" />
+          <col style="width: 55px" />
+          <col style="width: 55px" />
+        </colgroup>
+        <thead>
+          <tr>
+            <th>Nhân sự</th>
+            <th v-for="c in days" :key="c.date" :class="c.thCls">
+              <button
+                v-if="c.thCls.includes('today')"
+                type="button"
+                class="today-heading"
+                :aria-label="`Ngày ${c.n}, ${c.wd}. Mở chấm công hôm nay`"
+                @click="openToday"
+              >
+                <span class="dn">{{ c.n }}</span
+                ><span class="wd">{{ c.wd }}</span>
+              </button>
+              <template v-else
+                ><span class="dn">{{ c.n }}</span
+                ><span class="wd">{{ c.wd }}</span></template
+              >
+            </th>
+            <th class="sum">Có mặt</th>
+            <th class="sum">Chờ xử lý</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="r in rows" :key="r.id">
+            <td>
+              <div class="who">
+                <span class="av">{{ initials(r.name) }}</span>
+                <div>
+                  <div class="t">{{ r.name }}</div>
+                  <div class="s" :class="{ bad: r.noShift }" :title="r.shiftTooltip">{{ r.sub }}</div>
+                  <RouterLink
+                    v-if="r.noShift"
+                    class="link"
+                    :to="{ path: '/admin/nhan-su', query: { thang: route.query.thang, loc: 'chua-co-ca' } }"
+                    @click.stop
+                    >Gán ca</RouterLink
+                  >
+                </div>
               </div>
-            </div>
-          </td>
-          <td v-for="c in days" :key="c.date" :class="[c.cls, cellCls(r.cells[c.date])]">
-            <button
-              type="button"
-              class="cell"
-              :class="cellCls(r.cells[c.date])"
-              :aria-label="cellAria(r, c)"
-              @click="picked = { id: r.id, date: c.date }"
-            >
-              <span
-                v-if="hasDot(r.cells[c.date])"
-                class="m"
-                :class="dotCls(r.cells[c.date])"
-                :title="cellTooltip(r.cells[c.date])"
-              />
-            </button>
-          </td>
-          <td class="sum" :class="{ z: !r.present }">{{ r.present }}</td>
-          <td class="sum" :class="r.pending ? 'p' : 'z'">{{ r.pending }}</td>
-        </tr>
-        <tr v-if="data && !rows.length">
-          <td class="none" :colspan="days.length + 3">
-            {{ data.empty ? 'Chưa có dữ liệu chấm công của tháng này' : 'Không có nhân sự nào phù hợp' }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
+            </td>
+            <td v-for="c in days" :key="c.date" :class="[c.cls, cellCls(r.cells[c.date])]">
+              <button
+                type="button"
+                class="cell"
+                :class="cellCls(r.cells[c.date])"
+                :aria-label="cellAria(r, c)"
+                @click="openDay(r, c, $event)"
+              >
+                <span
+                  v-if="hasDot(r.cells[c.date])"
+                  class="m"
+                  :class="dotCls(r.cells[c.date])"
+                  :title="cellTooltip(r.cells[c.date])"
+                />
+              </button>
+            </td>
+            <td class="sum" :class="{ z: !r.present }">{{ r.present }}</td>
+            <td class="sum" :class="r.pending ? 'p' : 'z'">{{ r.pending }}</td>
+          </tr>
+          <tr v-if="data && !rows.length">
+            <td class="none" :colspan="days.length + 3">
+              {{ data.empty ? 'Chưa có dữ liệu chấm công của tháng này' : 'Không có nhân sự nào phù hợp' }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <PagerBar :text="footText" :page="data?.page || 1" :pages="data?.pages || 1" @page="page = $event" />
   </section>
 
   <BulkPunchDialog v-if="bulkOpen" :month="month" @close="bulkOpen = false" @saved="onBulkSaved" />
   <DayDetailDialog v-if="picked" :person-id="picked.id" :date="picked.date" @close="closeDialog" @saved="onSaved" />
-  <TodayDialog v-if="todayOpen" @close="todayOpen = false" />
 </template>
 
 <style scoped>
 .card-h {
-  align-items: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
 }
 .card-h > div:first-child {
   display: flex;
@@ -274,8 +343,9 @@ function onSaved() {
 .color-note {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 16px;
-  margin-left: auto;
+  margin-left: 0;
   font-size: 12px;
   color: var(--muted);
 }
@@ -294,7 +364,86 @@ function onSaved() {
 }
 .bc {
   table-layout: fixed;
-  width: 100%;
+  width: max(100%, 1116px);
+}
+.timesheet-scroll {
+  max-width: 100%;
+  overflow: auto;
+  overscroll-behavior-inline: contain;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  scrollbar-gutter: stable;
+}
+.timesheet-scroll:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: -2px;
+}
+.attendance-tools {
+  flex-wrap: wrap;
+}
+.attendance-filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.attendance-mobile-filter {
+  display: none;
+}
+.grid-hint {
+  display: none;
+  margin: -4px 24px 10px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 18px;
+}
+@media (max-width: 1100px) {
+  .grid-hint {
+    display: block;
+  }
+}
+@media (max-width: 767px) {
+  .attendance-filter-chips {
+    display: none;
+  }
+  .attendance-mobile-filter {
+    display: flex;
+    flex: 1 1 100%;
+    flex-direction: column;
+    gap: 6px;
+    color: var(--muted);
+    font-size: 12px;
+  }
+  .attendance-mobile-filter select {
+    width: 100%;
+    min-height: 40px;
+    padding: 0 12px;
+    border: 1px solid var(--control);
+    border-radius: var(--r-ctl);
+    background: var(--surface);
+    color: var(--text);
+    font: inherit;
+  }
+  .attendance-tools :deep(.search) {
+    flex: 1 1 100%;
+    width: 100%;
+    margin-left: 0 !important;
+  }
+}
+.today-heading {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  min-width: 34px;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  cursor: pointer;
+}
+.today-heading:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 1px;
 }
 .bc th,
 .bc td {
@@ -305,6 +454,11 @@ function onSaved() {
 .bc td:first-child {
   text-align: left;
   padding-left: 24px;
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background: var(--surface);
+  box-shadow: 1px 0 var(--rule);
 }
 .bc td {
   height: 48px;
@@ -339,7 +493,7 @@ function onSaved() {
   font-weight: 600;
 }
 .bc th.today {
-  cursor: pointer;
+  cursor: default;
 }
 .bc th.today .dn {
   display: inline-grid;
@@ -444,22 +598,28 @@ function onSaved() {
   background: #3b82f6;
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
 }
-td.c-pending, .cell.c-pending {
+td.c-pending,
+.cell.c-pending {
   background: rgba(254, 243, 199, 0.5);
 }
-td.c-rejected, .cell.c-rejected {
+td.c-rejected,
+.cell.c-rejected {
   background: rgba(254, 226, 226, 0.5);
 }
-td.c-leave, .cell.c-leave {
+td.c-leave,
+.cell.c-leave {
   background: rgba(224, 242, 254, 0.4);
 }
-td.c-extra, .cell.c-extra {
+td.c-extra,
+.cell.c-extra {
   background: rgba(237, 233, 254, 0.4);
 }
-td.c-in, .cell.c-in {
+td.c-in,
+.cell.c-in {
   background: rgba(219, 234, 254, 0.4);
 }
-td.c-ok, .cell.c-ok {
+td.c-ok,
+.cell.c-ok {
   /* soft neutral/ok */
 }
 td.none {

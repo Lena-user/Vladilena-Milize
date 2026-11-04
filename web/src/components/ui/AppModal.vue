@@ -5,9 +5,9 @@
 //     <template #footer><span class="sp" /><button class="btn" @click="open = false">Huỷ</button>…</template>
 //   </AppModal>
 // Slot #head thay tiêu đề mặc định. dismissable=false: bấm nền hay Esc không đóng (hộp có dữ liệu đang nhập).
-import { onBeforeUnmount, onMounted } from 'vue';
+import { onBeforeUnmount, onMounted, ref } from 'vue';
 import Icon from './Icon.vue';
-import { lockScroll, unlockScroll } from './overlay-lock';
+import { lockScroll, registerOverlayFocus, unlockScroll } from './overlay-lock';
 
 const props = defineProps({
   title: { type: String, default: '' },
@@ -18,29 +18,38 @@ const props = defineProps({
 });
 const emit = defineEmits(['close']);
 const close = () => emit('close');
-const onKey = (e?) => {
-  if (e.key === 'Escape' && props.dismissable) close();
-};
+const dialog = ref<HTMLElement | null>(null);
+let unregisterFocus = () => {};
 onMounted(() => {
   lockScroll();
-  document.addEventListener('keydown', onKey);
+  if (dialog.value) unregisterFocus = registerOverlayFocus(dialog.value, close, () => props.dismissable);
 });
 onBeforeUnmount(() => {
+  unregisterFocus();
   unlockScroll();
-  document.removeEventListener('keydown', onKey);
 });
 </script>
 
 <template>
   <Teleport to="body">
-    <div class="ov-root">
+    <div class="ov-root" style="overscroll-behavior: contain">
       <div class="scrim" @click="dismissable && close()" />
       <div
+        ref="dialog"
         class="dlg"
         role="dialog"
         aria-modal="true"
+        tabindex="-1"
         :aria-label="title || undefined"
-        :style="{ width: typeof width === 'number' ? width + 'px' : width, marginTop: top + 'px' }"
+        :style="{
+          width: typeof width === 'number' ? width + 'px' : width,
+          marginTop: top + 'px',
+          maxWidth: 'calc(100vw - 24px)',
+          maxHeight: 'calc(100dvh - 24px)',
+          boxSizing: 'border-box',
+          display: 'flex',
+          flexDirection: 'column'
+        }"
       >
         <div class="dlg-h">
           <div>
@@ -51,7 +60,7 @@ onBeforeUnmount(() => {
           </div>
           <button type="button" class="x" aria-label="Đóng" @click="close"><Icon name="x" /></button>
         </div>
-        <div class="dlg-b"><slot /></div>
+        <div class="dlg-b" style="min-height: 0; overflow-y: auto"><slot /></div>
         <div v-if="$slots.footer" class="dlg-f"><slot name="footer" /></div>
       </div>
     </div>
