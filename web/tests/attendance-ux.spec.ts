@@ -1,6 +1,6 @@
 import { expect, test, type Page } from '@playwright/test';
 
-async function mockAttendance(page: Page, emptySummary = false) {
+async function mockAttendance(page: Page, emptySummary = false, emptyToday = false) {
   const teamRequests: string[] = [];
   let failNextToday = false;
   page.on('request', request => {
@@ -53,18 +53,21 @@ async function mockAttendance(page: Page, emptySummary = false) {
     else if (path === '/today')
       body = {
         today: `${requestedMonth}-03`,
-        rows: [
-          {
-            username: 'employee-1',
-            name: 'Ánh Nguyễn',
-            type: 'nv',
-            shiftCode: 'day',
-            in: '08:00',
-            out: '17:00',
-            status: 'checked-out',
-            sessionCount: 1
-          }
-        ]
+        empty: emptyToday,
+        rows: emptyToday
+          ? []
+          : [
+              {
+                username: 'employee-1',
+                name: 'Ánh Nguyễn',
+                type: 'nv',
+                shiftCode: 'day',
+                in: '08:00',
+                out: '17:00',
+                status: 'checked-out',
+                sessionCount: 1
+              }
+            ]
       };
     else if (path === '/settings/shifts')
       body = { shifts: [{ code: 'day', name: 'Ca ngày', in: '08:00', out: '17:00' }] };
@@ -179,7 +182,7 @@ test('phone uses labeled employee filter and retains both Today entry points', a
 
 test('Today title action remains available when monthly attendance summary is empty', async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 });
-  await mockAttendance(page, true);
+  await mockAttendance(page, true, true);
   await page.goto('/admin/cham-cong?thang=2026-11');
 
   const today = page.getByRole('button', { name: 'Hôm nay', exact: true });
