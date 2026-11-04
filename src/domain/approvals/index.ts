@@ -2,7 +2,7 @@ const store = require('../../platform/db');
 const { HttpError } = require('../../platform/http');
 const { rulesFor } = require('../../platform/request-rules');
 const { validMonth, validDate } = require('../input');
-const { estimateSheet } = require('../sheet');
+const { estimateSheet } = require('../../platform/legacy-estimate');
 const schedule = require('../schedule'); // lịch làm việc của người (một nguồn)
 
 // Lịch làm việc đã giải của người trong tháng, đưa vào ctx của khoản OT ngày lễ; staffType (nếu có) thay loại đang lưu (đổi loại chưa ghi)

@@ -1,7 +1,7 @@
 const paramsStore = require('../params/store');
 const Positions = require('../params/positions');
 const { monthParams, benefitOf } = require('../platform/request-rules');
-const { leaveSummary } = require('./sheet'); // bộ tham số của tháng hiện tại (giờ Việt Nam)
+const { leaveSummary } = require('../platform/legacy-estimate'); // bộ tham số của tháng hiện tại (giờ Việt Nam)
 
 // Dữ liệu chức vụ cho giao diện. Chỉ đọc; thêm chức vụ đi qua src/params/save.ts → addPosition.
 // GET /api/positions?month=      { month, paramsRev, positions }

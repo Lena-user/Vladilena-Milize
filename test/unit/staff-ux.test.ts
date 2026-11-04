@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { useLoad } from '../../web/src/composables/useLoad.ts';
+import { useLoad } from '../../web/src/composables/useLoad';
 
 test('staff screen load exposes an API failure and recovers when retried', async () => {
   let attempts = 0;

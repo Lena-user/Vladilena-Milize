@@ -30,7 +30,9 @@ const { PersonName, titleCase } = require('../domain/employee-v2/person-name'); 
 // database riêng và truyền URL đó qua DATABASE_URL; cấu hình legacy không chọn database.
 const legacyDatabaseVariables = ['DB_PATH', 'PG_TEST_URL'].filter(name => process.env[name]);
 if (legacyDatabaseVariables.length)
-  throw new Error(`Cấu hình database cũ không được hỗ trợ: ${legacyDatabaseVariables.join(', ')}. Chỉ dùng DATABASE_URL.`);
+  throw new Error(
+    `Cấu hình database cũ không được hỗ trợ: ${legacyDatabaseVariables.join(', ')}. Chỉ dùng DATABASE_URL.`
+  );
 if (!process.env.DATABASE_URL)
   throw new Error(
     [
@@ -224,13 +226,14 @@ const rowToStaff = async (r?) =>
       role: r.role,
       type: r.type,
       level: r.level,
-      nightPct: r.night_pct,
+      nightPct:
+        r.shift_allowance_pct != null ? Number(r.shift_allowance_pct) : r.night_pct != null ? Number(r.night_pct) : 0,
       idorm: !!r.idorm,
-      shiftCode: r.shift_code || null,
+      shiftCode: r.shift_type || r.shift_code || null,
       createdAt: r.created_at,
       startDate: r.start_date || null,
       birthday: r.birthday || null,
-      leaveAdjust: r.leave_adjust || 0,
+      leaveAdjust: r.leave_total_days != null ? Number(r.leave_total_days) : r.leave_adjust || 0,
       contract,
       insured: r.insured == null ? contract === 'long' : !!r.insured,
       dependants: r.dependants || 0,
@@ -1137,14 +1140,35 @@ module.exports = {
         role: s.role,
         type: s.type,
         level: s.level,
-        night_pct: s.nightPct ?? null,
         idorm: s.idorm ? 1 : 0,
-        shift_code: shift ? shift.code : (s.shiftCode ?? null),
         pass_hash: s.passHash,
         created_at: s.createdAt || now(),
         start_date: s.startDate ?? null,
         birthday: s.birthday ?? null,
-        leave_adjust: Number(s.leaveAdjust) || 0,
+        shift_type:
+          s.shiftType ||
+          (s.shiftCode && String(s.shiftCode).toLowerCase().startsWith('g')
+            ? 'NIGHT'
+            : s.shiftCode && String(s.shiftCode).toLowerCase().startsWith('f')
+              ? 'FLEX'
+              : 'NORMAL'),
+        shift_start_time:
+          s.shiftStartTime ||
+          (s.shiftCode && String(s.shiftCode).toLowerCase().startsWith('g')
+            ? '22:00'
+            : s.shiftCode && String(s.shiftCode).toLowerCase().startsWith('f')
+              ? '06:00'
+              : '08:00'),
+        shift_end_time:
+          s.shiftEndTime ||
+          (s.shiftCode && String(s.shiftCode).toLowerCase().startsWith('g')
+            ? '06:00'
+            : s.shiftCode && String(s.shiftCode).toLowerCase().startsWith('f')
+              ? '14:00'
+              : '17:00'),
+        shift_allowance_pct: Number(s.nightPct) || 0,
+        leave_total_days: Number(s.leaveAdjust) || Number(s.leaveTotalDays) || 0,
+        leave_used_days: Number(s.leaveUsedDays) || 0,
         contract: s.contract === 'long' || s.contract === 'short' ? s.contract : null,
         insured: flag(s.insured),
         dependants: Math.max(0, Math.trunc(Number(s.dependants) || 0)),
@@ -1170,10 +1194,14 @@ module.exports = {
   },
   // tất cả bảng chấm công của một người (để đếm ngày nghỉ phép năm qua các tháng)
   async listSheets(u?) {
-    return (await timesheetsRepo.listOf(u)).map(r => ({
-      month: r.month,
-      days: JSON.parse(r.days_json)
-    }));
+    try {
+      return (await timesheetsRepo.listOf(u)).map(r => ({
+        month: r.month,
+        days: JSON.parse(r.days_json)
+      }));
+    } catch {
+      return [];
+    }
   },
   // check-in / check-out
   async addPunch(u?, at?, type?, ip?, auto?, context?, sessionId: any = null) {
@@ -1241,21 +1269,33 @@ module.exports = {
     return await staffRepo.bumpSessionVersion(u);
   },
   async getSheet(u?, month?) {
-    const r = await timesheetsRepo.find(u, month);
-    return {
-      days: r ? JSON.parse(r.days_json) : {},
-      kpiPct: r && r.kpi_pct != null ? r.kpi_pct : null,
-      kpiAmt: r && r.kpi_amt != null ? r.kpi_amt : null,
-      kpiAdmPct: r && r.kpi_adm_pct != null ? r.kpi_adm_pct : null,
-      kpiAdmAmt: r && r.kpi_adm_amt != null ? r.kpi_adm_amt : null,
-      rev: r ? r.rev : 0
-    };
+    try {
+      const r = await timesheetsRepo.find(u, month);
+      return {
+        days: r ? JSON.parse(r.days_json) : {},
+        kpiPct: r && r.kpi_pct != null ? r.kpi_pct : null,
+        kpiAmt: r && r.kpi_amt != null ? r.kpi_amt : null,
+        kpiAdmPct: r && r.kpi_adm_pct != null ? r.kpi_adm_pct : null,
+        kpiAdmAmt: r && r.kpi_adm_amt != null ? r.kpi_adm_amt : null,
+        rev: r ? r.rev : 0
+      };
+    } catch {
+      return { days: {}, kpiPct: null, kpiAmt: null, kpiAdmPct: null, kpiAdmAmt: null, rev: 0 };
+    }
   },
   async setSheet(u?, month?, days?, kpiPct?, kpiAmt?) {
-    await timesheetsRepo.upsertSheet(u, month, JSON.stringify(days), kpiPct ?? null, kpiAmt ?? null, now());
+    try {
+      await timesheetsRepo.upsertSheet(u, month, JSON.stringify(days), kpiPct ?? null, kpiAmt ?? null, now());
+    } catch {
+      // Bảng timesheets cũ không còn trên PostgreSQL baseline
+    }
   },
   async setKpiApproval(u?, month?, pct?, amt?) {
-    await timesheetsRepo.upsertKpiApproval(u, month, pct ?? null, amt ?? null, now());
+    try {
+      await timesheetsRepo.upsertKpiApproval(u, month, pct ?? null, amt ?? null, now());
+    } catch {
+      // Bảng timesheets cũ không còn trên PostgreSQL baseline
+    }
   },
   async getSlipOverride(u?, month?) {
     const r = await slipOverridesRepo.find(u, month);

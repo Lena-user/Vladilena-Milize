@@ -1,10 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { ADMIN_SIDEBAR_GROUPS, SETTINGS_NAV } from '../../web/src/views/admin/settings/nav.ts';
+import { ADMIN_SIDEBAR_GROUPS, SETTINGS_NAV } from '../../web/src/views/admin/settings/nav';
 
 test('rendered admin sidebar keeps all established destinations and operation label', () => {
-  const items = ADMIN_SIDEBAR_GROUPS.flatMap(([, links]) => links);
-  const paths = items.map(([, , , path]) => path);
+  const items = (ADMIN_SIDEBAR_GROUPS as any[]).flatMap(([, links]) => links);
+  const paths = items.map(([, , , path]: any) => path);
   for (const path of [
     '/admin/tong-quan',
     '/admin/yeu-cau',

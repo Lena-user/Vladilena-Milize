@@ -45,14 +45,14 @@ export class Leave {
     const nextUsed = Number((this.usedDays + days).toFixed(2));
     return new Leave({
       totalDays: this.totalDays,
-      usedDays: nextUsed,
+      usedDays: nextUsed
     });
   }
 
   withChanges(patch: { totalDays?: number; usedDays?: number }): Leave {
     return new Leave({
       totalDays: patch.totalDays !== undefined ? patch.totalDays : this.totalDays,
-      usedDays: patch.usedDays !== undefined ? patch.usedDays : this.usedDays,
+      usedDays: patch.usedDays !== undefined ? patch.usedDays : this.usedDays
     });
   }
 
@@ -60,7 +60,7 @@ export class Leave {
     return {
       totalDays: this.totalDays,
       usedDays: this.usedDays,
-      remainingDays: this.remainingDays(),
+      remainingDays: this.remainingDays()
     };
   }
 }

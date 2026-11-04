@@ -87,9 +87,7 @@
       "label": "Kỳ công: từ ngày 1 đến cuối tháng",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "fixed.period.cutoff"
-      ],
+      "keys": ["fixed.period.cutoff"],
       "valueBearing": false,
       "help": "Không đổi tiền; kỳ công hiện là tháng dương lịch, chưa chọn được kỳ khác như 26 đến 25.",
       "basis": "Quy chế công ty",
@@ -124,9 +122,7 @@
       "label": "Hạn nộp chấm công (ngày của tháng sau)",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "period.reportDeadlineDay"
-      ],
+      "keys": ["period.reportDeadlineDay"],
       "valueBearing": true,
       "help": "Không đổi tiền; dùng để nhắc hạn nộp chấm công và để AI gắn cờ khai sau hạn.",
       "basis": "Chủ dự án chốt ngày 15/10/2026",
@@ -170,9 +166,7 @@
       "label": "Khai chấm công sau hạn",
       "class": "choice",
       "editableBy": "admin",
-      "keys": [
-        "period.lateDeclaration"
-      ],
+      "keys": ["period.lateDeclaration"],
       "valueBearing": true,
       "help": "Chọn chỉ cảnh báo hay chặn nhân sự sửa lịch tháng trước sau hạn; tiền chỉ đổi khi việc chặn làm một khoản không được khai.",
       "basis": "Chính sách công ty, do C&B chọn",
@@ -232,9 +226,7 @@
       "label": "Ngày trả lương (ngày của tháng sau)",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "period.payDay"
-      ],
+      "keys": ["period.payDay"],
       "valueBearing": true,
       "help": "Không đổi tiền; dùng cho lời nhắc và cột dự kiến chi trả.",
       "basis": "Bộ luật Lao động 2019, Điều 97 về kỳ hạn trả lương (cần pháp chế xác nhận); ngày 5 hay ngày 10 chờ C&B chốt",
@@ -281,9 +273,7 @@
       "label": "Ngày trả lương trùng ngày nghỉ",
       "class": "choice",
       "editableBy": "admin",
-      "keys": [
-        "period.payDayOnHoliday"
-      ],
+      "keys": ["period.payDayOnHoliday"],
       "valueBearing": true,
       "help": "Chỉ đổi ngày nhắc và cột dự kiến chi trả khi ngày trả lương trùng ngày nghỉ, không đổi tiền.",
       "basis": "Chính sách công ty, do C&B chọn",
@@ -337,9 +327,7 @@
       "label": "Cảnh báo khi ngày trả cách hạn nộp công dưới … ngày",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "period.payDayMinGapDays"
-      ],
+      "keys": ["period.payDayMinGapDays"],
       "valueBearing": true,
       "help": "Chỉ cảnh báo lịch khi ngày trả lương quá sát hạn nộp chấm công, không đổi tiền.",
       "basis": "Chính sách công ty, do C&B chọn",
@@ -386,9 +374,7 @@
       "label": "Tạm ứng: % lương cơ bản thực nhận",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "advance.rate"
-      ],
+      "keys": ["advance.rate"],
       "valueBearing": true,
       "help": "Đổi trực tiếp khoản tạm ứng bị trừ khi tính thực lĩnh.",
       "basis": "Quy chế công ty",
@@ -438,9 +424,7 @@
       "label": "Tạm ứng tính cho ngày đi làm từ ngày 1 đến ngày",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "advance.untilDay"
-      ],
+      "keys": ["advance.untilDay"],
       "valueBearing": true,
       "help": "Đổi số ngày đầu tháng có ngày đi làm được tính vào lương cơ bản làm căn cứ tạm ứng.",
       "basis": "Quy chế công ty; mặc định ngày 15 theo chủ dự án 27/10/2026 (từ 23/10 đến 27/10 từng là 20)",
@@ -484,9 +468,7 @@
       "label": "Cách tính tạm ứng",
       "class": "choice",
       "editableBy": "admin",
-      "keys": [
-        "advance.basis"
-      ],
+      "keys": ["advance.basis"],
       "valueBearing": true,
       "help": "Đổi cách tính tiền tạm ứng: theo ngày đi làm, theo tỷ lệ cố định của bậc hoặc số tiền cố định theo bậc.",
       "basis": "Quy chế công ty",
@@ -549,9 +531,7 @@
       "label": "Loại nhân sự được tạm ứng",
       "class": "table",
       "editableBy": "admin",
-      "keys": [
-        "advance.eligibleTypes.<type>"
-      ],
+      "keys": ["advance.eligibleTypes.<type>"],
       "valueBearing": true,
       "help": "Loại nhân sự không được tạm ứng thì tạm ứng bằng 0, dù từng người có bật trong hồ sơ.",
       "basis": "Chính sách công ty, do C&B chọn",
@@ -689,11 +669,7 @@
       "label": "Bảng level: lương cơ bản và KPI tối đa",
       "class": "table",
       "editableBy": "admin",
-      "keys": [
-        "level.<type>.<level>.name",
-        "level.<type>.<level>.base",
-        "level.<type>.<level>.kpi"
-      ],
+      "keys": ["level.<type>.<level>.name", "level.<type>.<level>.base", "level.<type>.<level>.kpi"],
       "valueBearing": true,
       "help": "Lương ngày lấy từ lương cơ bản của bậc và mức KPI tối đa chặn tiền KPI; mỗi thay đổi có tháng áp dụng.",
       "basis": "Quy chế lương; sàn theo mức lương tối thiểu vùng, hiện chỉ cảnh báo, chờ pháp chế xác nhận",
@@ -792,9 +768,7 @@
       "label": "Ngày công chuẩn",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "type.<type>.workdays"
-      ],
+      "keys": ["type.<type>.workdays"],
       "valueBearing": true,
       "help": "Là mẫu số của lương ngày: đổi số này là đổi lương mọi ngày làm của loại nhân sự đó.",
       "basis": "Quy chế lương",
@@ -838,9 +812,7 @@
       "label": "Quyền lợi theo loại nhân sự",
       "class": "table",
       "editableBy": "admin",
-      "keys": [
-        "type.<type>.benefit.<flag>"
-      ],
+      "keys": ["type.<type>.benefit.<flag>"],
       "valueBearing": true,
       "help": "Có thì loại nhân sự đó được trả khoản này, Không thì không trả; thực tập sinh không có lương nghỉ lễ, nghỉ phép năm và Off Paid (giờ nghỉ giữa ca đêm có lương).",
       "basis": "Chính sách công ty; luật yêu cầu người có hợp đồng lao động được nghỉ lễ và nghỉ phép năm (Bộ luật Lao động 2019, Điều 112 và 113, cần pháp chế xác nhận)",
@@ -970,9 +942,7 @@
       "label": "Cách tính lương",
       "class": "choice",
       "editableBy": "admin",
-      "keys": [
-        "pay.method"
-      ],
+      "keys": ["pay.method"],
       "valueBearing": true,
       "help": "Đổi cách tính lương ngày và các khoản theo ngày: A không giới hạn ở 100%, B giới hạn 100%, C chia theo số ngày làm việc thực của tháng, D lấy lương tháng trừ ngày không lương.",
       "basis": "Lead chốt ngày 15/10/2026 giữ cách A; Bộ luật Lao động 2019, Điều 96 về hình thức trả lương (cần pháp chế xác nhận)",
@@ -1041,9 +1011,7 @@
       "label": "Lương giờ dùng để trả OT chia cho",
       "class": "choice",
       "editableBy": "admin",
-      "keys": [
-        "pay.otHourlyDivisor"
-      ],
+      "keys": ["pay.otHourlyDivisor"],
       "valueBearing": true,
       "help": "Chỉ khác khi cách tính lương là C: đổi mẫu số của lương giờ dùng để trả OT, làm bù và làm ngày lễ.",
       "basis": "Nghị định 145/2020/NĐ-CP, Điều 55 về cách tính lương giờ (cần pháp chế xác nhận)",
@@ -1094,9 +1062,7 @@
       "label": "Lương thử việc (% lương của công việc)",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "type.<type>.probationPayPct"
-      ],
+      "keys": ["type.<type>.probationPayPct"],
       "valueBearing": true,
       "help": "Người thử việc nhận phần trăm này của lương cơ bản và các khoản theo lương ngày; 100% là như hiện nay.",
       "basis": "Bộ luật Lao động 2019, Điều 26: tối thiểu 85% (cần pháp chế xác nhận)",
@@ -1147,9 +1113,7 @@
       "label": "Đổi loại, level hoặc lương giữa tháng: áp cho cả tháng, hiệu lực từ ngày 01",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "fixed.pay.midMonthChange"
-      ],
+      "keys": ["fixed.pay.midMonthChange"],
       "valueBearing": false,
       "help": "Đổi loại, bậc hoặc lương giữa tháng thì áp cho cả tháng từ ngày 01; chưa chia theo ngày.",
       "basis": "Đề xuất, chờ chủ dự án chốt",
@@ -1184,9 +1148,7 @@
       "label": "Lịch làm việc theo loại: TTS thứ Hai đến thứ Sáu; CTV, NV thứ Hai đến thứ Bảy",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "type.<type>.dows"
-      ],
+      "keys": ["type.<type>.dows"],
       "valueBearing": true,
       "help": "Quy định ngày nào được tính công; ngày ngoài lịch không tính công và không trừ phép.",
       "basis": "Quy chế lương",
@@ -1222,9 +1184,7 @@
       "label": "Ba loại nhân sự: Thực tập sinh, Chuyên trách viên, Nhân viên",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "fixed.type.catalog"
-      ],
+      "keys": ["fixed.type.catalog"],
       "valueBearing": false,
       "help": "Hiện chỉ có ba loại nhân sự; thêm loại mới chưa làm được.",
       "basis": "Mặc định của hệ thống",
@@ -1259,9 +1219,7 @@
       "label": "Phụ cấp đi lại",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "type.<type>.travel"
-      ],
+      "keys": ["type.<type>.travel"],
       "valueBearing": true,
       "help": "Đổi phụ cấp đi lại theo phần trăm lương cơ bản nhân với tỷ lệ ngày đi làm; 0 là loại đó không nhận.",
       "basis": "Quy chế công ty",
@@ -1305,9 +1263,7 @@
       "label": "Phụ cấp chuyên cần",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "type.<type>.attendance"
-      ],
+      "keys": ["type.<type>.attendance"],
       "valueBearing": true,
       "help": "Đổi phụ cấp chuyên cần theo phần trăm lương cơ bản và tỷ lệ ngày đi làm; mất cả khoản khi vượt ngưỡng chuyên cần.",
       "basis": "Quy chế công ty",
@@ -1351,9 +1307,7 @@
       "label": "iDorm là cờ hồ sơ, không phải phụ cấp",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "fixed.allowance.idorm"
-      ],
+      "keys": ["fixed.allowance.idorm"],
       "valueBearing": false,
       "help": "Người ở iDorm không nhận phụ cấp đi lại; iDorm chỉ là cờ trong hồ sơ, không có khoản tiền riêng.",
       "basis": "Quy chế công ty",
@@ -1388,10 +1342,7 @@
       "label": "Phụ cấp ca Flex",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "shift.flex.bonus",
-        "type.<type>.flexBonus"
-      ],
+      "keys": ["shift.flex.bonus", "type.<type>.flexBonus"],
       "valueBearing": true,
       "help": "Đổi phụ cấp ca Flex: phần trăm của lương giờ nhân với số giờ được trả.",
       "basis": "Quy chế công ty",
@@ -1435,9 +1386,7 @@
       "label": "Phụ cấp ca đêm (TTS, CTV)",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "shift.night.bonus"
-      ],
+      "keys": ["shift.night.bonus"],
       "valueBearing": true,
       "help": "Đổi phụ cấp ca đêm của thực tập sinh và chuyên trách viên, chỉ cộng một lần mỗi ngày.",
       "basis": "Bộ luật Lao động 2019, Điều 98 khoản 2: tối thiểu 30%",
@@ -1488,9 +1437,7 @@
       "label": "Các mức phụ cấp ca đêm cho Nhân viên",
       "class": "table",
       "editableBy": "admin",
-      "keys": [
-        "type.nv.nightOptions"
-      ],
+      "keys": ["type.nv.nightOptions"],
       "valueBearing": true,
       "help": "Các mức phụ cấp đêm để chọn cho từng nhân viên trong hồ sơ; đổi mức là đổi phụ cấp đêm của người đó.",
       "basis": "Bộ luật Lao động 2019, Điều 98 khoản 2: mỗi mức tối thiểu 30%",
@@ -1557,9 +1504,7 @@
       "label": "Danh mục phụ cấp tuỳ chỉnh (ăn trưa, trách nhiệm…): thêm khoản bằng cách ghép khối",
       "class": "table",
       "editableBy": "admin",
-      "keys": [
-        "allowance.item.<code>"
-      ],
+      "keys": ["allowance.item.<code>"],
       "valueBearing": false,
       "help": "Thêm khoản phụ cấp tuỳ chỉnh bằng cách ghép khối và điều kiện; khoản này cộng vào tổng thu nhập, phần miễn thuế đi vào khoản miễn.",
       "basis": "Đề xuất; mức miễn thuế và việc tính vào lương đóng bảo hiểm chờ kế toán xác nhận (Luật Bảo hiểm xã hội, Điều 31; Nghị định 158/2025/NĐ-CP, Điều 7)",
@@ -1594,9 +1539,7 @@
       "label": "Gán phụ cấp tuỳ chỉnh theo từng người",
       "class": "table",
       "editableBy": "admin",
-      "keys": [
-        "allowance.assign"
-      ],
+      "keys": ["allowance.assign"],
       "valueBearing": false,
       "help": "Đặt mức phụ cấp tuỳ chỉnh riêng cho từng người.",
       "basis": "Đề xuất, chờ C&B chốt",
@@ -1638,9 +1581,7 @@
       "label": "Mất phụ cấp chuyên cần khi nghỉ từ … ngày trong tháng",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "type.nv.maxAbsent"
-      ],
+      "keys": ["type.nv.maxAbsent"],
       "valueBearing": true,
       "help": "Nghỉ từ số ngày này trong tháng thì mất toàn bộ phụ cấp chuyên cần.",
       "basis": "Quy chế công ty; lead chốt ngày 15/10/2026 giữ mức 3 ngày",
@@ -1690,9 +1631,7 @@
       "label": "Mất phụ cấp chuyên cần khi tổng giờ vượt ngưỡng từ … giờ trong tháng",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "attendance.overLimitHours"
-      ],
+      "keys": ["attendance.overLimitHours"],
       "valueBearing": true,
       "help": "Giờ vượt ngưỡng trong tháng từ mức này trở lên thì mất phụ cấp chuyên cần.",
       "basis": "Chính sách công ty",
@@ -1742,9 +1681,7 @@
       "label": "Cách tính giờ vượt ngưỡng",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "fixed.attendance.overLimitFormula"
-      ],
+      "keys": ["fixed.attendance.overLimitFormula"],
       "valueBearing": false,
       "help": "Cách tính giờ vượt ngưỡng dùng chung cho chuyên cần và KPI nên không cho đổi riêng.",
       "basis": "Quy chế công ty",
@@ -1779,9 +1716,7 @@
       "label": "Cách mất phụ cấp chuyên cần",
       "class": "choice",
       "editableBy": "admin",
-      "keys": [
-        "attendance.lossMode"
-      ],
+      "keys": ["attendance.lossMode"],
       "valueBearing": true,
       "help": "Chọn mất toàn bộ hay giảm theo bậc phụ cấp chuyên cần khi nghỉ nhiều; vượt ngưỡng giờ vẫn mất toàn bộ.",
       "basis": "Lead chốt ngày 15/10/2026: mất toàn bộ",
@@ -1835,9 +1770,7 @@
       "label": "Bảng giảm theo bậc (số ngày nghỉ và % giữ lại)",
       "class": "table",
       "editableBy": "admin",
-      "keys": [
-        "attendance.tiers"
-      ],
+      "keys": ["attendance.tiers"],
       "valueBearing": true,
       "help": "Chỉ dùng khi chọn giảm theo bậc: số ngày nghỉ tương ứng với phần trăm phụ cấp được giữ lại.",
       "basis": "Chính sách công ty, do C&B chọn",
@@ -1899,9 +1832,7 @@
       "label": "Biên độ giờ vượt ngưỡng",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "attendance.overLimitTolerance"
-      ],
+      "keys": ["attendance.overLimitTolerance"],
       "valueBearing": true,
       "help": "Cộng thêm biên độ vào ngưỡng giờ vượt; 0 là đúng ngưỡng như hiện nay.",
       "basis": "Chính sách công ty, do C&B chọn",
@@ -1948,9 +1879,7 @@
       "label": "Làm tròn giờ thiếu chưa bù trước khi cộng vào giờ vượt ngưỡng",
       "class": "choice",
       "editableBy": "admin",
-      "keys": [
-        "attendance.shortHoursRounding"
-      ],
+      "keys": ["attendance.shortHoursRounding"],
       "valueBearing": true,
       "help": "Làm tròn giờ thiếu chưa bù trước khi cộng vào giờ vượt ngưỡng, nên có thể đổi kết quả đúng sát ngưỡng.",
       "basis": "Chính sách công ty, do C&B chọn",
@@ -2010,9 +1939,7 @@
       "label": "Phép năm tính là ngày nghỉ khi xét chuyên cần",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "fixed.attendance.leaveCounts"
-      ],
+      "keys": ["fixed.attendance.leaveCounts"],
       "valueBearing": false,
       "help": "Phép năm được tính là ngày nghỉ khi xét chuyên cần; cách tính đặt theo từng loại yêu cầu.",
       "basis": "Bộ luật Lao động 2019, Điều 113 (cần pháp chế xác nhận)",
@@ -2047,9 +1974,7 @@
       "label": "Phụ cấp chuyên cần theo tỷ lệ ngày đi làm",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "fixed.attendance.proration"
-      ],
+      "keys": ["fixed.attendance.proration"],
       "valueBearing": false,
       "help": "Phụ cấp chuyên cần tính theo tỷ lệ ngày đi làm trên ngày công chuẩn.",
       "basis": "Quy chế công ty",
@@ -2118,9 +2043,7 @@
       "label": "Hệ số OT ngày thường",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "ot.rate"
-      ],
+      "keys": ["ot.rate"],
       "valueBearing": true,
       "help": "Đổi hệ số tiền OT ngày thường và Thứ Bảy nằm trong lịch làm việc: tiền OT bằng giờ OT nhân lương giờ nhân hệ số.",
       "basis": "Bộ luật Lao động 2019, Điều 98 khoản 1: tối thiểu 150%",
@@ -2171,9 +2094,7 @@
       "label": "Hệ số OT cuối tuần",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "ot.weekendRate"
-      ],
+      "keys": ["ot.weekendRate"],
       "valueBearing": true,
       "help": "Đổi hệ số tiền OT vào Thứ Bảy, Chủ nhật không nằm trong lịch làm việc của người đó: tiền OT bằng giờ OT nhân lương giờ nhân hệ số.",
       "basis": "Bộ luật Lao động 2019, Điều 98 khoản 1: tối thiểu 200%",
@@ -2224,9 +2145,7 @@
       "label": "Làm ngày lễ",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "ot.holidayRate"
-      ],
+      "keys": ["ot.holidayRate"],
       "valueBearing": true,
       "help": "Đổi hệ số trả giờ làm và giờ OT rơi vào ngày lễ.",
       "basis": "Bộ luật Lao động 2019, Điều 98 khoản 1: tối thiểu 300%",
@@ -2277,9 +2196,7 @@
       "label": "Phụ trội giờ nghỉ đêm (giờ nghỉ bắt buộc rơi vào 22:00 đến 06:00 trả lương giờ cộng phần này)",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "night.breakPremium"
-      ],
+      "keys": ["night.breakPremium"],
       "valueBearing": true,
       "help": "Đổi phụ trội trả cho giờ nghỉ bắt buộc rơi vào khung đêm; cũng là mức sàn của phụ cấp ca đêm.",
       "basis": "Bộ luật Lao động 2019, Điều 98 khoản 2: tối thiểu 30%",
@@ -2330,9 +2247,7 @@
       "label": "Phụ trội làm ngày lễ ban đêm (% × hệ số lễ)",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "night.otAddRate"
-      ],
+      "keys": ["night.otAddRate"],
       "valueBearing": true,
       "help": "Đổi phụ trội trả thêm cho giờ OT ban đêm, tính theo hệ số OT áp dụng.",
       "basis": "Bộ luật Lao động 2019, Điều 98 khoản 3 và Nghị định 145/2020/NĐ-CP, Điều 55: tối thiểu 20% (cần pháp chế xác nhận)",
@@ -2383,9 +2298,7 @@
       "label": "Phụ trội OT ban đêm áp dụng cho",
       "class": "choice",
       "editableBy": "admin",
-      "keys": [
-        "ot.nightAddScope"
-      ],
+      "keys": ["ot.nightAddScope"],
       "valueBearing": true,
       "help": "Chọn phụ trội OT ban đêm chỉ áp cho ngày lễ hay cho mọi OT đêm; chọn mọi OT đêm thì tiền OT đêm tăng.",
       "basis": "Chờ pháp chế xác nhận: mặc định có thể thấp hơn Bộ luật Lao động 2019, Điều 98 khoản 3 nếu có OT đêm ngày thường",
@@ -2439,9 +2352,7 @@
       "label": "OT khi còn nợ giờ bù",
       "class": "choice",
       "editableBy": "admin",
-      "keys": [
-        "ot.afterMakeup"
-      ],
+      "keys": ["ot.afterMakeup"],
       "valueBearing": true,
       "help": "Chọn chặn OT đến khi cân giờ bù hay tính OT ngay, độc lập với giờ thiếu.",
       "basis": "Chính sách công ty",
@@ -2495,9 +2406,7 @@
       "label": "Làm bù rơi vào ngày lễ",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "holiday.makeupRate"
-      ],
+      "keys": ["holiday.makeupRate"],
       "valueBearing": true,
       "help": "Đổi hệ số trả phần giờ làm bù rơi vào ngày lễ.",
       "basis": "Bộ luật Lao động 2019, Điều 98 khoản 1 (cần pháp chế xác nhận): tạm thời chặn mức thấp hơn 300%; chờ C&B và pháp chế chốt",
@@ -2552,9 +2461,7 @@
       "label": "Phần OT và làm đêm miễn thuế",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "fixed.ot.taxExempt"
-      ],
+      "keys": ["fixed.ot.taxExempt"],
       "valueBearing": false,
       "help": "Phần OT và làm đêm miễn thuế bằng mức nhỏ hơn giữa tiền được trả và tiền tính theo hệ số miễn thuế; phần trả cao hơn chịu thuế.",
       "basis": "Luật Thuế thu nhập cá nhân số 109/2025/QH15, Điều 4 khoản 8; Nghị định 253/2026, Điều 26",
@@ -2589,9 +2496,7 @@
       "label": "Làm bù gộp theo tháng",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "fixed.ot.makeupPool"
-      ],
+      "keys": ["fixed.ot.makeupPool"],
       "valueBearing": false,
       "help": "Giờ làm bù được trả bằng mức nhỏ hơn giữa giờ đã khai và giờ cần bù trong tháng; bù trước hay sau đều được.",
       "basis": "Quy chế công ty",
@@ -2626,9 +2531,7 @@
       "label": "Làm việc cuối tuần ngoài lịch",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "fixed.ot.weeklyRest"
-      ],
+      "keys": ["fixed.ot.weeklyRest"],
       "valueBearing": false,
       "help": "Làm việc Thứ Bảy, Chủ nhật ngoài lịch làm việc được trả theo hệ số OT cuối tuần khi OT đã được duyệt và có chấm công.",
       "basis": "Bộ luật Lao động 2019, Điều 98 khoản 1",
@@ -2663,9 +2566,7 @@
       "label": "OT, làm bù, làm ngày lễ phải được duyệt mới trả",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "fixed.ot.approval"
-      ],
+      "keys": ["fixed.ot.approval"],
       "valueBearing": false,
       "help": "OT, làm bù và làm ngày lễ phải được duyệt mới được trả; cách xử lý từng loại đặt ở nhóm Duyệt.",
       "basis": "Chủ dự án chốt ngày 14/10/2026 và lead chốt ngày 15/10/2026",
@@ -2700,9 +2601,7 @@
       "label": "Nguồn chấm công chính: Check-in/out trên app có kiểm GPS",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "fixed.attendance.primarySource"
-      ],
+      "keys": ["fixed.attendance.primarySource"],
       "valueBearing": false,
       "help": "Giờ công lấy từ Check-in/out trên app, có kiểm vị trí khi bật.",
       "basis": "Chủ dự án quyết định: AiCB là hệ thống chấm công",
@@ -2737,9 +2636,7 @@
       "label": "Nhập file chấm công (CSV) để đối soát",
       "class": "choice",
       "editableBy": "admin",
-      "keys": [
-        "attendance.sources.file"
-      ],
+      "keys": ["attendance.sources.file"],
       "valueBearing": true,
       "help": "Bật để nhận file chấm công đối chiếu với app; AI báo lệch, không đổi tiền.",
       "basis": "Đề xuất, chờ chủ dự án chốt; máy chấm công chỉ nhập giờ, không nhập dữ liệu sinh trắc (Nghị định 356/2025/NĐ-CP, Điều 4)",
@@ -2792,9 +2689,7 @@
       "label": "Khi app và máy/file lệch nhau",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "fixed.attendance.conflictRule"
-      ],
+      "keys": ["fixed.attendance.conflictRule"],
       "valueBearing": false,
       "help": "Khi app và máy hoặc file lệch nhau, giờ trả lương luôn lấy từ app.",
       "basis": "Đề xuất, chờ chủ dự án chốt",
@@ -2829,9 +2724,7 @@
       "label": "Máy chấm công",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "fixed.attendance.device"
-      ],
+      "keys": ["fixed.attendance.device"],
       "valueBearing": false,
       "help": "Tích hợp máy chấm công chưa có.",
       "basis": "Đề xuất, chờ chủ dự án chốt",
@@ -2866,9 +2759,7 @@
       "label": "Kiểm vị trí khi Check-in",
       "class": "choice",
       "editableBy": "admin",
-      "keys": [
-        "geofence.enabled"
-      ],
+      "keys": ["geofence.enabled"],
       "valueBearing": true,
       "help": "Bật thì từ chối Check-in ngoài vùng công ty; hệ thống không lưu toạ độ.",
       "basis": "Chủ dự án chốt về kiểm vị trí Check-in",
@@ -2922,10 +2813,7 @@
       "label": "Vị trí công ty (vĩ độ, kinh độ)",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "geofence.lat",
-        "geofence.lng"
-      ],
+      "keys": ["geofence.lat", "geofence.lng"],
       "valueBearing": true,
       "help": "Đặt tâm vùng công ty để kiểm vị trí khi Check-in.",
       "basis": "Mặc định của hệ thống",
@@ -2981,9 +2869,7 @@
       "label": "Bán kính chấm công",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "geofence.radiusM"
-      ],
+      "keys": ["geofence.radiusM"],
       "valueBearing": true,
       "help": "Check-in ngoài bán kính quanh văn phòng bị từ chối.",
       "basis": "Giới hạn cố định của hệ thống",
@@ -3038,9 +2924,7 @@
       "label": "Độ chính xác GPS tối đa",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "geofence.maxAccuracyM"
-      ],
+      "keys": ["geofence.maxAccuracyM"],
       "valueBearing": true,
       "help": "Vị trí có sai số lớn hơn mức này bị từ chối khi Check-in.",
       "basis": "Giới hạn cố định của hệ thống",
@@ -3158,9 +3042,7 @@
       "label": "Đi trễ, về sớm tới … phút không trừ",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "attendance.graceMin"
-      ],
+      "keys": ["attendance.graceMin"],
       "valueBearing": true,
       "help": "Đi trễ hoặc về sớm dưới mức này thì không bị trừ giờ.",
       "basis": "Chủ dự án chốt ngày 14/10/2026",
@@ -3204,9 +3086,7 @@
       "label": "Bậc trừ khi vượt mức",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "attendance.stepMin"
-      ],
+      "keys": ["attendance.stepMin"],
       "valueBearing": true,
       "help": "Đổi số phút của mỗi bậc bị trừ khi đi trễ hoặc về sớm vượt mức miễn.",
       "basis": "Chủ dự án chốt ngày 14/10/2026",
@@ -3250,9 +3130,7 @@
       "label": "Cách tính số phút bị trừ (từ mức miễn trở lên)",
       "class": "choice",
       "editableBy": "admin",
-      "keys": [
-        "attendance.cutRounding"
-      ],
+      "keys": ["attendance.cutRounding"],
       "valueBearing": true,
       "help": "Chọn cách làm tròn số phút bị trừ từ mức miễn trở lên: bậc làm tròn nửa lên, làm tròn lên theo bậc hoặc đúng số phút.",
       "basis": "Chính sách công ty; cắt lương vì đi trễ có rủi ro theo Bộ luật Lao động 2019, Điều 127 khoản 2 (cần pháp chế xác nhận)",
@@ -3312,9 +3190,7 @@
       "label": "Cách áp mức miễn (graceMin)",
       "class": "choice",
       "editableBy": "admin",
-      "keys": [
-        "attendance.graceScope"
-      ],
+      "keys": ["attendance.graceScope"],
       "valueBearing": true,
       "help": "Chọn áp mức miễn cho từng lượt, cho tổng số phút mỗi tháng hoặc cho số lần mỗi tháng.",
       "basis": "Chính sách công ty; cắt lương vì đi trễ có rủi ro theo Bộ luật Lao động 2019, Điều 127 khoản 2 (cần pháp chế xác nhận)",
@@ -3374,9 +3250,7 @@
       "label": "Tổng phút miễn mỗi tháng (khi chọn \"Tổng mỗi tháng\")",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "attendance.graceMonthlyMin"
-      ],
+      "keys": ["attendance.graceMonthlyMin"],
       "valueBearing": true,
       "help": "Tổng số phút trễ và sớm trong tháng được miễn, chỉ dùng khi chọn miễn theo tổng mỗi tháng.",
       "basis": "Chính sách công ty, do C&B chọn",
@@ -3423,9 +3297,7 @@
       "label": "Số lần miễn mỗi tháng (khi chọn \"Số lần mỗi tháng\")",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "attendance.graceMonthlyCount"
-      ],
+      "keys": ["attendance.graceMonthlyCount"],
       "valueBearing": true,
       "help": "Số lần trễ hoặc sớm trong tháng được miễn, chỉ dùng khi chọn miễn theo số lần.",
       "basis": "Chính sách công ty, do C&B chọn",
@@ -3472,9 +3344,7 @@
       "label": "Đi trễ và về sớm cùng ngày",
       "class": "choice",
       "editableBy": "admin",
-      "keys": [
-        "attendance.lateEarlyRule"
-      ],
+      "keys": ["attendance.lateEarlyRule"],
       "valueBearing": true,
       "help": "Chọn xét riêng đi trễ và về sớm, hay cộng phút của cả hai rồi mới làm tròn.",
       "basis": "Chủ dự án chốt ngày 14/10/2026",
@@ -3524,9 +3394,7 @@
       "label": "Ra ngoài giữa ca",
       "class": "choice",
       "editableBy": "admin",
-      "keys": [
-        "attendance.gapRule"
-      ],
+      "keys": ["attendance.gapRule"],
       "valueBearing": true,
       "help": "Chọn cách trừ giờ khi nhân sự ra ngoài giữa ca: theo bậc như đi trễ, đúng số phút hoặc không trừ.",
       "basis": "Lead chốt ngày 15/10/2026 là có trừ công; cách trừ chờ lead trả lời",
@@ -3587,9 +3455,7 @@
       "label": "Quên chấm một đầu (Check-in hoặc Check-out)",
       "class": "choice",
       "editableBy": "admin",
-      "keys": [
-        "attendance.missingOneSideRule"
-      ],
+      "keys": ["attendance.missingOneSideRule"],
       "valueBearing": true,
       "help": "Chọn xử lý ngày quên một đầu Check-in hoặc Check-out: chờ Admin xử lý hay tính là vắng.",
       "basis": "Chủ dự án chốt ngày 14/10/2026",
@@ -3640,9 +3506,7 @@
       "label": "Ngày có lịch mà không chấm công",
       "class": "choice",
       "editableBy": "admin",
-      "keys": [
-        "attendance.missingAllRule"
-      ],
+      "keys": ["attendance.missingAllRule"],
       "valueBearing": true,
       "help": "Chọn xử lý ngày có lịch mà không chấm công: tính theo lịch đã khai (ngày không khai thì không tính), tính là vắng với tiền ngày bằng 0, hoặc chờ Admin xử lý.",
       "basis": "Chủ dự án chốt ngày 14/10/2026; đổi mặc định thành \"tính theo lịch đã khai\" tối 23/10/2026; chốt lại ngày 28/10/2026: ngày khai đi làm mà không có Check-in/Check-out là nghỉ không phép, áp dụng từ tháng 10",
@@ -3699,9 +3563,7 @@
       "label": "Đi làm ngoài lịch chưa được duyệt",
       "class": "choice",
       "editableBy": "admin",
-      "keys": [
-        "attendance.offScheduleRule"
-      ],
+      "keys": ["attendance.offScheduleRule"],
       "valueBearing": true,
       "help": "Chọn không trả tiền hay trả như đã khai cho giờ đi làm ngoài lịch chưa được duyệt.",
       "basis": "Chủ dự án chốt ngày 14/10/2026; chờ pháp chế xem lại rủi ro",
@@ -3760,9 +3622,7 @@
       "label": "Làm bù cả ngày (TTS thứ Bảy)",
       "class": "choice",
       "editableBy": "admin",
-      "keys": [
-        "attendance.makeupDayStepRule"
-      ],
+      "keys": ["attendance.makeupDayStepRule"],
       "valueBearing": true,
       "help": "Chọn trả đúng số phút hay cắt theo bậc như đi trễ cho làm bù cả ngày.",
       "basis": "Chính sách công ty; chờ lead trả lời",
@@ -3818,9 +3678,7 @@
       "label": "Lượt Check-in mở quá … giờ thì tính là quên Check-out",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "attendance.openSessionMaxHours"
-      ],
+      "keys": ["attendance.openSessionMaxHours"],
       "valueBearing": true,
       "help": "Lượt Check-in mở quá số giờ này tự đóng thành quên Check-out và chờ Admin xử lý.",
       "basis": "Chính sách công ty",
@@ -3867,9 +3725,7 @@
       "label": "Nhận Check-in sớm hơn giờ ca tối đa … giờ",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "attendance.earlyCheckinMaxHours"
-      ],
+      "keys": ["attendance.earlyCheckinMaxHours"],
       "valueBearing": true,
       "help": "Check-in sớm hơn giờ ca quá mức này bị từ chối vì ngoài ca cố định.",
       "basis": "Chính sách công ty",
@@ -3916,9 +3772,7 @@
       "label": "Check-in ngoài vùng GPS",
       "class": "choice",
       "editableBy": "admin",
-      "keys": [
-        "geofence.outside"
-      ],
+      "keys": ["geofence.outside"],
       "valueBearing": true,
       "help": "Chọn chặn Check-in ngoài vùng hoặc cho chấm nhưng chờ Admin duyệt; hệ thống không bao giờ lưu toạ độ.",
       "basis": "Chính sách công ty; hệ thống không bao giờ lưu toạ độ",
@@ -4016,10 +3870,7 @@
       "label": "Ca cố định (6 ca)",
       "class": "table",
       "editableBy": "admin",
-      "keys": [
-        "shift.preset.<code>.in",
-        "shift.preset.<code>.out"
-      ],
+      "keys": ["shift.preset.<code>.in", "shift.preset.<code>.out"],
       "valueBearing": true,
       "help": "Giờ vào và giờ ra của sáu ca có sẵn. Mỗi ca dài đúng 9 giờ (8 giờ làm cộng 1 giờ nghỉ), giữ nguyên loại ca (Normal, Flex hoặc Night) và không trùng cả giờ vào lẫn giờ ra với ca khác. Giờ mới có hiệu lực từ tháng áp dụng, ca cũ của tháng đã qua không đổi.",
       "basis": "Chính sách công ty, do C&B chọn (chủ dự án chốt giờ mặc định ngày 14/10/2026)",
@@ -4114,9 +3965,7 @@
       "label": "Giờ làm việc mỗi công",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "time.workHoursPerDay"
-      ],
+      "keys": ["time.workHoursPerDay"],
       "valueBearing": true,
       "help": "Một công là 8 giờ; lương giờ, trần OT, giờ thiếu và kiểm ca đều dựa vào số này.",
       "basis": "Bộ luật Lao động 2019, Điều 105 (cần pháp chế xác nhận)",
@@ -4153,9 +4002,7 @@
       "label": "Ca tối đa từ giờ vào đến giờ ra",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "time.maxSpanHours"
-      ],
+      "keys": ["time.maxSpanHours"],
       "valueBearing": true,
       "help": "Ca dài nhất từ giờ vào đến giờ ra là 9 giờ, gồm 1 giờ nghỉ; ca đêm xử lý riêng.",
       "basis": "Quy chế công ty",
@@ -4192,10 +4039,7 @@
       "label": "Làm … giờ thì nghỉ … giờ",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "time.breakAfterWorkHours",
-        "time.breakHours"
-      ],
+      "keys": ["time.breakAfterWorkHours", "time.breakHours"],
       "valueBearing": true,
       "help": "Cứ 4 giờ làm nghỉ 1 giờ; giờ nghỉ rơi vào khung đêm được trả phụ trội.",
       "basis": "Bộ luật Lao động 2019, Điều 109 (cần pháp chế xác nhận)",
@@ -4232,10 +4076,7 @@
       "label": "Khung giờ đêm",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "time.nightStartHour",
-        "time.nightEndHour"
-      ],
+      "keys": ["time.nightStartHour", "time.nightEndHour"],
       "valueBearing": true,
       "help": "Khung giờ đêm từ 22 giờ đến 6 giờ; giờ làm trong khung được tính là giờ đêm.",
       "basis": "Bộ luật Lao động 2019, Điều 106 (cần pháp chế xác nhận)",
@@ -4272,9 +4113,7 @@
       "label": "Ca qua đêm thuộc ngày bắt đầu ca",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "time.shiftStructure"
-      ],
+      "keys": ["time.shiftStructure"],
       "valueBearing": false,
       "help": "Ca qua đêm thuộc ngày bắt đầu ca.",
       "basis": "Mặc định của hệ thống",
@@ -4309,9 +4148,7 @@
       "label": "Cách cộng phép năm",
       "class": "choice",
       "editableBy": "admin",
-      "keys": [
-        "leave.accrualMode"
-      ],
+      "keys": ["leave.accrualMode"],
       "valueBearing": true,
       "help": "Chọn cách cộng phép năm: như app hiện nay, 12 ngày chia theo tháng, hoặc cấp đủ 12 ngày đầu năm; đổi số dư phép là đổi cả ngày phép có lương và quyết toán.",
       "basis": "Bộ luật Lao động 2019, Điều 113 và 114 (cần pháp chế xác nhận); lead chốt ngày 15/10/2026 giữ phép năm như app",
@@ -4368,9 +4205,7 @@
       "label": "Thâm niên: +1 ngày mỗi 5 năm làm việc",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "fixed.leave.seniority"
-      ],
+      "keys": ["fixed.leave.seniority"],
       "valueBearing": false,
       "help": "Cộng thêm 1 ngày phép mỗi 5 năm làm việc, chỉ áp cho hai cách cộng phép theo 12 ngày mỗi năm.",
       "basis": "Bộ luật Lao động 2019, Điều 114 (cần pháp chế xác nhận)",
@@ -4405,9 +4240,7 @@
       "label": "Phép cộng ngày đầu đi làm",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "leave.accrual.start"
-      ],
+      "keys": ["leave.accrual.start"],
       "valueBearing": true,
       "help": "Số ngày phép cộng khi bắt đầu đi làm (từ 23/10/2026 bằng 0: phép chỉ tăng theo tháng làm việc tròn).",
       "basis": "Chủ dự án 23/10/2026 (Bộ luật Lao động 45/2019/QH14 Điều 113: theo tỷ lệ tháng làm việc; cần pháp chế xác nhận)",
@@ -4451,9 +4284,7 @@
       "label": "Phép cộng mỗi tháng tròn",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "leave.accrual.perMonth"
-      ],
+      "keys": ["leave.accrual.perMonth"],
       "valueBearing": true,
       "help": "Số ngày phép cộng cho mỗi tháng làm việc tròn.",
       "basis": "Quy chế công ty; cảnh báo nếu dưới 1 ngày (Bộ luật Lao động 2019, Điều 113: 12 ngày mỗi năm)",
@@ -4503,9 +4334,7 @@
       "label": "Phép cộng vào ngày sinh nhật",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "leave.accrual.birthday"
-      ],
+      "keys": ["leave.accrual.birthday"],
       "valueBearing": true,
       "help": "Số ngày phép cộng vào mỗi lần sinh nhật, chỉ cho cấp Nhân viên (type nv) — iFourteen của quy chế phúc lợi; CTV và TTS không có ngày này.",
       "basis": "Quy chế phúc lợi GFT (iFourteen: từ cấp Nhân viên trở lên); chủ dự án 26/10/2026",
@@ -4549,9 +4378,7 @@
       "label": "Phép sinh nhật hoặc iFourteen",
       "class": "choice",
       "editableBy": "admin",
-      "keys": [
-        "leave.birthdayMode"
-      ],
+      "keys": ["leave.birthdayMode"],
       "valueBearing": true,
       "help": "Chọn cộng ngày sinh nhật vào phép năm hay dùng kho phép riêng iFourteen không trừ vào phép năm.",
       "basis": "Lead chốt ngày 15/10/2026 giữ phép năm như app và thêm iFourteen; chi tiết chờ lead trả lời",
@@ -4605,9 +4432,7 @@
       "label": "Phép hết hạn cuối tháng 1 năm sau, quy tiền vào lương tháng 2",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "fixed.leave.expiry"
-      ],
+      "keys": ["fixed.leave.expiry"],
       "valueBearing": false,
       "help": "Phép tích luỹ tới 31/12 mà chưa dùng (dùng phép cũ trước) hết hạn cuối tháng 1 năm sau và được quy tiền vào phiếu lương tháng 2; xem leave.expiry.month.",
       "basis": "Đề xuất, chờ C&B chốt",
@@ -4642,9 +4467,7 @@
       "label": "Cách quyết toán phép còn lại khi nghỉ việc (luật: phép còn lại được trả)",
       "class": "choice",
       "editableBy": "admin",
-      "keys": [
-        "leave.settleMethod"
-      ],
+      "keys": ["leave.settleMethod"],
       "valueBearing": true,
       "help": "Chọn Admin nhập tay hay tự tính quyết toán phép còn lại khi nghỉ việc, vào dòng quyết toán của phiếu.",
       "basis": "Bộ luật Lao động 2019, Điều 113 khoản 3 (cần pháp chế xác nhận): luật bắt buộc trả, còn cách làm là chính sách",
@@ -4698,9 +4521,7 @@
       "label": "Không cho phép âm",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "fixed.leave.noNegative"
-      ],
+      "keys": ["fixed.leave.noNegative"],
       "valueBearing": false,
       "help": "AI báo các số dư phép năm âm.",
       "basis": "Chuyên viên C&B chốt",
@@ -4735,9 +4556,7 @@
       "label": "Phải dùng phép năm trước khi nghỉ không lương",
       "class": "choice",
       "editableBy": "admin",
-      "keys": [
-        "leave.useLeaveFirst"
-      ],
+      "keys": ["leave.useLeaveFirst"],
       "valueBearing": true,
       "help": "Bắt buộc dùng hết phép năm trước khi được khai nghỉ không lương, hoặc để tuỳ nhân sự.",
       "basis": "Chính sách công ty, do C&B chọn",
@@ -4791,9 +4610,7 @@
       "label": "Nghỉ bù khi ngày lễ trùng ngày nghỉ hằng tuần",
       "class": "choice",
       "editableBy": "admin",
-      "keys": [
-        "holiday.compensatory"
-      ],
+      "keys": ["holiday.compensatory"],
       "valueBearing": true,
       "help": "Chọn Admin tự thêm ngày nghỉ bù hay để app gợi ý ngày làm việc kế tiếp khi ngày lễ trùng ngày nghỉ hằng tuần.",
       "basis": "Bộ luật Lao động 2019, Điều 112 khoản 3 (cần pháp chế xác nhận)",
@@ -4845,9 +4662,7 @@
       "label": "Đơn vị nghỉ: cả ngày",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "fixed.leave.unit"
-      ],
+      "keys": ["fixed.leave.unit"],
       "valueBearing": false,
       "help": "Nghỉ tính theo cả ngày; nửa ngày và theo giờ chưa làm được.",
       "basis": "Đề xuất, chờ C&B chốt",
@@ -4882,9 +4697,7 @@
       "label": "Phép sinh nhật hoặc iFourteen (kho riêng)",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "leave.ifourteen.days"
-      ],
+      "keys": ["leave.ifourteen.days"],
       "valueBearing": true,
       "help": "Số ngày của kho phép riêng iFourteen, không trừ vào phép năm; 0 là chưa dùng.",
       "basis": "Lead chốt ngày 15/10/2026 thêm iFourteen; chi tiết chờ lead trả lời",
@@ -4931,9 +4744,7 @@
       "label": "Giới hạn iSAT mỗi tháng",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "isat.monthlyLimit"
-      ],
+      "keys": ["isat.monthlyLimit"],
       "valueBearing": true,
       "help": "Số ngày iSAT tối đa mỗi tháng; để trống là không giới hạn. Khai thêm vượt giới hạn: vẫn lưu và báo; ngày iSAT đã duyệt vẫn được trả đủ.",
       "basis": "Chính sách công ty",
@@ -4982,9 +4793,7 @@
       "label": "Ngày nghỉ lễ",
       "class": "table",
       "editableBy": "admin",
-      "keys": [
-        "holidays"
-      ],
+      "keys": ["holidays"],
       "valueBearing": true,
       "help": "Danh sách ngày lễ: chuyên trách viên và nhân viên nhận lương ngày, làm ngày lễ trả theo hệ số ngày lễ và ngày lễ được trừ khỏi phép năm đã khai.",
       "basis": "Bộ luật Lao động 2019, Điều 112 về số ngày nghỉ lễ (cần pháp chế xác nhận)",
@@ -5080,9 +4889,7 @@
       "label": "Chu kỳ KPI: hằng tháng",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "fixed.kpi.cycle"
-      ],
+      "keys": ["fixed.kpi.cycle"],
       "valueBearing": false,
       "help": "KPI tính theo tháng; chu kỳ quý chưa làm được.",
       "basis": "Lead chốt ngày 15/10/2026",
@@ -5117,13 +4924,7 @@
       "label": "Trọng số: Base Wework, người dùng, đồng nghiệp, quản lý trực tiếp, tự đánh giá",
       "class": "table",
       "editableBy": "admin",
-      "keys": [
-        "kpi.weight.wework",
-        "kpi.weight.user",
-        "kpi.weight.peer",
-        "kpi.weight.manager",
-        "kpi.weight.self"
-      ],
+      "keys": ["kpi.weight.wework", "kpi.weight.user", "kpi.weight.peer", "kpi.weight.manager", "kpi.weight.self"],
       "valueBearing": true,
       "help": "Trọng số năm thành phần KPI; đổi trọng số là đổi KPI của mọi người, và tổng phải bằng 100.",
       "basis": "Quy chế lương 3P",
@@ -5191,13 +4992,7 @@
       "crossChecks": [
         {
           "kind": "sum",
-          "keys": [
-            "kpi.weight.wework",
-            "kpi.weight.user",
-            "kpi.weight.peer",
-            "kpi.weight.manager",
-            "kpi.weight.self"
-          ],
+          "keys": ["kpi.weight.wework", "kpi.weight.user", "kpi.weight.peer", "kpi.weight.manager", "kpi.weight.self"],
           "equalsKey": "unit.percent",
           "message": "Tổng trọng số của năm thành phần KPI phải bằng 100"
         }
@@ -5220,9 +5015,7 @@
       "label": "Điều kiện đạt: Base Wework từ … điểm",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "kpi.weworkMin"
-      ],
+      "keys": ["kpi.weworkMin"],
       "valueBearing": true,
       "help": "Điểm Base Wework dưới mức này thì KPI tháng bằng 0 theo cách xử lý đã chọn.",
       "basis": "Quy chế lương 3P",
@@ -5266,9 +5059,7 @@
       "label": "Điều kiện đạt: tổng từ … %",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "type.<type>.kpiPass"
-      ],
+      "keys": ["type.<type>.kpiPass"],
       "valueBearing": true,
       "help": "Tổng điểm KPI dưới mức này là không đạt, xử lý theo cách đã chọn cho tổng dưới mức đạt.",
       "basis": "Quy chế lương 3P",
@@ -5312,9 +5103,7 @@
       "label": "Tổng dưới mức đạt",
       "class": "choice",
       "editableBy": "admin",
-      "keys": [
-        "kpi.belowPassRule"
-      ],
+      "keys": ["kpi.belowPassRule"],
       "valueBearing": true,
       "help": "Chọn KPI bằng 0 hay vẫn trả theo phần trăm khi tổng điểm dưới mức đạt.",
       "basis": "Quy chế lương 3P; chờ lead trả lời về cách trả theo bậc",
@@ -5374,9 +5163,7 @@
       "label": "Base Wework dưới mức đạt",
       "class": "choice",
       "editableBy": "admin",
-      "keys": [
-        "kpi.weworkGateRule"
-      ],
+      "keys": ["kpi.weworkGateRule"],
       "valueBearing": true,
       "help": "Chọn KPI bằng 0 hay chỉ cảnh báo khi Base Wework dưới mức đạt.",
       "basis": "Quy chế lương 3P; chờ lead trả lời",
@@ -5430,9 +5217,7 @@
       "label": "Chưa đủ 5 điểm thành phần",
       "class": "choice",
       "editableBy": "admin",
-      "keys": [
-        "kpi.incompleteRule"
-      ],
+      "keys": ["kpi.incompleteRule"],
       "valueBearing": true,
       "help": "Chọn xử lý khi chưa đủ 5 điểm thành phần: chờ điểm, tính điểm thiếu là 0, hoặc dùng tổng phần trăm của tháng trước.",
       "basis": "Quy chế lương 3P; chờ lead trả lời",
@@ -5492,9 +5277,7 @@
       "label": "Kỳ đã duyệt mà thiếu điểm KPI: không trả bù",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "fixed.kpi.backpay"
-      ],
+      "keys": ["fixed.kpi.backpay"],
       "valueBearing": false,
       "help": "Kỳ đã duyệt mà thiếu điểm KPI thì không trả bù ở kỳ sau; điểm đủ trước khi duyệt thì tính vào kỳ đó.",
       "basis": "Chính sách công ty",
@@ -5532,9 +5315,7 @@
       "label": "KPI nhân tỷ lệ ngày đi làm khi giờ vượt ngưỡng trên … giờ",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "kpi.overLimitHours"
-      ],
+      "keys": ["kpi.overLimitHours"],
       "valueBearing": true,
       "help": "Giờ vượt ngưỡng lớn hơn mức này thì tiền KPI nhân với tỷ lệ ngày đi làm.",
       "basis": "Chính sách công ty",
@@ -5581,9 +5362,7 @@
       "label": "Hệ số ngày đi làm của tiền KPI",
       "class": "choice",
       "editableBy": "admin",
-      "keys": [
-        "kpi.ratioRule"
-      ],
+      "keys": ["kpi.ratioRule"],
       "valueBearing": true,
       "help": "Chọn khi nào tiền KPI nhân với tỷ lệ ngày đi làm: chỉ khi vượt ngưỡng giờ, luôn nhân hoặc không nhân.",
       "basis": "Quy chế lương 3P",
@@ -5640,9 +5419,7 @@
       "label": "Đường cong tiền KPI",
       "class": "choice",
       "editableBy": "admin",
-      "keys": [
-        "kpi.payCurveRule"
-      ],
+      "keys": ["kpi.payCurveRule"],
       "valueBearing": true,
       "help": "Chọn tiền KPI tỷ lệ thuận với tổng điểm hay theo bảng bậc; đổi cách này là đổi quy chế KPI.",
       "basis": "Quy chế lương 3P; chờ lead trả lời",
@@ -5693,9 +5470,7 @@
       "label": "Công thức thưởng KPI",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "fixed.kpi.formula"
-      ],
+      "keys": ["fixed.kpi.formula"],
       "valueBearing": false,
       "help": "Tiền KPI bằng mức KPI đã duyệt (không quá KPI tối đa của bậc) nhân tổng điểm và hệ số ngày đi làm.",
       "basis": "Quy chế lương 3P",
@@ -5920,9 +5695,7 @@
       "label": "Duyệt cả lô các khoản không có cảnh báo AI",
       "class": "choice",
       "editableBy": "admin",
-      "keys": [
-        "approval.batch"
-      ],
+      "keys": ["approval.batch"],
       "valueBearing": true,
       "help": "Cho phép duyệt một lần nhiều khoản không có cảnh báo AI, hoặc buộc duyệt từng khoản.",
       "basis": "Chính sách công ty",
@@ -5977,9 +5750,7 @@
       "label": "Khoản còn chờ duyệt tới ngày chốt công",
       "class": "choice",
       "editableBy": "admin",
-      "keys": [
-        "approval.pendingAtLock"
-      ],
+      "keys": ["approval.pendingAtLock"],
       "valueBearing": true,
       "help": "Chọn cho chốt công kèm lý do hay chặn chốt khi còn khoản chờ duyệt; khoản chưa duyệt không được trả bù.",
       "basis": "Chính sách công ty",
@@ -6033,9 +5804,7 @@
       "label": "Khai, sửa lịch tháng đã qua",
       "class": "choice",
       "editableBy": "admin",
-      "keys": [
-        "period.editPastMonths"
-      ],
+      "keys": ["period.editPastMonths"],
       "valueBearing": true,
       "help": "Chọn cho khai và sửa lịch tháng đã qua tới khi chốt công, hoặc chỉ trong một số tháng gần nhất.",
       "basis": "Chính sách công ty",
@@ -6089,9 +5858,7 @@
       "label": "Số tháng gần nhất được sửa (khi chọn \"N tháng gần nhất\")",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "period.editPastMonthsN"
-      ],
+      "keys": ["period.editPastMonthsN"],
       "valueBearing": true,
       "help": "Số tháng gần nhất được sửa lịch, chỉ dùng khi chọn chỉ vài tháng gần nhất.",
       "basis": "Chính sách công ty",
@@ -6138,9 +5905,7 @@
       "label": "Không tự động duyệt khi quá hạn",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "fixed.approval.noAutoApprove"
-      ],
+      "keys": ["fixed.approval.noAutoApprove"],
       "valueBearing": false,
       "help": "Khoản quá hạn vẫn chờ duyệt và AI nhắc; hệ thống không tự duyệt.",
       "basis": "Tách nhiệm vụ giữa người khai và người duyệt",
@@ -6175,9 +5940,7 @@
       "label": "Từ chối và đổi quyết định bắt buộc ghi lý do",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "fixed.approval.rejectReason"
-      ],
+      "keys": ["fixed.approval.rejectReason"],
       "valueBearing": false,
       "help": "Từ chối và đổi quyết định đều bắt buộc ghi lý do.",
       "basis": "Điều khiển bắt buộc của hệ thống",
@@ -6212,9 +5975,7 @@
       "label": "Không tự duyệt khoản của chính mình",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "fixed.approval.noSelf"
-      ],
+      "keys": ["fixed.approval.noSelf"],
       "valueBearing": false,
       "help": "Không ai được duyệt khoản của chính mình.",
       "basis": "Điều khiển bắt buộc của hệ thống",
@@ -6249,9 +6010,7 @@
       "label": "Khoản có cảnh báo AI không vào duyệt cả lô, không duyệt một chạm; AI không chạy thì khoá duyệt cả lô",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "fixed.approval.aiFlagged"
-      ],
+      "keys": ["fixed.approval.aiFlagged"],
       "valueBearing": false,
       "help": "Khoản có cảnh báo AI không vào duyệt cả lô và không duyệt một chạm: cần ghi chú và xử lý cảnh báo trước; AI chưa chạy thì khoá duyệt cả lô.",
       "basis": "Chủ dự án chốt",
@@ -6286,9 +6045,7 @@
       "label": "Duyệt cả lô: một khoản lệch thì cả lô không lưu",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "fixed.approval.lock"
-      ],
+      "keys": ["fixed.approval.lock"],
       "valueBearing": false,
       "help": "Duyệt cả lô: một khoản đã bị người khác đổi thì cả lô không lưu.",
       "basis": "Điều khiển bắt buộc của hệ thống",
@@ -6323,9 +6080,7 @@
       "label": "BHXH người lao động đóng",
       "class": "number",
       "editableBy": "accounting",
-      "keys": [
-        "tax.insurance.employee.bhxh"
-      ],
+      "keys": ["tax.insurance.employee.bhxh"],
       "valueBearing": true,
       "help": "Phần BHXH người lao động đóng, trừ trên lương đóng bảo hiểm.",
       "basis": "Luật Bảo hiểm xã hội 2024; Nghị định 188/2025/NĐ-CP",
@@ -6372,9 +6127,7 @@
       "label": "BHYT người lao động đóng",
       "class": "number",
       "editableBy": "accounting",
-      "keys": [
-        "tax.insurance.employee.bhyt"
-      ],
+      "keys": ["tax.insurance.employee.bhyt"],
       "valueBearing": true,
       "help": "Phần BHYT người lao động đóng, trừ trên lương đóng bảo hiểm.",
       "basis": "Luật Bảo hiểm xã hội 2024; Nghị định 188/2025/NĐ-CP",
@@ -6421,9 +6174,7 @@
       "label": "BHTN người lao động đóng",
       "class": "number",
       "editableBy": "accounting",
-      "keys": [
-        "tax.insurance.employee.bhtn"
-      ],
+      "keys": ["tax.insurance.employee.bhtn"],
       "valueBearing": true,
       "help": "Phần BHTN người lao động đóng, trừ trên lương đóng bảo hiểm.",
       "basis": "Luật Việc làm 2025",
@@ -6470,11 +6221,7 @@
       "label": "Công ty đóng (chỉ tham khảo, không trừ vào lương)",
       "class": "number",
       "editableBy": "accounting",
-      "keys": [
-        "tax.insurance.employer.bhxh",
-        "tax.insurance.employer.bhyt",
-        "tax.insurance.employer.bhtn"
-      ],
+      "keys": ["tax.insurance.employer.bhxh", "tax.insurance.employer.bhyt", "tax.insurance.employer.bhtn"],
       "valueBearing": true,
       "help": "Phần công ty đóng, chỉ để tham khảo và không đổi thực lĩnh.",
       "basis": "Luật Bảo hiểm xã hội 2024; Nghị định 188/2025/NĐ-CP",
@@ -6521,9 +6268,7 @@
       "label": "Lương cơ sở",
       "class": "number",
       "editableBy": "accounting",
-      "keys": [
-        "law.luongCoSo"
-      ],
+      "keys": ["law.luongCoSo"],
       "valueBearing": true,
       "help": "Dùng để tính trần lương đóng BHXH và BHYT.",
       "basis": "Nghị định 161/2026, có hiệu lực từ 01/7/2026",
@@ -6568,9 +6313,7 @@
       "label": "Vùng lương tối thiểu của công ty",
       "class": "choice",
       "editableBy": "accounting",
-      "keys": [
-        "law.region"
-      ],
+      "keys": ["law.region"],
       "valueBearing": true,
       "help": "Chọn vùng lương tối thiểu của công ty, dùng làm sàn cảnh báo của bảng bậc lương và trần đóng BHTN.",
       "basis": "Nghị định 293/2025/NĐ-CP",
@@ -6639,9 +6382,7 @@
       "label": "Lương tối thiểu vùng I, II, III, IV",
       "class": "number",
       "editableBy": "accounting",
-      "keys": [
-        "law.regionMinWage.<region>"
-      ],
+      "keys": ["law.regionMinWage.<region>"],
       "valueBearing": true,
       "help": "Mức lương tối thiểu từng vùng, dùng để tính trần đóng BHTN và sàn cảnh báo của bảng bậc lương.",
       "basis": "Nghị định 293/2025/NĐ-CP; mức vùng II, III, IV cần kế toán xác nhận",
@@ -6688,9 +6429,7 @@
       "label": "Trần đóng = 20 lần",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "fixed.tax.capMultiple"
-      ],
+      "keys": ["fixed.tax.capMultiple"],
       "valueBearing": false,
       "help": "Trần đóng BHXH và BHYT bằng 20 lần lương cơ sở; trần đóng BHTN bằng 20 lần lương tối thiểu vùng đã chọn.",
       "basis": "Luật Bảo hiểm xã hội 2024; Luật Việc làm 2025",
@@ -6725,9 +6464,7 @@
       "label": "Từ … ngày không lương trong tháng thì tháng đó không đóng BH",
       "class": "number",
       "editableBy": "accounting",
-      "keys": [
-        "tax.insurance.skipDays"
-      ],
+      "keys": ["tax.insurance.skipDays"],
       "valueBearing": true,
       "help": "Ngày không lương là ngày công chuẩn của người trừ số ngày có lương (ngày công, phép năm, nghỉ lễ hưởng lương, iSAT hưởng lương); từ số ngày này trở lên trong tháng thì tháng đó không đóng bảo hiểm.",
       "basis": "Luật Bảo hiểm xã hội 2024 (điều khoản cần kế toán xác nhận)",
@@ -6774,9 +6511,7 @@
       "label": "Giảm trừ bản thân",
       "class": "number",
       "editableBy": "accounting",
-      "keys": [
-        "tax.deduction.personal"
-      ],
+      "keys": ["tax.deduction.personal"],
       "valueBearing": true,
       "help": "Mức giảm trừ bản thân, làm giảm thu nhập tính thuế.",
       "basis": "Nghị quyết 110/2025/UBTVQH15, áp dụng từ kỳ tính thuế 2026",
@@ -6821,9 +6556,7 @@
       "label": "Giảm trừ mỗi người phụ thuộc",
       "class": "number",
       "editableBy": "accounting",
-      "keys": [
-        "tax.deduction.dependant"
-      ],
+      "keys": ["tax.deduction.dependant"],
       "valueBearing": true,
       "help": "Mức giảm trừ cho mỗi người phụ thuộc.",
       "basis": "Nghị quyết 110/2025/UBTVQH15, áp dụng từ kỳ tính thuế 2026",
@@ -6868,9 +6601,7 @@
       "label": "Biểu thuế lũy tiến từng phần",
       "class": "table",
       "editableBy": "accounting",
-      "keys": [
-        "tax.brackets"
-      ],
+      "keys": ["tax.brackets"],
       "valueBearing": true,
       "help": "Biểu thuế lũy tiến năm bậc: đến 10 triệu 5%, đến 30 triệu 10%, đến 60 triệu 20%, đến 100 triệu 30%, trên đó 35%. Kế toán chỉ sửa khi có văn bản mới và phải ghi căn cứ.",
       "basis": "Luật Thuế thu nhập cá nhân số 109/2025/QH15, Điều 9",
@@ -6935,9 +6666,7 @@
       "label": "Khấu trừ cho người không có hợp đồng lao động từ 3 tháng",
       "class": "number",
       "editableBy": "accounting",
-      "keys": [
-        "tax.casual.rate"
-      ],
+      "keys": ["tax.casual.rate"],
       "valueBearing": true,
       "help": "Mức khấu trừ trên toàn bộ thu nhập của người không có hợp đồng lao động từ 3 tháng khi thu nhập đạt ngưỡng.",
       "basis": "Nghị định 253/2026, Điều 50 khoản 2; Thông tư 111/2013/TT-BTC, Điều 25",
@@ -6984,9 +6713,7 @@
       "label": "Ngưỡng áp dụng khấu trừ nói trên",
       "class": "number",
       "editableBy": "accounting",
-      "keys": [
-        "tax.casual.threshold"
-      ],
+      "keys": ["tax.casual.threshold"],
       "valueBearing": true,
       "help": "Ngưỡng thu nhập từ đó áp dụng khấu trừ nói trên.",
       "basis": "Nghị định 253/2026, Điều 50 khoản 2; Thông tư 111/2013/TT-BTC, Điều 25",
@@ -7034,9 +6761,7 @@
       "label": "Miễn thuế: phụ trội giờ làm đêm",
       "class": "number",
       "editableBy": "accounting",
-      "keys": [
-        "tax.exempt.nightPremium"
-      ],
+      "keys": ["tax.exempt.nightPremium"],
       "valueBearing": true,
       "help": "Phần phụ trội của giờ làm đêm được miễn thuế (phần trả cao hơn lương giờ thường); lương giờ thường của giờ đêm vẫn chịu thuế. Tăng mức này là tăng phần miễn thuế.",
       "basis": "Luật Thuế thu nhập cá nhân số 109/2025/QH15, Điều 4 khoản 8; Nghị định 253/2026, Điều 26",
@@ -7083,9 +6808,7 @@
       "label": "Miễn thuế: hệ số OT ngày thường (chỉ phần trên lương giờ thường)",
       "class": "number",
       "editableBy": "accounting",
-      "keys": [
-        "tax.exempt.otRate"
-      ],
+      "keys": ["tax.exempt.otRate"],
       "valueBearing": true,
       "help": "Mức trả OT ngày thường được tính miễn thuế tối đa; chỉ phần cao hơn lương giờ thường của cùng số giờ được miễn (150 % thì miễn 50 %).",
       "basis": "Luật Thuế thu nhập cá nhân số 109/2025/QH15, Điều 4 khoản 8; Nghị định 253/2026, Điều 26",
@@ -7132,9 +6855,7 @@
       "label": "Miễn thuế: hệ số OT cuối tuần (chỉ phần trên lương giờ thường)",
       "class": "number",
       "editableBy": "accounting",
-      "keys": [
-        "tax.exempt.weekendRate"
-      ],
+      "keys": ["tax.exempt.weekendRate"],
       "valueBearing": true,
       "help": "Mức trả OT cuối tuần được tính miễn thuế tối đa; chỉ phần cao hơn lương giờ thường của cùng số giờ được miễn (200 % thì miễn 100 %).",
       "basis": "Luật Thuế thu nhập cá nhân số 109/2025/QH15, Điều 4 khoản 8; Nghị định 253/2026, Điều 26",
@@ -7181,9 +6902,7 @@
       "label": "Miễn thuế: hệ số làm ngày lễ (chỉ phần trên lương giờ thường)",
       "class": "number",
       "editableBy": "accounting",
-      "keys": [
-        "tax.exempt.holidayRate"
-      ],
+      "keys": ["tax.exempt.holidayRate"],
       "valueBearing": true,
       "help": "Mức trả làm ngày lễ được tính miễn thuế tối đa; chỉ phần cao hơn lương giờ thường của cùng số giờ được miễn (300 % thì miễn 200 %).",
       "basis": "Luật Thuế thu nhập cá nhân số 109/2025/QH15, Điều 4 khoản 8; Nghị định 253/2026, Điều 26",
@@ -7267,9 +6986,7 @@
       "label": "Cách tính thuế theo loại hợp đồng",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "fixed.tax.method"
-      ],
+      "keys": ["fixed.tax.method"],
       "valueBearing": false,
       "help": "Hợp đồng dài thì thuế lũy tiến sau giảm trừ; hợp đồng ngắn thì khấu trừ theo tỷ lệ cố định khi đủ ngưỡng.",
       "basis": "Luật Thuế thu nhập cá nhân số 109/2025/QH15; Nghị định 253/2026",
@@ -7304,9 +7021,7 @@
       "label": "Căn cứ đóng BH",
       "class": "choice",
       "editableBy": "accounting",
-      "keys": [
-        "insurance.base"
-      ],
+      "keys": ["insurance.base"],
       "valueBearing": true,
       "help": "Chọn nền đóng bảo hiểm là lương cơ bản, hay lương cơ bản cộng các phụ cấp đã được Kế toán xác nhận tính vào lương đóng. Phụ cấp chưa xác nhận thì không vào nền.",
       "basis": "Luật Bảo hiểm xã hội số 41/2024/QH15, Điều 31; Nghị định 158/2025/NĐ-CP, Điều 7 (cần pháp chế xác nhận)",
@@ -7367,9 +7082,7 @@
       "label": "Lương đóng BH không thấp hơn lương tối thiểu vùng",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "fixed.insurance.floor"
-      ],
+      "keys": ["fixed.insurance.floor"],
       "valueBearing": false,
       "help": "Lương đóng bảo hiểm không được thấp hơn lương tối thiểu vùng; hệ thống chưa áp sàn này vì nhân viên hiện đều trên mức vùng I.",
       "basis": "Luật Bảo hiểm xã hội số 41/2024/QH15 (cần pháp chế xác nhận)",
@@ -7404,9 +7117,7 @@
       "label": "Tham số thuế và bảo hiểm áp theo tháng trả lương",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "fixed.tax.effectiveBy"
-      ],
+      "keys": ["fixed.tax.effectiveBy"],
       "valueBearing": false,
       "help": "Tiền lương tháng M trả ở tháng sau dùng tham số thuế và bảo hiểm có hiệu lực ở tháng trả.",
       "basis": "Thông tư 111/2013/TT-BTC về thời điểm tính thuế theo chi trả (cần pháp chế xác nhận)",
@@ -7478,9 +7189,7 @@
       "label": "iSAT: gắn cờ từ … lần mỗi tháng",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "ai.threshold.isatPerMonth"
-      ],
+      "keys": ["ai.threshold.isatPerMonth"],
       "valueBearing": true,
       "help": "AI gắn cờ nhân sự khai iSAT từ số lần này trong tháng; không đổi tiền.",
       "basis": "Đề xuất, chờ C&B chốt",
@@ -7525,9 +7234,7 @@
       "label": "\"Nghỉ được duyệt\": từ … lần mỗi tháng",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "ai.threshold.approvedLeavePerMonth"
-      ],
+      "keys": ["ai.threshold.approvedLeavePerMonth"],
       "valueBearing": true,
       "help": "AI gắn cờ nhân sự khai Nghỉ được duyệt từ số lần này trong tháng; không đổi tiền.",
       "basis": "Đề xuất, chờ C&B chốt",
@@ -7572,9 +7279,7 @@
       "label": "Khoản cùng loại bị từ chối trong … ngày gần nhất",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "ai.threshold.rejectedLookbackDays"
-      ],
+      "keys": ["ai.threshold.rejectedLookbackDays"],
       "valueBearing": true,
       "help": "AI gắn cờ khoản vừa khai nếu khoản cùng loại bị từ chối trong số ngày gần nhất này; không đổi tiền.",
       "basis": "Đề xuất, chờ C&B chốt",
@@ -7619,9 +7324,7 @@
       "label": "Khoản chờ duyệt đã đổi từ … lần (rev)",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "ai.threshold.repeatedEditsRev"
-      ],
+      "keys": ["ai.threshold.repeatedEditsRev"],
       "valueBearing": true,
       "help": "AI gắn cờ khoản chờ duyệt đã bị sửa từ số lần này; không đổi tiền.",
       "basis": "Đề xuất, chờ C&B chốt",
@@ -7666,9 +7369,7 @@
       "label": "Lệch giờ khai và Check-in từ … phút",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "ai.threshold.presenceGapMin"
-      ],
+      "keys": ["ai.threshold.presenceGapMin"],
       "valueBearing": true,
       "help": "AI gắn cờ khi giờ khai làm thêm lệch giờ Check-in từ số phút này; không đổi tiền.",
       "basis": "Đề xuất, chờ C&B chốt",
@@ -7713,9 +7414,7 @@
       "label": "OT của một người từ … lần trung vị nhóm",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "ai.threshold.otMedianFactor"
-      ],
+      "keys": ["ai.threshold.otMedianFactor"],
       "valueBearing": true,
       "help": "AI gắn cờ nhân sự có OT từ số lần này so với trung vị của nhóm; không đổi tiền.",
       "basis": "Đề xuất, chờ C&B chốt",
@@ -7760,9 +7459,7 @@
       "label": "và ít nhất … giờ OT trong tháng",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "ai.threshold.otMedianMinHours"
-      ],
+      "keys": ["ai.threshold.otMedianMinHours"],
       "valueBearing": true,
       "help": "Chỉ gắn cờ OT cao so với nhóm khi người đó có ít nhất số giờ OT này trong tháng.",
       "basis": "Đề xuất, chờ C&B chốt",
@@ -7807,9 +7504,7 @@
       "label": "chỉ so khi có ít nhất … người có OT",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "ai.threshold.otMedianMinPeers"
-      ],
+      "keys": ["ai.threshold.otMedianMinPeers"],
       "valueBearing": true,
       "help": "Chỉ so với trung vị khi nhóm có ít nhất số người có OT này.",
       "basis": "Đề xuất, chờ C&B chốt",
@@ -7854,9 +7549,7 @@
       "label": "\"Tác động tiền lớn\" từ … ₫",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "ai.threshold.impactVnd"
-      ],
+      "keys": ["ai.threshold.impactVnd"],
       "valueBearing": true,
       "help": "AI gắn cờ khoản làm đổi tiền của một người từ mức này; không đổi tiền.",
       "basis": "Đề xuất, chờ C&B chốt",
@@ -7899,9 +7592,7 @@
       "label": "Số sửa trên phiếu lệch từ … ₫",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "ai.threshold.slipDiffVnd"
-      ],
+      "keys": ["ai.threshold.slipDiffVnd"],
       "valueBearing": true,
       "help": "AI gắn cờ số Admin sửa trên phiếu khi lệch so với số tự tính từ mức tiền này, đồng thời từ mức phần trăm ở dòng dưới.",
       "basis": "Đề xuất, chờ C&B chốt",
@@ -7944,9 +7635,7 @@
       "label": "và lệch từ … % so với số tự tính",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "ai.threshold.slipDiffRatio"
-      ],
+      "keys": ["ai.threshold.slipDiffRatio"],
       "valueBearing": true,
       "help": "Phần trăm lệch so với số tự tính; AI chỉ gắn cờ khi vượt cả mức tiền và mức phần trăm.",
       "basis": "Đề xuất, chờ C&B chốt",
@@ -7991,9 +7680,7 @@
       "label": "Tự chấm KPI 100 % từ … tháng liền",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "ai.threshold.kpiFullMonths"
-      ],
+      "keys": ["ai.threshold.kpiFullMonths"],
       "valueBearing": true,
       "help": "AI gắn cờ nhân sự tự chấm KPI 100% liên tiếp từ số tháng này khi chưa được duyệt.",
       "basis": "Đề xuất, chờ C&B chốt",
@@ -8038,9 +7725,7 @@
       "label": "Thực nhận đổi quá … % so với tháng trước",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "ai.threshold.netChangePct"
-      ],
+      "keys": ["ai.threshold.netChangePct"],
       "valueBearing": true,
       "help": "AI gắn cờ khi thực nhận của một người đổi quá mức này so với tháng trước; không đổi tiền.",
       "basis": "Chủ dự án chốt mức 20%",
@@ -8085,9 +7770,7 @@
       "label": "Bật luật cảnh báo",
       "class": "choice",
       "editableBy": "admin",
-      "keys": [
-        "ai.rule.<id>.enabled"
-      ],
+      "keys": ["ai.rule.<id>.enabled"],
       "valueBearing": true,
       "help": "Bật hay tắt từng luật cảnh báo của AI; luật bị tắt không chạy và được ghi là Admin tắt.",
       "basis": "Chính sách công ty, do C&B chọn",
@@ -8138,9 +7821,7 @@
       "label": "Bỏ qua cảnh báo bắt buộc ghi lý do",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "fixed.ai.dismissReason"
-      ],
+      "keys": ["fixed.ai.dismissReason"],
       "valueBearing": false,
       "help": "Bỏ qua cảnh báo AI bắt buộc ghi lý do từ 10 đến 300 ký tự.",
       "basis": "Điều khiển bắt buộc của hệ thống",
@@ -8175,9 +7856,7 @@
       "label": "AI không chạy thì khoá duyệt cả lô",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "fixed.ai.lock"
-      ],
+      "keys": ["fixed.ai.lock"],
       "valueBearing": false,
       "help": "Phải chạy AI sau lần tính gần nhất thì mới duyệt cả lô được.",
       "basis": "Điều khiển bắt buộc của hệ thống",
@@ -8212,9 +7891,7 @@
       "label": "AI chỉ chạy trong công ty, chỉ gợi ý",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "fixed.ai.local"
-      ],
+      "keys": ["fixed.ai.local"],
       "valueBearing": false,
       "help": "AI chỉ chạy trong công ty và chỉ gợi ý: không gửi dữ liệu ra ngoài, không sửa lương, công hay hồ sơ.",
       "basis": "Chủ dự án chốt ngày 14/10/2026",
@@ -8249,9 +7926,7 @@
       "label": "Mẫu phiếu: \"BẢNG CHI TIẾT LƯƠNG NHÂN VIÊN\"",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "fixed.slip.template"
-      ],
+      "keys": ["fixed.slip.template"],
       "valueBearing": false,
       "help": "Phiếu in theo mẫu Bảng chi tiết lương nhân viên của công ty; nhiều mẫu chưa làm được.",
       "basis": "Quy chế công ty",
@@ -8286,9 +7961,7 @@
       "label": "Sửa số trên phiếu bắt buộc ghi lý do",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "fixed.slip.overrideReason"
-      ],
+      "keys": ["fixed.slip.overrideReason"],
       "valueBearing": false,
       "help": "Sửa số trên phiếu bắt buộc ghi lý do từ 10 đến 300 ký tự; mỗi ô sửa được ghi nhật ký và nhân sự vẫn thấy số tự tính.",
       "basis": "Điều khiển bắt buộc của hệ thống",
@@ -8323,9 +7996,7 @@
       "label": "Sau khi chốt, nhân sự thấy số nào",
       "class": "choice",
       "editableBy": "admin",
-      "keys": [
-        "slip.staffVisibleFrom"
-      ],
+      "keys": ["slip.staffVisibleFrom"],
       "valueBearing": true,
       "help": "Chọn lúc nhân sự thấy phiếu chính thức thay cho số ước tính: chưa bao giờ, từ khi duyệt kỳ hoặc từ khi chi trả.",
       "basis": "Chủ dự án quyết; Bộ luật Lao động 2019, Điều 95 khoản 3 về bảng kê trả lương (cần pháp chế xác nhận)",
@@ -8384,9 +8055,7 @@
       "label": "Phiếu ghi rõ \"ước tính\" hay \"đã chốt\", \"tính đến ngày …\"; che số tài khoản",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "fixed.slip.estimateLabel"
-      ],
+      "keys": ["fixed.slip.estimateLabel"],
       "valueBearing": false,
       "help": "Trước khi chốt kỳ mọi số đều là ước tính; nhân sự luôn thấy số tự tính, không thấy số Admin sửa.",
       "basis": "Chủ dự án chốt",
@@ -8421,9 +8090,7 @@
       "label": "Dòng của phiếu",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "fixed.slip.lines"
-      ],
+      "keys": ["fixed.slip.lines"],
       "valueBearing": false,
       "help": "Các dòng của phiếu theo mẫu công ty; nhãn trọng số KPI và hệ số OT lấy từ tham số, không viết cứng.",
       "basis": "Quy chế công ty",
@@ -8458,9 +8125,7 @@
       "label": "Mẫu gợi ý mã nhân viên mới",
       "class": "choice",
       "editableBy": "admin",
-      "keys": [
-        "employeeCode.pattern"
-      ],
+      "keys": ["employeeCode.pattern"],
       "valueBearing": true,
       "help": "Chọn mẫu gợi ý mã nhân viên mới; Admin vẫn xác nhận từng mã.",
       "basis": "Chủ dự án chốt ngày 15/10/2026",
@@ -8526,9 +8191,7 @@
       "label": "Khi đổi loại nhân sự hoặc chuyển đơn vị",
       "class": "choice",
       "editableBy": "admin",
-      "keys": [
-        "employeeCode.onTypeOrUnitChange"
-      ],
+      "keys": ["employeeCode.onTypeOrUnitChange"],
       "valueBearing": true,
       "help": "Chọn cấp mã mới hay giữ mã khi đổi loại nhân sự hoặc chuyển đơn vị; mã cũ vẫn tìm ra người.",
       "basis": "Chính sách công ty",
@@ -8582,9 +8245,7 @@
       "label": "Mã của người đã nghỉ",
       "class": "choice",
       "editableBy": "admin",
-      "keys": [
-        "employeeCode.reuseAfterLeave"
-      ],
+      "keys": ["employeeCode.reuseAfterLeave"],
       "valueBearing": true,
       "help": "Chọn cho hay không cho cấp lại mã của người đã nghỉ việc.",
       "basis": "Chính sách công ty",
@@ -8638,9 +8299,7 @@
       "label": "Danh mục loại hợp đồng",
       "class": "table",
       "editableBy": "admin",
-      "keys": [
-        "contract.type.<code>"
-      ],
+      "keys": ["contract.type.<code>"],
       "valueBearing": false,
       "help": "Mỗi loại hợp đồng quy định: có phải hợp đồng lao động không, thời hạn tối đa, có thử việc, cách tính thuế thu nhập cá nhân mặc định và bảo hiểm bắt buộc.",
       "basis": "Bộ luật Lao động 2019, Điều 20 (cần pháp chế xác nhận); cờ thuế và bảo hiểm chỉ có tác dụng từ tháng đã chọn",
@@ -8688,9 +8347,7 @@
       "label": "Tháng bắt đầu suy cờ thuế, BH từ hợp đồng",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "contract.deriveFrom"
-      ],
+      "keys": ["contract.deriveFrom"],
       "valueBearing": true,
       "help": "Từ tháng này người chưa đặt tay loại hợp đồng và bảo hiểm sẽ nhận cờ từ loại hợp đồng đang hiệu lực.",
       "basis": "Chủ dự án chốt",
@@ -8733,9 +8390,7 @@
       "label": "Nhắc hợp đồng sắp hết hạn trước … ngày",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "contract.expiryWarnDays"
-      ],
+      "keys": ["contract.expiryWarnDays"],
       "valueBearing": true,
       "help": "Nhắc hợp đồng sắp hết hạn trước số ngày này; chỉ nhắc, không đổi tiền.",
       "basis": "Đề xuất, chờ C&B chốt",
@@ -8779,11 +8434,7 @@
       "label": "Cây đơn vị, danh mục chức danh, địa điểm làm việc",
       "class": "table",
       "editableBy": "admin",
-      "keys": [
-        "catalog.orgUnits",
-        "catalog.positions",
-        "catalog.workLocations"
-      ],
+      "keys": ["catalog.orgUnits", "catalog.positions", "catalog.workLocations"],
       "valueBearing": true,
       "help": "Danh mục đơn vị, chức danh và địa điểm làm việc của màn Hồ sơ; không đổi tiền.",
       "basis": "Chủ dự án chốt",
@@ -8835,9 +8486,7 @@
       "label": "Số ngày phiên đăng nhập",
       "class": "number",
       "editableBy": "ops",
-      "keys": [
-        "system.session.days"
-      ],
+      "keys": ["system.session.days"],
       "valueType": "int",
       "unit": "day",
       "min": 1,
@@ -8878,9 +8527,7 @@
       "label": "Số lần đăng nhập sai tối đa mỗi (địa chỉ, tên)",
       "class": "number",
       "editableBy": "ops",
-      "keys": [
-        "system.login.maxFailures"
-      ],
+      "keys": ["system.login.maxFailures"],
       "valueType": "int",
       "unit": "count",
       "min": 1,
@@ -8921,9 +8568,7 @@
       "label": "Số tên đăng nhập khác nhau sai tối đa mỗi địa chỉ",
       "class": "number",
       "editableBy": "ops",
-      "keys": [
-        "system.login.sprayUsers"
-      ],
+      "keys": ["system.login.sprayUsers"],
       "valueType": "int",
       "unit": "count",
       "min": 1,
@@ -8964,9 +8609,7 @@
       "label": "Cửa sổ đếm đăng nhập sai (phút)",
       "class": "number",
       "editableBy": "ops",
-      "keys": [
-        "system.login.windowMin"
-      ],
+      "keys": ["system.login.windowMin"],
       "valueType": "int",
       "unit": "minute",
       "min": 1,
@@ -9007,9 +8650,7 @@
       "label": "Số khoá đăng nhập giữ trong bộ nhớ",
       "class": "number",
       "editableBy": "ops",
-      "keys": [
-        "system.login.maxKeys"
-      ],
+      "keys": ["system.login.maxKeys"],
       "valueType": "int",
       "unit": "count",
       "min": 1,
@@ -9050,9 +8691,7 @@
       "label": "Cỡ thân yêu cầu tối đa",
       "class": "number",
       "editableBy": "ops",
-      "keys": [
-        "system.http.maxBodyBytes"
-      ],
+      "keys": ["system.http.maxBodyBytes"],
       "valueType": "int",
       "unit": "bytes",
       "min": 1,
@@ -9093,9 +8732,7 @@
       "label": "Số khoản tối đa một lần duyệt",
       "class": "number",
       "editableBy": "ops",
-      "keys": [
-        "system.approval.maxDecideItems"
-      ],
+      "keys": ["system.approval.maxDecideItems"],
       "valueType": "int",
       "unit": "count",
       "min": 1,
@@ -9136,9 +8773,7 @@
       "label": "Danh sách duyệt: cỡ trang mặc định",
       "class": "number",
       "editableBy": "ops",
-      "keys": [
-        "system.page.approvals.default"
-      ],
+      "keys": ["system.page.approvals.default"],
       "valueType": "int",
       "unit": "count",
       "min": 1,
@@ -9179,9 +8814,7 @@
       "label": "Danh sách duyệt: cỡ trang tối đa",
       "class": "number",
       "editableBy": "ops",
-      "keys": [
-        "system.page.approvals.max"
-      ],
+      "keys": ["system.page.approvals.max"],
       "valueType": "int",
       "unit": "count",
       "min": 1,
@@ -9222,9 +8855,7 @@
       "label": "Danh sách điều chỉnh giờ: cỡ trang mặc định",
       "class": "number",
       "editableBy": "ops",
-      "keys": [
-        "system.page.corrections.default"
-      ],
+      "keys": ["system.page.corrections.default"],
       "valueType": "int",
       "unit": "count",
       "min": 1,
@@ -9265,9 +8896,7 @@
       "label": "Danh sách điều chỉnh giờ: cỡ trang tối đa",
       "class": "number",
       "editableBy": "ops",
-      "keys": [
-        "system.page.corrections.max"
-      ],
+      "keys": ["system.page.corrections.max"],
       "valueType": "int",
       "unit": "count",
       "min": 1,
@@ -9308,9 +8937,7 @@
       "label": "Số bản sao lưu giữ lại",
       "class": "number",
       "editableBy": "ops",
-      "keys": [
-        "system.backup.keep"
-      ],
+      "keys": ["system.backup.keep"],
       "valueType": "int",
       "unit": "count",
       "min": 1,
@@ -9351,9 +8978,7 @@
       "label": "Cỡ tệp nhập chấm công tối đa",
       "class": "number",
       "editableBy": "ops",
-      "keys": [
-        "system.import.maxBytes"
-      ],
+      "keys": ["system.import.maxBytes"],
       "valueType": "int",
       "unit": "bytes",
       "min": 1,
@@ -9394,9 +9019,7 @@
       "label": "Số lần xem đầy đủ thông tin nhạy cảm mỗi giờ mỗi người",
       "class": "number",
       "editableBy": "ops",
-      "keys": [
-        "system.reveal.maxPerHour"
-      ],
+      "keys": ["system.reveal.maxPerHour"],
       "valueType": "int",
       "unit": "count",
       "min": 1,
@@ -9437,9 +9060,7 @@
       "label": "Nhật ký hệ thống: số dòng tối đa một trang",
       "class": "number",
       "editableBy": "ops",
-      "keys": [
-        "system.audit.pageMax"
-      ],
+      "keys": ["system.audit.pageMax"],
       "valueType": "int",
       "unit": "count",
       "min": 1,
@@ -9480,9 +9101,7 @@
       "label": "Danh sách phiếu lương: cỡ trang mặc định",
       "class": "number",
       "editableBy": "ops",
-      "keys": [
-        "system.page.payslips.default"
-      ],
+      "keys": ["system.page.payslips.default"],
       "valueType": "int",
       "unit": "count",
       "min": 1,
@@ -9523,9 +9142,7 @@
       "label": "Danh sách phiếu lương: cỡ trang tối đa",
       "class": "number",
       "editableBy": "ops",
-      "keys": [
-        "system.page.payslips.max"
-      ],
+      "keys": ["system.page.payslips.max"],
       "valueType": "int",
       "unit": "count",
       "min": 1,
@@ -9566,9 +9183,7 @@
       "label": "Nhật ký hệ thống: số dòng mặc định một trang",
       "class": "number",
       "editableBy": "ops",
-      "keys": [
-        "system.audit.pageDefault"
-      ],
+      "keys": ["system.audit.pageDefault"],
       "valueType": "int",
       "unit": "count",
       "min": 1,
@@ -9609,9 +9224,7 @@
       "label": "Bắt buộc lý do khi sửa số phiếu (chuyển tiếp)",
       "class": "choice",
       "editableBy": "ops",
-      "keys": [
-        "system.slipOverride.reasonRequired"
-      ],
+      "keys": ["system.slipOverride.reasonRequired"],
       "valueType": "bool",
       "options": [
         {
@@ -9660,9 +9273,7 @@
       "label": "Phút trong một giờ",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "unit.minutesPerHour"
-      ],
+      "keys": ["unit.minutesPerHour"],
       "valueType": "int",
       "lockReason": "Đơn vị đo cố định",
       "ui": {
@@ -9696,9 +9307,7 @@
       "label": "Phút trong một ngày",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "unit.minutesPerDay"
-      ],
+      "keys": ["unit.minutesPerDay"],
       "valueType": "int",
       "lockReason": "Đơn vị đo cố định",
       "ui": {
@@ -9732,9 +9341,7 @@
       "label": "Ngày trong một tuần",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "unit.daysPerWeek"
-      ],
+      "keys": ["unit.daysPerWeek"],
       "valueType": "int",
       "lockReason": "Đơn vị đo cố định",
       "ui": {
@@ -9768,9 +9375,7 @@
       "label": "Mẫu số phần trăm",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "unit.percent"
-      ],
+      "keys": ["unit.percent"],
       "valueType": "int",
       "lockReason": "Đơn vị đo cố định",
       "ui": {
@@ -9804,9 +9409,7 @@
       "label": "Giờ bù còn nợ không quá mức này (giờ) thì coi như đã cân",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "unit.owedHoursEpsilon"
-      ],
+      "keys": ["unit.owedHoursEpsilon"],
       "valueType": "number",
       "lockReason": "Giới hạn cố định của hệ thống",
       "ui": {
@@ -9840,9 +9443,7 @@
       "label": "Vào trước … giờ (hoặc ra từ giờ bắt đầu khung đêm) thì tính ca Flex",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "time.flexStartBeforeHour"
-      ],
+      "keys": ["time.flexStartBeforeHour"],
       "valueType": "int",
       "lockReason": "Giới hạn cố định của hệ thống",
       "ui": {
@@ -9877,9 +9478,7 @@
       "label": "iSAT chỉ áp dụng vào thứ (0 = Chủ nhật … 6 = Thứ Bảy)",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "isat.weekday"
-      ],
+      "keys": ["isat.weekday"],
       "valueType": "int",
       "lockReason": "Quy tắc iSAT của công ty",
       "ui": {
@@ -9913,9 +9512,7 @@
       "label": "Mili giây trong một ngày",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "unit.msPerDay"
-      ],
+      "keys": ["unit.msPerDay"],
       "valueType": "int",
       "lockReason": "Đơn vị đo cố định",
       "ui": {
@@ -9949,9 +9546,7 @@
       "label": "Chênh múi giờ Việt Nam so với UTC (phút)",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "unit.vnUtcOffsetMin"
-      ],
+      "keys": ["unit.vnUtcOffsetMin"],
       "valueType": "int",
       "lockReason": "Múi giờ Việt Nam không đổi giờ mùa hè",
       "ui": {
@@ -9985,9 +9580,7 @@
       "label": "Làm tròn tiền đến (đồng)",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "money.roundTo"
-      ],
+      "keys": ["money.roundTo"],
       "valueType": "int",
       "lockReason": "Tiền tính bằng đồng nguyên; chỉ làm tròn ở bước tính thực lĩnh",
       "ui": {
@@ -10021,9 +9614,7 @@
       "label": "Kiểu làm tròn",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "money.roundMode"
-      ],
+      "keys": ["money.roundMode"],
       "valueType": "enum",
       "lockReason": "Tiền tính bằng đồng nguyên; chỉ làm tròn ở bước tính thực lĩnh",
       "ui": {
@@ -10057,9 +9648,7 @@
       "label": "So giờ vượt ngưỡng với ngưỡng cho chuyên cần",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "attendance.overLimitCompare"
-      ],
+      "keys": ["attendance.overLimitCompare"],
       "valueType": "enum",
       "lockReason": "Quy tắc đã chốt: đủ ngưỡng là mất",
       "ui": {
@@ -10093,9 +9682,7 @@
       "label": "So giờ vượt ngưỡng với ngưỡng cho KPI",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "kpi.overLimitCompare"
-      ],
+      "keys": ["kpi.overLimitCompare"],
       "valueType": "enum",
       "lockReason": "Quy tắc đã chốt: vượt hẳn mới nhân tỷ lệ",
       "ui": {
@@ -10129,9 +9716,7 @@
       "label": "So số ngày nghỉ với ngưỡng mất chuyên cần",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "attendance.absentCompare"
-      ],
+      "keys": ["attendance.absentCompare"],
       "valueType": "enum",
       "lockReason": "Lead chốt ngày 15/10/2026",
       "ui": {
@@ -10165,9 +9750,7 @@
       "label": "So phút trễ với mức miễn",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "attendance.graceCompare"
-      ],
+      "keys": ["attendance.graceCompare"],
       "valueType": "enum",
       "lockReason": "Chủ dự án chốt ngày 14/10/2026: đủ mức miễn là bị trừ",
       "ui": {
@@ -10201,9 +9784,7 @@
       "label": "So tổng điểm KPI với mức đạt",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "kpi.passCompare"
-      ],
+      "keys": ["kpi.passCompare"],
       "valueType": "enum",
       "lockReason": "Quy chế lương 3P",
       "ui": {
@@ -10237,9 +9818,7 @@
       "label": "So điểm Base Wework với mức đạt",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "kpi.weworkMinCompare"
-      ],
+      "keys": ["kpi.weworkMinCompare"],
       "valueType": "enum",
       "lockReason": "Quy chế lương 3P",
       "ui": {
@@ -10273,9 +9852,7 @@
       "label": "So tổng thu nhập với ngưỡng khấu trừ 10 %",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "tax.casual.thresholdCompare"
-      ],
+      "keys": ["tax.casual.thresholdCompare"],
       "valueType": "enum",
       "lockReason": "Nghị định 253/2026, Điều 50 khoản 2",
       "ui": {
@@ -10309,9 +9886,7 @@
       "label": "Phụ cấp ca tính theo",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "shift.allowance.basis"
-      ],
+      "keys": ["shift.allowance.basis"],
       "valueType": "enum",
       "lockReason": "Quy chế lương",
       "ui": {
@@ -10345,9 +9920,7 @@
       "label": "Loại hợp đồng tính thuế và bảo hiểm",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "tax.contract.basis"
-      ],
+      "keys": ["tax.contract.basis"],
       "valueType": "enum",
       "lockReason": "Quy chế lương",
       "ui": {
@@ -10381,9 +9954,7 @@
       "label": "Số tháng thâm niên để tính hợp đồng dài",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "tax.longTermMonths"
-      ],
+      "keys": ["tax.longTermMonths"],
       "valueType": "int",
       "lockReason": "Quy chế lương",
       "ui": {
@@ -10417,9 +9988,7 @@
       "label": "So (chịu thuế trừ BH) với giảm trừ bản thân để phát sinh thuế",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "tax.personalCompare"
-      ],
+      "keys": ["tax.personalCompare"],
       "valueType": "enum",
       "lockReason": "Luật Thuế thu nhập cá nhân số 109/2025/QH15",
       "ui": {
@@ -10453,9 +10022,7 @@
       "label": "So số ngày không lương với ngưỡng không đóng BH",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "tax.insurance.skipCompare"
-      ],
+      "keys": ["tax.insurance.skipCompare"],
       "valueType": "enum",
       "lockReason": "Luật Bảo hiểm xã hội 2024 (điều khoản cần kế toán xác nhận)",
       "ui": {
@@ -10489,9 +10056,7 @@
       "label": "Trần đóng bảo hiểm tính bằng số lần (lương cơ sở, lương tối thiểu vùng)",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "tax.insurance.capMultiple"
-      ],
+      "keys": ["tax.insurance.capMultiple"],
       "valueType": "int",
       "lockReason": "Luật Bảo hiểm xã hội 2024; Luật Việc làm 2025",
       "ui": {
@@ -10525,9 +10090,7 @@
       "label": "Sàn luật: hệ số OT ngày thường",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "law.floor.otRate"
-      ],
+      "keys": ["law.floor.otRate"],
       "valueType": "number",
       "lockReason": "Bộ luật Lao động 2019, Điều 98 (cần pháp chế xác nhận)",
       "ui": {
@@ -10561,9 +10124,7 @@
       "label": "Sàn luật: hệ số OT cuối tuần",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "law.floor.weekendOtRate"
-      ],
+      "keys": ["law.floor.weekendOtRate"],
       "valueType": "number",
       "lockReason": "Bộ luật Lao động 2019, Điều 98 (cần pháp chế xác nhận)",
       "ui": {
@@ -10597,9 +10158,7 @@
       "label": "Sàn luật: hệ số làm ngày lễ",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "law.floor.holidayRate"
-      ],
+      "keys": ["law.floor.holidayRate"],
       "valueType": "int",
       "lockReason": "Bộ luật Lao động 2019, Điều 98 (cần pháp chế xác nhận)",
       "ui": {
@@ -10633,9 +10192,7 @@
       "label": "Sàn luật: phụ trội làm đêm",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "law.floor.nightPremium"
-      ],
+      "keys": ["law.floor.nightPremium"],
       "valueType": "number",
       "lockReason": "Bộ luật Lao động 2019, Điều 98 (cần pháp chế xác nhận)",
       "ui": {
@@ -10669,9 +10226,7 @@
       "label": "Sàn luật: phụ trội OT ban đêm",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "law.floor.nightOtAddRate"
-      ],
+      "keys": ["law.floor.nightOtAddRate"],
       "valueType": "number",
       "lockReason": "Bộ luật Lao động 2019, Điều 98 (cần pháp chế xác nhận)",
       "ui": {
@@ -10705,9 +10260,7 @@
       "label": "Sàn lương thử việc",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "law.floor.probationPayRate"
-      ],
+      "keys": ["law.floor.probationPayRate"],
       "valueType": "number",
       "lockReason": "Bộ luật Lao động 2019, Điều 26 (cần pháp chế xác nhận)",
       "ui": {
@@ -10741,9 +10294,7 @@
       "label": "Sàn ngày việc riêng có lương: kết hôn",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "law.floor.privateLeave.marriage"
-      ],
+      "keys": ["law.floor.privateLeave.marriage"],
       "valueType": "int",
       "lockReason": "Bộ luật Lao động 2019, Điều 115 (cần pháp chế xác nhận)",
       "ui": {
@@ -10777,9 +10328,7 @@
       "label": "Sàn ngày việc riêng có lương: con kết hôn",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "law.floor.privateLeave.childMarriage"
-      ],
+      "keys": ["law.floor.privateLeave.childMarriage"],
       "valueType": "int",
       "lockReason": "Bộ luật Lao động 2019, Điều 115 (cần pháp chế xác nhận)",
       "ui": {
@@ -10813,9 +10362,7 @@
       "label": "Sàn ngày việc riêng có lương: cha mẹ, vợ chồng, con mất",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "law.floor.privateLeave.death"
-      ],
+      "keys": ["law.floor.privateLeave.death"],
       "valueType": "int",
       "lockReason": "Bộ luật Lao động 2019, Điều 115 (cần pháp chế xác nhận)",
       "ui": {
@@ -10849,9 +10396,7 @@
       "label": "Trần OT mỗi ngày: tổng giờ bình thường cộng OT",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "law.ceiling.otDayTotalHours"
-      ],
+      "keys": ["law.ceiling.otDayTotalHours"],
       "valueType": "int",
       "lockReason": "Bộ luật Lao động 2019, Điều 107 (cần pháp chế xác nhận)",
       "ui": {
@@ -10885,9 +10430,7 @@
       "label": "Trần OT mỗi tháng",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "law.ceiling.otMonthHours"
-      ],
+      "keys": ["law.ceiling.otMonthHours"],
       "valueType": "int",
       "lockReason": "Bộ luật Lao động 2019, Điều 107 (cần pháp chế xác nhận)",
       "ui": {
@@ -10921,9 +10464,7 @@
       "label": "Trần hợp đồng xác định thời hạn (tháng)",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "law.ceiling.fixedTermMonths"
-      ],
+      "keys": ["law.ceiling.fixedTermMonths"],
       "valueType": "int",
       "lockReason": "Bộ luật Lao động 2019, Điều 20 (cần pháp chế xác nhận)",
       "ui": {
@@ -10957,9 +10498,7 @@
       "label": "Trần thời gian thử việc: quản lý doanh nghiệp (ngày)",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "law.ceiling.probationDays.manager"
-      ],
+      "keys": ["law.ceiling.probationDays.manager"],
       "valueType": "int",
       "lockReason": "Bộ luật Lao động 2019, Điều 25 (cần pháp chế xác nhận)",
       "ui": {
@@ -10993,9 +10532,7 @@
       "label": "Trần thời gian thử việc: cao đẳng trở lên (ngày)",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "law.ceiling.probationDays.college"
-      ],
+      "keys": ["law.ceiling.probationDays.college"],
       "valueType": "int",
       "lockReason": "Bộ luật Lao động 2019, Điều 25 (cần pháp chế xác nhận)",
       "ui": {
@@ -11029,9 +10566,7 @@
       "label": "Trần thời gian thử việc: trung cấp (ngày)",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "law.ceiling.probationDays.vocational"
-      ],
+      "keys": ["law.ceiling.probationDays.vocational"],
       "valueType": "int",
       "lockReason": "Bộ luật Lao động 2019, Điều 25 (cần pháp chế xác nhận)",
       "ui": {
@@ -11065,9 +10600,7 @@
       "label": "Trần thời gian thử việc: việc khác (ngày)",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "law.ceiling.probationDays.other"
-      ],
+      "keys": ["law.ceiling.probationDays.other"],
       "valueType": "int",
       "lockReason": "Bộ luật Lao động 2019, Điều 25 (cần pháp chế xác nhận)",
       "ui": {
@@ -11101,9 +10634,7 @@
       "label": "Trần khấu trừ bồi thường mỗi tháng",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "law.ceiling.compensationShare"
-      ],
+      "keys": ["law.ceiling.compensationShare"],
       "valueType": "number",
       "lockReason": "Bộ luật Lao động 2019, Điều 102 (cần pháp chế xác nhận)",
       "ui": {
@@ -11137,9 +10668,7 @@
       "label": "Độ dài lý do bắt buộc: tối thiểu (ký tự)",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "control.reasonMinLength"
-      ],
+      "keys": ["control.reasonMinLength"],
       "valueType": "int",
       "lockReason": "Điều khiển bắt buộc của hệ thống",
       "ui": {
@@ -11173,9 +10702,7 @@
       "label": "Độ dài lý do bắt buộc: tối đa (ký tự)",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "control.reasonMaxLength"
-      ],
+      "keys": ["control.reasonMaxLength"],
       "valueType": "int",
       "lockReason": "Điều khiển bắt buộc của hệ thống",
       "ui": {
@@ -11209,9 +10736,7 @@
       "label": "Thâm niên: +1 ngày phép mỗi … năm",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "leave.seniority.stepYears"
-      ],
+      "keys": ["leave.seniority.stepYears"],
       "valueType": "int",
       "lockReason": "Bộ luật Lao động 2019, Điều 114 (cần pháp chế xác nhận)",
       "ui": {
@@ -11245,9 +10770,7 @@
       "label": "Lý do bắt buộc khi từ chối",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "control.reasonRequired.reject"
-      ],
+      "keys": ["control.reasonRequired.reject"],
       "valueType": "bool",
       "lockReason": "Điều khiển bắt buộc của hệ thống",
       "ui": {
@@ -11281,9 +10804,7 @@
       "label": "Lý do bắt buộc khi đổi quyết định",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "control.reasonRequired.changeDecision"
-      ],
+      "keys": ["control.reasonRequired.changeDecision"],
       "valueType": "bool",
       "lockReason": "Điều khiển bắt buộc của hệ thống",
       "ui": {
@@ -11317,9 +10838,7 @@
       "label": "Lý do bắt buộc khi bỏ qua cảnh báo AI",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "control.reasonRequired.aiDismiss"
-      ],
+      "keys": ["control.reasonRequired.aiDismiss"],
       "valueType": "bool",
       "lockReason": "Điều khiển bắt buộc của hệ thống",
       "ui": {
@@ -11353,9 +10872,7 @@
       "label": "Lý do bắt buộc khi sửa số phiếu",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "control.reasonRequired.slipOverride"
-      ],
+      "keys": ["control.reasonRequired.slipOverride"],
       "valueType": "bool",
       "lockReason": "Điều khiển bắt buộc của hệ thống",
       "ui": {
@@ -11389,9 +10906,7 @@
       "label": "Lý do bắt buộc khi đổi tham số",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "control.reasonRequired.paramChange"
-      ],
+      "keys": ["control.reasonRequired.paramChange"],
       "valueType": "bool",
       "lockReason": "Điều khiển bắt buộc của hệ thống",
       "ui": {
@@ -11425,9 +10940,7 @@
       "label": "Lý do bắt buộc khi mở lại kỳ",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "control.reasonRequired.periodReopen"
-      ],
+      "keys": ["control.reasonRequired.periodReopen"],
       "valueType": "bool",
       "lockReason": "Điều khiển bắt buộc của hệ thống",
       "ui": {
@@ -11461,9 +10974,7 @@
       "label": "Thứ tự các bước tính thực lĩnh",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "net.stepOrder"
-      ],
+      "keys": ["net.stepOrder"],
       "valueType": "stringList",
       "lockReason": "Khung tính thực lĩnh của công ty",
       "ui": {
@@ -11497,9 +11008,7 @@
       "label": "Thứ tự ưu tiên khoản trừ khác (đề xuất, chờ pháp chế và kế toán)",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "net.deductionPriority"
-      ],
+      "keys": ["net.deductionPriority"],
       "valueType": "stringList",
       "lockReason": "Đề xuất, chờ pháp chế và kế toán chốt",
       "ui": {
@@ -11533,9 +11042,7 @@
       "label": "Khoảng hợp lệ của GPS: radiusM.min",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "geofence.radiusM.min"
-      ],
+      "keys": ["geofence.radiusM.min"],
       "valueType": "int",
       "unit": "meter",
       "lockReason": "Giới hạn cố định của hệ thống",
@@ -11570,9 +11077,7 @@
       "label": "Khoảng hợp lệ của GPS: radiusM.max",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "geofence.radiusM.max"
-      ],
+      "keys": ["geofence.radiusM.max"],
       "valueType": "int",
       "unit": "meter",
       "lockReason": "Giới hạn cố định của hệ thống",
@@ -11607,9 +11112,7 @@
       "label": "Khoảng hợp lệ của GPS: maxAccuracyM.min",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "geofence.maxAccuracyM.min"
-      ],
+      "keys": ["geofence.maxAccuracyM.min"],
       "valueType": "int",
       "unit": "meter",
       "lockReason": "Giới hạn cố định của hệ thống",
@@ -11644,9 +11147,7 @@
       "label": "Khoảng hợp lệ của GPS: maxAccuracyM.max",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "geofence.maxAccuracyM.max"
-      ],
+      "keys": ["geofence.maxAccuracyM.max"],
       "valueType": "int",
       "unit": "meter",
       "lockReason": "Giới hạn cố định của hệ thống",
@@ -11681,9 +11182,7 @@
       "label": "Khoảng hợp lệ của GPS: maxAccuracyM.default",
       "class": "fixed",
       "editableBy": "locked",
-      "keys": [
-        "geofence.maxAccuracyM.default"
-      ],
+      "keys": ["geofence.maxAccuracyM.default"],
       "valueType": "int",
       "unit": "meter",
       "lockReason": "Giới hạn cố định của hệ thống",
@@ -12307,9 +11806,7 @@
       "label": "Lưu cài đặt: số thay đổi tối đa một lần Lưu",
       "class": "number",
       "editableBy": "ops",
-      "keys": [
-        "system.params.maxChanges"
-      ],
+      "keys": ["system.params.maxChanges"],
       "valueType": "int",
       "unit": "count",
       "min": 1,
@@ -12349,9 +11846,7 @@
       "label": "Xem trước tác động: số người tối đa trong bảng (tổng vẫn tính cả)",
       "class": "number",
       "editableBy": "ops",
-      "keys": [
-        "system.params.previewMaxPeople"
-      ],
+      "keys": ["system.params.previewMaxPeople"],
       "valueType": "int",
       "unit": "count",
       "min": 1,
@@ -12391,9 +11886,7 @@
       "label": "Kênh báo: nhịp tim (giây)",
       "class": "number",
       "editableBy": "ops",
-      "keys": [
-        "system.events.heartbeatSec"
-      ],
+      "keys": ["system.events.heartbeatSec"],
       "valueType": "int",
       "unit": "second",
       "min": 1,
@@ -12433,9 +11926,7 @@
       "label": "Kênh báo: gợi ý nối lại (mili giây)",
       "class": "number",
       "editableBy": "ops",
-      "keys": [
-        "system.events.retryMs"
-      ],
+      "keys": ["system.events.retryMs"],
       "valueType": "int",
       "unit": "millisecond",
       "min": 1,
@@ -12475,9 +11966,7 @@
       "label": "Kênh báo: số kết nối tối đa mỗi người",
       "class": "number",
       "editableBy": "ops",
-      "keys": [
-        "system.events.maxPerUser"
-      ],
+      "keys": ["system.events.maxPerUser"],
       "valueType": "int",
       "unit": "count",
       "min": 1,
@@ -12517,9 +12006,7 @@
       "label": "Kênh báo: số kết nối tối đa cả máy chủ",
       "class": "number",
       "editableBy": "ops",
-      "keys": [
-        "system.events.maxTotal"
-      ],
+      "keys": ["system.events.maxTotal"],
       "valueType": "int",
       "unit": "count",
       "min": 1,
@@ -12559,9 +12046,7 @@
       "label": "Kênh báo: byte chờ ghi tối đa của một kết nối",
       "class": "number",
       "editableBy": "ops",
-      "keys": [
-        "system.events.maxBacklogBytes"
-      ],
+      "keys": ["system.events.maxBacklogBytes"],
       "valueType": "int",
       "unit": "bytes",
       "min": 1,
@@ -12601,9 +12086,7 @@
       "label": "Công thức: Tổng thu nhập",
       "class": "formula",
       "editableBy": "locked",
-      "keys": [
-        "formula.tongThuNhap"
-      ],
+      "keys": ["formula.tongThuNhap"],
       "valueType": "formula",
       "nullable": true,
       "ui": {
@@ -12639,9 +12122,7 @@
       "label": "Công thức: Phụ cấp đi lại",
       "class": "formula",
       "editableBy": "locked",
-      "keys": [
-        "formula.phuCapDiLai"
-      ],
+      "keys": ["formula.phuCapDiLai"],
       "valueType": "formula",
       "nullable": true,
       "ui": {
@@ -12677,9 +12158,7 @@
       "label": "Công thức: Phụ cấp chuyên cần",
       "class": "formula",
       "editableBy": "locked",
-      "keys": [
-        "formula.phuCapChuyenCan"
-      ],
+      "keys": ["formula.phuCapChuyenCan"],
       "valueType": "formula",
       "nullable": true,
       "ui": {
@@ -12715,9 +12194,7 @@
       "label": "Công thức: Lương KPI",
       "class": "formula",
       "editableBy": "locked",
-      "keys": [
-        "formula.luongKpi"
-      ],
+      "keys": ["formula.luongKpi"],
       "valueType": "formula",
       "nullable": true,
       "ui": {
@@ -12753,9 +12230,7 @@
       "label": "Công thức: Hệ số ngày KPI",
       "class": "formula",
       "editableBy": "locked",
-      "keys": [
-        "formula.heSoNgayKpi"
-      ],
+      "keys": ["formula.heSoNgayKpi"],
       "valueType": "formula",
       "nullable": true,
       "ui": {
@@ -12791,9 +12266,7 @@
       "label": "Công thức: Tỷ lệ ngày đi làm",
       "class": "formula",
       "editableBy": "locked",
-      "keys": [
-        "formula.tyLeNgayDiLam"
-      ],
+      "keys": ["formula.tyLeNgayDiLam"],
       "valueType": "formula",
       "nullable": true,
       "ui": {
@@ -12829,9 +12302,7 @@
       "label": "Công thức: Tạm ứng",
       "class": "formula",
       "editableBy": "locked",
-      "keys": [
-        "formula.tamUng"
-      ],
+      "keys": ["formula.tamUng"],
       "valueType": "formula",
       "nullable": true,
       "ui": {
@@ -12867,9 +12338,7 @@
       "label": "Thuộc tính của lớp: số tối đa mỗi lớp",
       "class": "number",
       "editableBy": "ops",
-      "keys": [
-        "system.attr.maxPerClass"
-      ],
+      "keys": ["system.attr.maxPerClass"],
       "valueType": "int",
       "unit": "count",
       "min": 1,
@@ -12910,9 +12379,7 @@
       "label": "AI: số mục tối đa trong một danh sách ở bằng chứng của phát hiện",
       "class": "number",
       "editableBy": "ops",
-      "keys": [
-        "ai.limit.evidenceListMax"
-      ],
+      "keys": ["ai.limit.evidenceListMax"],
       "valueType": "int",
       "unit": "count",
       "min": 1,
@@ -12953,9 +12420,7 @@
       "label": "Công thức hoặc tham số đổi làm đổi thực nhận từ … % số người thì gắn \"Cần xem\"",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "ai.threshold.paramChangePeoplePct"
-      ],
+      "keys": ["ai.threshold.paramChangePeoplePct"],
       "valueType": "number",
       "unit": "ratio",
       "min": 0.01,
@@ -12996,9 +12461,7 @@
       "id": "system.auth.scryptSaltBytes",
       "group": 14,
       "label": "Mật khẩu: độ dài muối scrypt (byte)",
-      "keys": [
-        "system.auth.scryptSaltBytes"
-      ],
+      "keys": ["system.auth.scryptSaltBytes"],
       "class": "fixed",
       "editableBy": "locked",
       "valueType": "number",
@@ -13033,9 +12496,7 @@
       "id": "system.auth.scryptKeyBytes",
       "group": 14,
       "label": "Mật khẩu: độ dài khoá scrypt (byte)",
-      "keys": [
-        "system.auth.scryptKeyBytes"
-      ],
+      "keys": ["system.auth.scryptKeyBytes"],
       "class": "fixed",
       "editableBy": "locked",
       "valueType": "number",
@@ -13070,9 +12531,7 @@
       "id": "system.auth.usernameKeyChars",
       "group": 14,
       "label": "Giới hạn đoán mật khẩu: số ký tự tên đăng nhập đưa vào khoá",
-      "keys": [
-        "system.auth.usernameKeyChars"
-      ],
+      "keys": ["system.auth.usernameKeyChars"],
       "class": "number",
       "editableBy": "ops",
       "valueType": "int",
@@ -13112,9 +12571,7 @@
       "id": "system.auth.trustProxyMaxHops",
       "group": 14,
       "label": "Số tầng máy chủ trung gian tối đa được tin",
-      "keys": [
-        "system.auth.trustProxyMaxHops"
-      ],
+      "keys": ["system.auth.trustProxyMaxHops"],
       "class": "fixed",
       "editableBy": "locked",
       "valueType": "number",
@@ -13149,9 +12606,7 @@
       "id": "system.auth.adminPasswordMinProduction",
       "group": 14,
       "label": "Môi trường thật: độ dài tối thiểu mật khẩu Admin (ký tự)",
-      "keys": [
-        "system.auth.adminPasswordMinProduction"
-      ],
+      "keys": ["system.auth.adminPasswordMinProduction"],
       "class": "number",
       "editableBy": "ops",
       "valueType": "int",
@@ -13191,9 +12646,7 @@
       "id": "system.auth.generatedPasswordBytes",
       "group": 14,
       "label": "Mật khẩu Admin tự sinh: số byte ngẫu nhiên",
-      "keys": [
-        "system.auth.generatedPasswordBytes"
-      ],
+      "keys": ["system.auth.generatedPasswordBytes"],
       "class": "fixed",
       "editableBy": "locked",
       "valueType": "number",
@@ -13228,9 +12681,7 @@
       "id": "system.auth.sessionSecretBytes",
       "group": 14,
       "label": "Khoá ký phiên tự sinh: số byte",
-      "keys": [
-        "system.auth.sessionSecretBytes"
-      ],
+      "keys": ["system.auth.sessionSecretBytes"],
       "class": "fixed",
       "editableBy": "locked",
       "valueType": "number",
@@ -13265,9 +12716,7 @@
       "id": "system.auth.passMarkChars",
       "group": 14,
       "label": "Dấu mật khẩu trong cookie phiên: độ dài (ký tự)",
-      "keys": [
-        "system.auth.passMarkChars"
-      ],
+      "keys": ["system.auth.passMarkChars"],
       "class": "fixed",
       "editableBy": "locked",
       "valueType": "number",
@@ -13302,9 +12751,7 @@
       "id": "unit.msPerSecond",
       "group": 15,
       "label": "Mili giây trong một giây",
-      "keys": [
-        "unit.msPerSecond"
-      ],
+      "keys": ["unit.msPerSecond"],
       "class": "fixed",
       "editableBy": "locked",
       "valueType": "number",
@@ -13338,9 +12785,7 @@
       "id": "kpi.scoreMax",
       "group": 8,
       "label": "Điểm KPI tối đa của một thành phần",
-      "keys": [
-        "kpi.scoreMax"
-      ],
+      "keys": ["kpi.scoreMax"],
       "class": "fixed",
       "editableBy": "locked",
       "valueType": "number",
@@ -13374,9 +12819,7 @@
       "id": "kpi.scoreDecimals",
       "group": 8,
       "label": "Điểm KPI: số chữ số thập phân",
-      "keys": [
-        "kpi.scoreDecimals"
-      ],
+      "keys": ["kpi.scoreDecimals"],
       "class": "fixed",
       "editableBy": "locked",
       "valueType": "number",
@@ -13411,9 +12854,7 @@
       "id": "geofence.earthRadiusM",
       "group": 6,
       "label": "Bán kính Trái Đất (mét) dùng tính khoảng cách GPS",
-      "keys": [
-        "geofence.earthRadiusM"
-      ],
+      "keys": ["geofence.earthRadiusM"],
       "class": "fixed",
       "editableBy": "locked",
       "valueType": "number",
@@ -13450,9 +12891,7 @@
       "label": "Gán ca hàng loạt: số người tối đa mỗi lần",
       "class": "number",
       "editableBy": "ops",
-      "keys": [
-        "system.staff.bulkMax"
-      ],
+      "keys": ["system.staff.bulkMax"],
       "valueType": "int",
       "unit": "count",
       "min": 1,
@@ -13494,9 +12933,7 @@
       "help": "Có thì hồ sơ nhân sự của chức vụ này phải có ngày bắt đầu làm (dùng để tính phép năm).",
       "basis": "Chính sách công ty",
       "defaultNote": "Thực tập sinh: Không; còn lại: Có",
-      "keys": [
-        "type.<type>.startDateRequired"
-      ],
+      "keys": ["type.<type>.startDateRequired"],
       "options": [
         {
           "value": false,
@@ -13548,9 +12985,7 @@
       "help": "Hợp đồng áp cho người chưa có hợp đồng riêng trong hồ sơ: ngắn hạn tính thuế theo cách vãng lai, dài hạn tính theo biểu lũy tiến và đóng bảo hiểm.",
       "basis": "Chính sách công ty và quy định về thuế thu nhập cá nhân",
       "defaultNote": "Thực tập sinh: ngắn hạn; còn lại: dài hạn",
-      "keys": [
-        "type.<type>.defaultContract"
-      ],
+      "keys": ["type.<type>.defaultContract"],
       "options": [
         {
           "value": "long",
@@ -13600,9 +13035,7 @@
       "label": "Thêm chức vụ: số thay đổi tối đa một lô sao chép",
       "class": "number",
       "editableBy": "ops",
-      "keys": [
-        "system.positions.maxCopyKeys"
-      ],
+      "keys": ["system.positions.maxCopyKeys"],
       "valueType": "int",
       "unit": "count",
       "min": 1,
@@ -13642,9 +13075,7 @@
       "label": "Số chức vụ tối đa",
       "class": "number",
       "editableBy": "ops",
-      "keys": [
-        "system.positions.max"
-      ],
+      "keys": ["system.positions.max"],
       "valueType": "int",
       "unit": "count",
       "min": 1,
@@ -13675,9 +13106,7 @@
       "label": "Thay đổi cài đặt làm đổi tổng thực nhận từ … ₫ thì gắn \"Cần xem\"",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "ai.threshold.formulaChangeTotalVnd"
-      ],
+      "keys": ["ai.threshold.formulaChangeTotalVnd"],
       "valueBearing": true,
       "help": "Khi xem trước một thay đổi, AI gợi ý xem lại nếu tổng thực nhận của mọi người đổi từ mức này; không chặn, không đổi tiền.",
       "basis": "Đề xuất, chờ C&B chốt",
@@ -13720,9 +13149,7 @@
       "label": "Số sửa phiếu tăng đúng bội của … ₫ thì gắn \"giống khoản cộng thêm\"",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "ai.threshold.overrideEntryRoundVnd"
-      ],
+      "keys": ["ai.threshold.overrideEntryRoundVnd"],
       "valueBearing": true,
       "help": "AI gợi ý khi số sửa trên phiếu tăng so với số tự tính đúng bội của mức này, vì trông như một khoản cộng thêm; không đổi tiền.",
       "basis": "Đề xuất, chờ C&B chốt",
@@ -13765,9 +13192,7 @@
       "label": "Thay đổi cho một chức vụ chạm từ … người ngoài chức vụ thì gắn \"Cần xem\"",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "ai.threshold.scopeLeakMinPeople"
-      ],
+      "keys": ["ai.threshold.scopeLeakMinPeople"],
       "valueBearing": true,
       "help": "AI gợi ý khi thay đổi dành cho một chức vụ lại làm đổi tiền của người ngoài chức vụ đó; không chặn, không đổi tiền.",
       "basis": "Đề xuất, chờ C&B chốt",
@@ -13818,9 +13243,7 @@
       "group": 14,
       "label": "Khoản điền thêm: bắt buộc người duyệt khác người lập",
       "editableBy": "ops",
-      "keys": [
-        "system.entries.requireApproval"
-      ],
+      "keys": ["system.entries.requireApproval"],
       "class": "choice",
       "valueType": "bool",
       "options": [
@@ -13868,9 +13291,7 @@
       "group": 14,
       "label": "Khoản điền thêm: số khoản tối đa mỗi lần nhập hàng loạt",
       "editableBy": "ops",
-      "keys": [
-        "system.entries.maxPerBatch"
-      ],
+      "keys": ["system.entries.maxPerBatch"],
       "class": "number",
       "valueType": "int",
       "unit": "count",
@@ -13910,9 +13331,7 @@
       "group": 14,
       "label": "Khoản điền thêm: số tiền tối đa mỗi khoản",
       "editableBy": "ops",
-      "keys": [
-        "system.entries.maxAmount"
-      ],
+      "keys": ["system.entries.maxAmount"],
       "class": "number",
       "valueType": "vnd",
       "unit": "vnd",
@@ -13952,9 +13371,7 @@
       "group": 14,
       "label": "Khoản điền thêm: số ký tự tối đa của nhãn",
       "editableBy": "ops",
-      "keys": [
-        "system.entries.labelMaxLength"
-      ],
+      "keys": ["system.entries.labelMaxLength"],
       "class": "number",
       "valueType": "int",
       "unit": "count",
@@ -13997,9 +13414,7 @@
       "help": "Cố định dùng số ngày công chuẩn đã đặt; tự đếm theo lịch dùng số ngày làm việc của tháng theo lịch của người, nên mỗi tháng một mẫu số.",
       "basis": "Chính sách công ty (chủ dự án 16/10/2026: mặc định cố định)",
       "defaultNote": "Cố định",
-      "keys": [
-        "type.<type>.workdaysMode"
-      ],
+      "keys": ["type.<type>.workdaysMode"],
       "options": [
         {
           "value": "fixed",
@@ -14050,9 +13465,7 @@
       "help": "Người có hợp đồng dài hạn (từ 3 tháng) mà hồ sơ chưa ghi riêng thì có đóng bảo hiểm bắt buộc. Hồ sơ từng người vẫn đè lên lựa chọn này.",
       "basis": "Luật Bảo hiểm xã hội số 41/2024/QH15 (cần pháp chế xác nhận)",
       "defaultNote": "Có",
-      "keys": [
-        "insurance.coverage.long"
-      ],
+      "keys": ["insurance.coverage.long"],
       "options": [
         {
           "value": true,
@@ -14105,9 +13518,7 @@
       "help": "Người có hợp đồng ngắn hạn mà hồ sơ chưa ghi riêng thì có đóng bảo hiểm bắt buộc hay không. Hợp đồng từ 1 đến dưới 3 tháng phải đóng; hồ sơ từng người vẫn đè lên lựa chọn này.",
       "basis": "Luật Bảo hiểm xã hội số 41/2024/QH15 (cần pháp chế xác nhận)",
       "defaultNote": "Không",
-      "keys": [
-        "insurance.coverage.short"
-      ],
+      "keys": ["insurance.coverage.short"],
       "options": [
         {
           "value": false,
@@ -14159,9 +13570,7 @@
       "help": "Chỉ dùng khi nền đóng bảo hiểm chọn theo thuộc tính của bậc: tên thuộc tính tiền mà nền đóng lấy giá trị theo từng bậc. Chưa dùng được.",
       "basis": "Luật Bảo hiểm xã hội số 41/2024/QH15 (cần pháp chế xác nhận)",
       "defaultNote": "Chưa chọn",
-      "keys": [
-        "insurance.baseAttr"
-      ],
+      "keys": ["insurance.baseAttr"],
       "options": [
         {
           "value": "",
@@ -14206,9 +13615,7 @@
       "help": "Chọn không áp sàn (như hiện nay, chỉ cảnh báo khi lương thấp hơn lương tối thiểu vùng), hay nâng nền đóng lên bằng lương tối thiểu vùng.",
       "basis": "Luật Bảo hiểm xã hội số 41/2024/QH15 (cần pháp chế xác nhận)",
       "defaultNote": "Không áp sàn",
-      "keys": [
-        "insurance.floorMode"
-      ],
+      "keys": ["insurance.floorMode"],
       "options": [
         {
           "value": "none",
@@ -14260,9 +13667,7 @@
       "help": "Hợp đồng dài hạn (từ 3 tháng) tính thuế lũy tiến từng phần trên thu nhập tính thuế. Các cách khác chưa dùng được.",
       "basis": "Luật Thuế thu nhập cá nhân số 109/2025/QH15; Nghị định 253/2026/NĐ-CP (cần kế toán xác nhận)",
       "defaultNote": "Lũy tiến từng phần",
-      "keys": [
-        "tax.method.long"
-      ],
+      "keys": ["tax.method.long"],
       "options": [
         {
           "value": "progressive",
@@ -14321,9 +13726,7 @@
       "help": "Hợp đồng ngắn hạn (dưới 3 tháng) khấu trừ một mức cố định trên tổng thu nhập khi đạt ngưỡng. Các cách khác chưa dùng được.",
       "basis": "Luật Thuế thu nhập cá nhân số 109/2025/QH15; Nghị định 253/2026/NĐ-CP (cần kế toán xác nhận)",
       "defaultNote": "Khấu trừ một mức cố định",
-      "keys": [
-        "tax.method.short"
-      ],
+      "keys": ["tax.method.short"],
       "options": [
         {
           "value": "flat",
@@ -14382,9 +13785,7 @@
       "help": "Phần tiền làm thêm giờ được miễn thuế tính theo đơn giá luật định (như hiện nay), hay theo số giờ.",
       "basis": "Luật Thuế thu nhập cá nhân số 109/2025/QH15, Điều 4; Nghị định 253/2026/NĐ-CP (chưa có văn bản hướng dẫn, cần kế toán hoặc pháp chế xác nhận)",
       "defaultNote": "Theo đơn giá",
-      "keys": [
-        "tax.exempt.otMethod"
-      ],
+      "keys": ["tax.exempt.otMethod"],
       "options": [
         {
           "value": "byRate",
@@ -14436,9 +13837,7 @@
       "help": "Thuế phát sinh khi thu nhập chịu thuế sau bảo hiểm vượt mức giảm trừ bản thân (như hiện nay). Ngưỡng riêng chưa dùng được.",
       "basis": "Luật Thuế thu nhập cá nhân số 109/2025/QH15; Nghị định 253/2026/NĐ-CP (cần kế toán xác nhận)",
       "defaultNote": "Vượt mức giảm trừ bản thân",
-      "keys": [
-        "tax.arise.mode"
-      ],
+      "keys": ["tax.arise.mode"],
       "options": [
         {
           "value": "personalDeduction",
@@ -14479,9 +13878,7 @@
       "label": "Phép năm hết hạn vào cuối tháng",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "leave.expiry.month"
-      ],
+      "keys": ["leave.expiry.month"],
       "valueBearing": true,
       "help": "Phép tích luỹ tới 31/12 mà chưa dùng hết hạn vào cuối tháng này của năm sau và được quy tiền vào phiếu tháng liền sau. Đặt 0 nếu phép không hết hạn.",
       "basis": "Chủ dự án 23/10/2026; Bộ luật Lao động 45/2019/QH14 Điều 113 khoản 3 (cần pháp chế xác nhận)",
@@ -14525,9 +13922,7 @@
       "label": "Phép hết hạn áp dụng từ năm",
       "class": "number",
       "editableBy": "admin",
-      "keys": [
-        "leave.expiry.fromYear"
-      ],
+      "keys": ["leave.expiry.fromYear"],
       "valueBearing": true,
       "help": "Chỉ phép tích luỹ tới 31/12 của năm này trở đi mới hết hạn; các năm trước không tính hồi tố.",
       "basis": "Chủ dự án 23/10/2026; Bộ luật Lao động 45/2019/QH14 Điều 113 khoản 3 (cần pháp chế xác nhận)",

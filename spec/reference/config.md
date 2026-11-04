@@ -79,9 +79,9 @@
 | Biến | Đọc ở |
 | --- | --- |
 | `ACCESS_LOG` | `src/ops/access-log.ts:12` |
-| `AUDIT_KEY` | `src/platform/db.ts:315` |
+| `AUDIT_KEY` | `src/platform/db.ts:318` |
 | `COOKIE_SECURE` | `src/params/save.ts:68` `src/params/save.ts:72` `src/params/save.ts:88` `src/platform/auth.ts:276` (+1) |
-| `DATABASE_URL` | `src/platform/db.ts:34` `src/platform/db.ts:43` |
+| `DATABASE_URL` | `src/platform/db.ts:36` `src/platform/db.ts:45` |
 | `DB_DEBUG_SQL` | `src/data/postgres-database.ts:187` |
 | `DB_SQL_STATS` | `src/data/postgres-database.ts:177` |
 | `DRILL_PG_CONTROL_URL` | `src/ops/pg-backup.ts:315` |

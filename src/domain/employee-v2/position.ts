@@ -32,7 +32,7 @@ export class Position {
     return new Position({
       type: patch.type !== undefined ? patch.type : this.type,
       level: patch.level !== undefined ? patch.level : this.level,
-      jobTitle: patch.jobTitle !== undefined ? patch.jobTitle : this.jobTitle,
+      jobTitle: patch.jobTitle !== undefined ? patch.jobTitle : this.jobTitle
     });
   }
 
@@ -40,7 +40,7 @@ export class Position {
     return {
       type: this.type,
       level: this.level,
-      jobTitle: this.jobTitle,
+      jobTitle: this.jobTitle
     };
   }
 }

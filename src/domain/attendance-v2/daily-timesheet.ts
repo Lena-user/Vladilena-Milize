@@ -284,7 +284,11 @@ export class DailyTimesheet {
       } else if (nowOrOptions && typeof nowOrOptions === 'object' && 'gracePeriodMinutes' in nowOrOptions) {
         options = nowOrOptions;
       }
-    } else if (scheduleOrOptions && typeof scheduleOrOptions === 'object' && 'gracePeriodMinutes' in scheduleOrOptions) {
+    } else if (
+      scheduleOrOptions &&
+      typeof scheduleOrOptions === 'object' &&
+      'gracePeriodMinutes' in scheduleOrOptions
+    ) {
       options = scheduleOrOptions;
       if (nowOrOptions instanceof Date) {
         now = nowOrOptions;
@@ -346,8 +350,8 @@ export class DailyTimesheet {
     const currentTime = now
       ? now.getTime()
       : lastOut
-      ? Math.max(lastOut.punchedAt.getTime(), plannedEnd.getTime() + 31 * 60000)
-      : new Date().getTime();
+        ? Math.max(lastOut.punchedAt.getTime(), plannedEnd.getTime() + 31 * 60000)
+        : new Date().getTime();
 
     // 1. Check-in status
     let checkInStatus: CheckInStatus = 'PENDING';
@@ -578,10 +582,21 @@ export class DailyTimesheet {
       throw new Error('Dữ liệu row DailyTimesheet không hợp lệ');
     }
 
+    const rawDate = row.work_date as any;
+    let workDate = String(rawDate || '');
+    if (rawDate instanceof Date) {
+      const y = rawDate.getUTCFullYear();
+      const m = String(rawDate.getUTCMonth() + 1).padStart(2, '0');
+      const d = String(rawDate.getUTCDate()).padStart(2, '0');
+      workDate = `${y}-${m}-${d}`;
+    } else if (workDate.length > 10) {
+      workDate = workDate.slice(0, 10);
+    }
+
     return new DailyTimesheet({
       id: row.id,
       employeeId: row.employee_id,
-      workDate: row.work_date,
+      workDate,
       shiftType: row.shift_type as ShiftType,
       shiftStartTime: row.shift_start_time,
       shiftEndTime: row.shift_end_time,

@@ -1,4 +1,5 @@
-import { Injectable, Optional } from '@nestjs/common';
+import { Injectable, Optional, Inject } from '@nestjs/common';
+import { STORE } from '../../core/tokens';
 import {
   SystemRequest,
   RequestType,
@@ -105,10 +106,21 @@ function formatTimeToHHmm(val: Date | string): string {
 
 @Injectable()
 export class RequestV2Service {
+  private readonly repo: RequestV2Repository;
+
   constructor(
-    private readonly repo: RequestV2Repository,
-    @Optional() private readonly attendanceRepo?: AttendanceV2Repository
-  ) {}
+    @Optional() @Inject(RequestV2Repository) repo?: RequestV2Repository,
+    @Optional() @Inject(AttendanceV2Repository) private readonly attendanceRepo?: AttendanceV2Repository,
+    @Optional() @Inject(STORE) private readonly store?: any
+  ) {
+    if (repo) {
+      this.repo = repo;
+    } else if (this.store?.queryBuilder) {
+      this.repo = new RequestV2Repository(this.store.queryBuilder);
+    } else {
+      this.repo = new RequestV2Repository({} as any);
+    }
+  }
 
   async createLeaveRequest(input: CreateLeaveInput): Promise<SystemRequestDTO> {
     const req = SystemRequest.createLeaveRequest({

@@ -74,7 +74,7 @@ export class Shift {
       type: nextType,
       startTime: nextStart,
       endTime: nextEnd,
-      allowancePct: nextAllowance,
+      allowancePct: nextAllowance
     });
   }
 
@@ -84,7 +84,7 @@ export class Shift {
       startTime: this.startTime,
       endTime: this.endTime,
       allowancePct: this.allowancePct,
-      isOvernight: this.isOvernight(),
+      isOvernight: this.isOvernight()
     };
   }
 }

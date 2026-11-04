@@ -46,10 +46,7 @@ export class PersonName {
     } else {
       const rawFull = props.fullName != null ? String(props.fullName).trim().replace(/\s+/g, ' ') : '';
       if (!rawFull) {
-        this.familyName = '';
-        this.givenName = '';
-        this.fullName = '';
-        return;
+        throw new Error('Họ tên nhân viên không được để trống');
       }
       const words = titleCase(rawFull).split(' ').filter(Boolean);
       if (words.length <= 1) {
@@ -62,6 +59,16 @@ export class PersonName {
         this.fullName = [this.familyName, this.givenName].join(' ');
       }
     }
+
+    if (!this.fullName) {
+      throw new Error('Họ tên nhân viên không được để trống');
+    }
+  }
+
+  static empty(): PersonName {
+    const p = Object.create(PersonName.prototype);
+    Object.assign(p, { familyName: '', givenName: '', fullName: '' });
+    return p;
   }
 
   static fromFullName(fullName: string): PersonName {
@@ -73,13 +80,17 @@ export class PersonName {
   }
 
   static parse(fullName?: string): PersonName {
-    return PersonName.fromFullName(fullName || '');
+    if (!fullName || !String(fullName).trim()) {
+      return PersonName.empty();
+    }
+    return PersonName.fromFullName(fullName);
   }
 
-  static from({ familyName, givenName, fullName }: any): PersonName {
+  static from({ familyName, givenName, fullName }: any = {}): PersonName {
     if ((familyName && String(familyName).trim()) || (givenName && String(givenName).trim()))
       return new PersonName({ familyName, givenName });
-    return PersonName.fromFullName(fullName || '');
+    if (fullName && String(fullName).trim()) return PersonName.fromFullName(fullName);
+    return PersonName.empty();
   }
 
   withChanges(patch: { familyName?: string; givenName?: string; fullName?: string }): PersonName {
@@ -88,7 +99,7 @@ export class PersonName {
     }
     return new PersonName({
       familyName: patch.familyName !== undefined ? patch.familyName : this.familyName,
-      givenName: patch.givenName !== undefined ? patch.givenName : this.givenName,
+      givenName: patch.givenName !== undefined ? patch.givenName : this.givenName
     });
   }
 
@@ -100,7 +111,7 @@ export class PersonName {
     return {
       familyName: this.familyName,
       givenName: this.givenName,
-      fullName: this.fullName,
+      fullName: this.fullName
     };
   }
 }

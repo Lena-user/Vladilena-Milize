@@ -34,8 +34,8 @@ Số route: **120**; đường dẫn không module nào nhận trả 404 sau c�
 | `GET /employees/:uuid/trace` | `audit.read` | — | **không có controller** |  |
 | `GET /entitlements` | `config.read` | — | [`src/modules/positions/positions.controller.ts:26`](../../src/modules/positions/positions.controller.ts#L26) `listEntitlements` | ?month= (config.read) |
 | `GET /events` | đã đăng nhập | — | [`src/modules/system/system.controller.ts:24`](../../src/modules/system/system.controller.ts#L24) `getEvents` |  |
-| `GET /explanations` | đã đăng nhập | — | **không có controller** |  |
-| `POST /explanations` | đã đăng nhập | — | **không có controller** |  |
+| `GET /explanations` | đã đăng nhập | — | [`src/modules/ui-bridge/ui-bridge.controller.ts:215`](../../src/modules/ui-bridge/ui-bridge.controller.ts#L215) `getExplanations` |  |
+| `POST /explanations` | đã đăng nhập | — | [`src/modules/ui-bridge/ui-bridge.controller.ts:222`](../../src/modules/ui-bridge/ui-bridge.controller.ts#L222) `postExplanations` |  |
 | `POST /explanations/:id/answer` | đã đăng nhập | — | **không có controller** |  |
 | `POST /explanations/:id/decide` | `attendance.correct` | — | **không có controller** |  |
 | `GET /health` | công khai | — | [`src/modules/system/system.controller.ts:17`](../../src/modules/system/system.controller.ts#L17) `getHealth` |  |
@@ -48,8 +48,8 @@ Số route: **120**; đường dẫn không module nào nhận trả 404 sau c�
 | `POST /login` | công khai | — | [`src/modules/auth/auth.controller.ts:30`](../../src/modules/auth/auth.controller.ts#L30) `postLogin` |  |
 | `POST /logout` | công khai | — | [`src/modules/auth/auth.controller.ts:72`](../../src/modules/auth/auth.controller.ts#L72) `postLogout` |  |
 | `GET /me` | công khai | — | [`src/modules/auth/auth.controller.ts:83`](../../src/modules/auth/auth.controller.ts#L83) `getMe` |  |
-| `GET /me/estimate` | đã đăng nhập | — | **không có controller** |  |
-| `GET /ot` | `attendance.correct` | — | **không có controller** |  |
+| `GET /me/estimate` | đã đăng nhập | — | [`src/modules/ui-bridge/ui-bridge.controller.ts:21`](../../src/modules/ui-bridge/ui-bridge.controller.ts#L21) `getMeEstimate` |  |
+| `GET /ot` | `attendance.correct` | — | [`src/modules/ui-bridge/ui-bridge.controller.ts:208`](../../src/modules/ui-bridge/ui-bridge.controller.ts#L208) `getOt` |  |
 | `POST /ot` | `attendance.correct` | `attendance` (tháng: ngày của lượt) | **không có controller** |  |
 | `PUT /ot` | `attendance.correct` | `attendance` (tháng: ngày của lượt) | **không có controller** |  |
 | `PUT /password` | đã đăng nhập | — | [`src/modules/auth/auth.controller.ts:99`](../../src/modules/auth/auth.controller.ts#L99) `putPassword` |  |
@@ -76,8 +76,8 @@ Số route: **120**; đường dẫn không module nào nhận trả 404 sau c�
 | `GET /positions` | `config.read` | — | [`src/modules/positions/positions.controller.ts:20`](../../src/modules/positions/positions.controller.ts#L20) `listPositions` | ?month= (config.read) |
 | `POST /positions` | `config.read` | — | [`src/modules/positions/positions.controller.ts:32`](../../src/modules/positions/positions.controller.ts#L32) `addPosition` | thêm chức vụ bằng sao chép |
 | `POST /positions/:code/levels` | `config.payroll` | — | [`src/modules/positions/positions.controller.ts:40`](../../src/modules/positions/positions.controller.ts#L40) `addLevel` | thêm bậc cho một chức vụ |
-| `GET /punch` | đã đăng nhập | — | **không có controller** |  |
-| `POST /punch` | đã đăng nhập | `attendance` (tháng: ngày công của lượt (ca đêm thuộc ngày bắt đầu)) | **không có controller** |  |
+| `GET /punch` | đã đăng nhập | — | [`src/modules/ui-bridge/ui-bridge.controller.ts:139`](../../src/modules/ui-bridge/ui-bridge.controller.ts#L139) `getPunch` |  |
+| `POST /punch` | đã đăng nhập | `attendance` (tháng: ngày công của lượt (ca đêm thuộc ngày bắt đầu)) | [`src/modules/ui-bridge/ui-bridge.controller.ts:170`](../../src/modules/ui-bridge/ui-bridge.controller.ts#L170) `postPunch` |  |
 | `GET /roles` | `roles.manage` | — | [`src/modules/roles/roles.controller.ts:18`](../../src/modules/roles/roles.controller.ts#L18) `list` | danh sách vai trò mặc định + tuỳ chỉnh, khu vực của ma trận, loại yêu cầu duyệt, tài khoản |
 | `POST /roles` | `roles.manage` | — | [`src/modules/roles/roles.controller.ts:24`](../../src/modules/roles/roles.controller.ts#L24) `create` | { label, copyFrom?, code?, caps? \| levels?+extras?, approvals?, scope?, reason? } tạo hoặc sao chép |
 | `PUT /roles/:code` | `roles.manage` | — | [`src/modules/roles/roles.controller.ts:30`](../../src/modules/roles/roles.controller.ts#L30) `update` | { rev, label?, caps? \| levels?+extras?, approvals?, scope?, reason } sửa vai trò tuỳ chỉnh |
@@ -91,9 +91,9 @@ Số route: **120**; đường dẫn không module nào nhận trả 404 sau c�
 | `GET /settings/shifts` | `config.read` | — | [`src/modules/settings/settings-shifts.controller.ts:27`](../../src/modules/settings/settings-shifts.controller.ts#L27) `get` | ?month= → { month, paramsRev, editable, hours, shifts: [{ code, preset, name, kind, in, out }] } |
 | `PUT /settings/shifts` | `config.read` | — | [`src/modules/settings/settings-shifts.controller.ts:35`](../../src/modules/settings/settings-shifts.controller.ts#L35) `put` | { shifts: [{ code, in, out }], effectiveMonth?, reason, expectedRev? } → như lưu tham số |
 | `GET /settings/version` | đã đăng nhập | — | [`src/modules/settings/settings.controller.ts:182`](../../src/modules/settings/settings.controller.ts#L182) `getSettingsVersion` |  |
-| `GET /sheet` | `self-or:attendance.read` | — | **không có controller** |  |
-| `PUT /sheet` | đã đăng nhập | `attendance` (tháng: body.month) | **không có controller** |  |
-| `PUT /sheet/bulk` | `request.decide.*` | `attendance` (tháng: body.month) | **không có controller** |  |
+| `GET /sheet` | `self-or:attendance.read` | — | [`src/modules/ui-bridge/ui-bridge.controller.ts:30`](../../src/modules/ui-bridge/ui-bridge.controller.ts#L30) `getSheet` |  |
+| `PUT /sheet` | đã đăng nhập | `attendance` (tháng: body.month) | [`src/modules/ui-bridge/ui-bridge.controller.ts:77`](../../src/modules/ui-bridge/ui-bridge.controller.ts#L77) `putSheet` |  |
+| `PUT /sheet/bulk` | `request.decide.*` | `attendance` (tháng: body.month) | [`src/modules/ui-bridge/ui-bridge.controller.ts:123`](../../src/modules/ui-bridge/ui-bridge.controller.ts#L123) `putSheetBulk` |  |
 | `GET /slip-override` | `payroll.override` | — | [`src/modules/periods/periods.controller.ts:32`](../../src/modules/periods/periods.controller.ts#L32) `getSlipOverride` |  |
 | `PUT /slip-override` | `payroll.override` | `slip` (tháng: body.month) | [`src/modules/periods/periods.controller.ts:75`](../../src/modules/periods/periods.controller.ts#L75) `putSlipOverride` |  |
 | `GET /staff` | `profile.read` | — | [`src/modules/staff/staff.controller.ts:42`](../../src/modules/staff/staff.controller.ts#L42) `getStaff` |  |
@@ -102,9 +102,9 @@ Số route: **120**; đường dẫn không module nào nhận trả 404 sau c�
 | `POST /staff/:u/password` | `roles.manage` | — | [`src/modules/staff/staff.controller.ts:103`](../../src/modules/staff/staff.controller.ts#L103) `postStaffPassword` |  |
 | `PUT /staff/:u/roles` | `roles.manage` | — | [`src/modules/staff/staff.controller.ts:139`](../../src/modules/staff/staff.controller.ts#L139) `putStaffRoles` |  |
 | `GET /staff/:u/schedule` | `self-or:profile.read` | — | [`src/modules/staff/staff.controller.ts:644`](../../src/modules/staff/staff.controller.ts#L644) `getStaffSchedule` | ?month= lịch làm việc hiệu lực của một người (self-or:profile.read); kiểm quyền TRƯỚC khi tra tên để không dò được tên đăng nhập |
-| `PUT /staff/shift-bulk` | `profile.write` | — | **không có controller** |  |
+| `PUT /staff/shift-bulk` | `profile.write` | — | [`src/modules/ui-bridge/ui-bridge.controller.ts:131`](../../src/modules/ui-bridge/ui-bridge.controller.ts#L131) `putStaffShiftBulk` |  |
 | `GET /team` | `payroll.view` | — | [`src/modules/staff/staff.controller.ts:55`](../../src/modules/staff/staff.controller.ts#L55) `getTeam` |  |
-| `GET /today` | `attendance.read` | — | **không có controller** |  |
+| `GET /today` | `attendance.read` | — | [`src/modules/ui-bridge/ui-bridge.controller.ts:191`](../../src/modules/ui-bridge/ui-bridge.controller.ts#L191) `getToday` |  |
 | `GET /v2/attendance/punches` | `attendance.read` | — | [`src/modules/attendance-v2/attendance-v2.controller.ts:21`](../../src/modules/attendance-v2/attendance-v2.controller.ts#L21) `getPunches` |  |
 | `POST /v2/attendance/punches` | `attendance.read` | — | [`src/modules/attendance-v2/attendance-v2.controller.ts:10`](../../src/modules/attendance-v2/attendance-v2.controller.ts#L10) `recordPunch` |  |
 | `GET /v2/attendance/timesheets` | `attendance.read` | — | [`src/modules/attendance-v2/attendance-v2.controller.ts:36`](../../src/modules/attendance-v2/attendance-v2.controller.ts#L36) `listTimesheets` |  |

@@ -181,7 +181,13 @@ export class StaffRepository {
           family_name: eb.ref('excluded.family_name'),
           given_name: eb.ref('excluded.given_name'),
           contract_status: sql<string | null>`CASE WHEN ${options.keepContractStatus ? 1 : 0} THEN staff.contract_status ELSE excluded.contract_status END`,
-          resigned_on: sql<string | null>`CASE WHEN ${options.keepResignedOn ? 1 : 0} THEN staff.resigned_on ELSE excluded.resigned_on END`
+          resigned_on: sql<string | null>`CASE WHEN ${options.keepResignedOn ? 1 : 0} THEN staff.resigned_on ELSE excluded.resigned_on END`,
+          shift_type: eb.ref('excluded.shift_type'),
+          shift_start_time: eb.ref('excluded.shift_start_time'),
+          shift_end_time: eb.ref('excluded.shift_end_time'),
+          shift_allowance_pct: eb.ref('excluded.shift_allowance_pct'),
+          leave_total_days: eb.ref('excluded.leave_total_days'),
+          leave_used_days: eb.ref('excluded.leave_used_days')
         }))
       )
       .execute();

@@ -1,11 +1,5 @@
 export type RequestType =
-  | 'LEAVE'
-  | 'TIME_CORRECTION'
-  | 'OVERTIME'
-  | 'ADVANCE'
-  | 'SHIFT_CHANGE'
-  | 'LEAVE_WITH_MAKEUP'
-  | 'EXPLANATION';
+  'LEAVE' | 'TIME_CORRECTION' | 'OVERTIME' | 'ADVANCE' | 'SHIFT_CHANGE' | 'LEAVE_WITH_MAKEUP' | 'EXPLANATION';
 
 export type RequestStatus = 'PENDING' | 'APPROVED' | 'REJECTED' | 'CANCELLED';
 

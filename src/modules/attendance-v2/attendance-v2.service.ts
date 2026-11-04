@@ -28,8 +28,10 @@ export interface OfficeLocationInput {
 export interface RecordPunchInput {
   employeeId: string;
   type: 'IN' | 'OUT';
-  latitude: number;
-  longitude: number;
+  latitude?: number;
+  longitude?: number;
+  accuracyMeters?: number;
+  userLocation?: { latitude: number; longitude: number; accuracyMeters?: number };
   note?: string;
   workDate?: string;
   punchedAt?: Date | string;
@@ -100,10 +102,13 @@ export class AttendanceV2Service {
       throw new Error('Bảng công ngày đã bị khóa cho kỳ lương, không thể tính toán lại');
     }
 
+    const lat = input.latitude ?? input.userLocation?.latitude ?? 0;
+    const lng = input.longitude ?? input.userLocation?.longitude ?? 0;
+    const accuracy = input.accuracyMeters ?? input.userLocation?.accuracyMeters ?? 0;
     const userLocation = new GeoLocation({
-      latitude: input.latitude,
-      longitude: input.longitude,
-      accuracyMeters: 0
+      latitude: lat,
+      longitude: lng,
+      accuracyMeters: accuracy
     });
 
     const punchProps: CreatePunchEventProps = {

@@ -47,7 +47,8 @@ class AbsentDay {
     const sessions = await this.store.listSessions({ username, month });
     if (sessions.some((s: any) => AbsentDay.dayOf(s) === date && (s.entry.presIn || s.entry.presOut))) return 'punched';
     const holidays = await this.store.getSetting('holidays', []);
-    const inService = (!staff.startDate || date! >= staff.startDate) && (!staff.resignedOn || date! <= staff.resignedOn);
+    const inService =
+      (!staff.startDate || date! >= staff.startDate) && (!staff.resignedOn || date! <= staff.resignedOn);
     if (!inService || holidays.includes(date) || !(await schedule.isWorkDay(staff, date))) return 'off-schedule';
     const days = (await estimateSheet(username, month)).days;
     const approvals = await this.store.approvals.forSheet(username, month);
@@ -150,6 +151,38 @@ const legacyExplanations = {
   explainedByUser: async (_month?: string) => new Map<string, Set<string>>()
 };
 
+const leaveDates = async (staff?: any) => {
+  const { leaveDates: getLeaveDates } = require('../domain/leave-days');
+  return getLeaveDates(staff);
+};
+
+const leaveSummary = async (s?: any) => {
+  const { ledger } = (await rulesFor()).leave;
+  const dates = await leaveDates(s);
+  const a = ledger(
+    s,
+    dates.filter((d: string) => d <= vnToday()),
+    vnToday()
+  );
+  const { settled, ...rest } = a;
+  return { ...rest, balance: a.balance };
+};
+
+const neighborDays = async (username?: string, month?: string) => {
+  const [y, m] = (month || '').split('-').map(Number);
+  const mk = (t: Date) => `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, '0')}`;
+  const pm = mk(new Date(y, m - 2, 1));
+  const nm = mk(new Date(y, m, 1));
+  const prevLast = `${pm}-${String(new Date(y, m - 1, 0).getDate()).padStart(2, '0')}`;
+  const nextFirst = `${nm}-01`;
+  const out: Record<string, any> = {};
+  const a = (await estimateSheet(username, pm)).days[prevLast];
+  const b = (await estimateSheet(username, nm)).days[nextFirst];
+  if (a) out[prevLast] = a;
+  if (b) out[nextFirst] = b;
+  return out;
+};
+
 export = {
   estimateDays,
   estimateSheet,
@@ -164,5 +197,8 @@ export = {
   actualHolidayOtHours,
   OtLimits,
   formulasOf,
-  explanations: legacyExplanations
+  explanations: legacyExplanations,
+  leaveDates,
+  leaveSummary,
+  neighborDays
 };

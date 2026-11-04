@@ -25,12 +25,14 @@ import { PayrollV2Module } from './modules/payroll-v2';
 import { LeaveModule } from './modules/leave';
 import { AdvanceModule } from './modules/advance';
 import { PayEntriesModule } from './modules/pay-entries';
+import { UiBridgeModule } from './modules/ui-bridge';
 
 /**
  * Thứ tự import là thứ tự đăng ký route: route cụ thể (ví dụ PUT /staff/shift-bulk) phải đứng trước route có tham số (PUT /staff/:u),
  * và NotFoundModule (bắt-hết, trả 404) luôn đứng cuối.
  */
 const FEATURE_MODULES = [
+  UiBridgeModule,
   SystemModule,
   AuthModule,
   SettingsModule,

@@ -190,11 +190,22 @@ export class PunchEvent {
       throw new Error('Dữ liệu row PunchEvent không hợp lệ');
     }
 
+    const rawDate = row.work_date as any;
+    let workDate = String(rawDate || '');
+    if (rawDate instanceof Date) {
+      const y = rawDate.getUTCFullYear();
+      const m = String(rawDate.getUTCMonth() + 1).padStart(2, '0');
+      const d = String(rawDate.getUTCDate()).padStart(2, '0');
+      workDate = `${y}-${m}-${d}`;
+    } else if (workDate.length > 10) {
+      workDate = workDate.slice(0, 10);
+    }
+
     return new PunchEvent({
       id: row.id,
       employeeId: row.employee_id,
       punchedAt: new Date(row.punched_at),
-      workDate: row.work_date,
+      workDate,
       type: row.type as PunchType,
       userLocation: new GeoLocation({
         latitude: Number(row.latitude),

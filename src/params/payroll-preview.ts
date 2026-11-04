@@ -218,6 +218,38 @@ const COMPONENTS = Object.freeze([
   { id: 8, key: 'tax', label: 'Thuế TNCN' }
 ]);
 
+const contextOf = (inputs?: any) => ({ holidays: inputs.holidays, asOf: inputs.asOf });
+
+const digestOf = (inputs?: any) =>
+  crypto
+    .createHash('sha256')
+    .update(
+      JSON.stringify({
+        holidays: inputs.holidays,
+        asOf: inputs.asOf,
+        people: Array.from(inputs.people.entries()).map(([u, d]) => [u, d]),
+        overrides: inputs.overrides
+      })
+    )
+    .digest('hex');
+
+const paramsFor = async (month?: string) => await paramsStore.resolve(month);
+
+const SLIP_KPI_CELLS: Record<string, string> = Object.freeze({
+  wework: 'kpi_wework',
+  user: 'kpi_user',
+  peer: 'kpi_peer',
+  manager: 'kpi_manager',
+  self: 'kpi_self'
+});
+
+async function kpiSlipCells(username?: string, month?: string, params?: any) {
+  const rules = KpiScore.create(params || (await paramsStore.resolve(month)).params);
+  const row = await store.getKpiScores(username, month);
+  const parts = kpiScoresOut(row, rules);
+  return Object.fromEntries(rules.COMPONENTS.map((c: any) => [SLIP_KPI_CELLS[c.key], parts[c.key]]));
+}
+
 function thanhPhanOf(m?) {
   const t = m.trace;
   const cut = m.cut || 0;
@@ -241,6 +273,16 @@ function thanhPhanOf(m?) {
 export = {
   loadInputs,
   computeFor,
+  estimateDays,
+  contextOf,
+  digestOf,
+  paramsFor,
   COMPONENTS,
-  thanhPhanOf
+  thanhPhanOf,
+  engineFor,
+  lastDayOf,
+  previousMonth,
+  payrollPeople,
+  kpiSlipCells,
+  PayrollPolicy
 };

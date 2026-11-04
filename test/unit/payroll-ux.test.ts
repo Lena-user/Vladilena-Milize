@@ -40,11 +40,12 @@ const row = (username, status, gross) => ({
 });
 
 test('payroll UX keeps API totals and page amounts distinct across paginated status rows', () => {
-  for (const [page, rows] of [
+  const cases: Array<[number, any[]]> = [
     [1, [row('draft', 'draft', 100000), row('pending', 'pending', 200000)]],
     [2, [row('approved', 'approved', 300000), row('error', 'error', 0)]],
     [3, [row('pending-2', 'pending', 400000)]]
-  ]) {
+  ];
+  for (const [page, rows] of cases) {
     const view = buildPeriodView('2026-10', period, { rows, page, total: 31 }, { filter: 'all', pageSize: 2 });
     assert.equal(view.facts.total, 31);
     assert.equal(view.paging.total, 31);

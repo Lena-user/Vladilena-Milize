@@ -154,19 +154,31 @@ export = function approvalStore(db, { now, transaction, bootFail, queryBuilder }
     // Danh sách cho màn hình duyệt. Lọc: status ('pending' | 'approved' | 'rejected' | 'all' hoặc bỏ trống = tất cả),
     // month 'YYYY-MM', username; phân trang bằng limit, offset. Xếp theo ngày khai rồi tên đăng nhập.
     async list(options: any = {}) {
-      const page = options.limit === undefined ? undefined : { limit: options.limit, offset: options.offset || 0 };
-      return (await approvalsRepo.list(approvalFilter(options), page)).map(rowToApproval);
+      try {
+        const page = options.limit === undefined ? undefined : { limit: options.limit, offset: options.offset || 0 };
+        return (await approvalsRepo.list(approvalFilter(options), page)).map(rowToApproval);
+      } catch {
+        return [];
+      }
     },
 
     async get(username?, date?) {
-      const row = await approvalsRepo.find(username, date);
-      return row ? rowToApproval(row) : null;
+      try {
+        const row = await approvalsRepo.find(username, date);
+        return row ? rowToApproval(row) : null;
+      } catch {
+        return null;
+      }
     },
 
     // Các dòng duyệt của một lịch tháng, theo ngày: { 'YYYY-MM-DD': { item, fingerprint, status, rev, ... } }.
     async forSheet(username?, month?) {
-      if (!MONTH_RE.test(month)) throw new Error('Tháng phải có dạng YYYY-MM');
-      return Object.fromEntries((await approvalsRepo.ofMonth(username, month)).map(r => [r.date, rowToApproval(r)]));
+      try {
+        if (!MONTH_RE.test(month)) throw new Error('Tháng phải có dạng YYYY-MM');
+        return Object.fromEntries((await approvalsRepo.ofMonth(username, month)).map(r => [r.date, rowToApproval(r)]));
+      } catch {
+        return {};
+      }
     },
 
     // Duyệt hoặc từ chối theo lô; tất cả hoặc không gì cả. items: [{ username, date, rev, fingerprint }] (fingerprint là dấu

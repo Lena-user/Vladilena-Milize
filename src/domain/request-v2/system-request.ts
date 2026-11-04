@@ -480,6 +480,18 @@ export class SystemRequest {
       return isNaN(d.getTime()) ? null : d;
     };
 
+    const formatDateStr = (val: any): string | null => {
+      if (!val) return null;
+      if (val instanceof Date) {
+        const y = val.getUTCFullYear();
+        const m = String(val.getUTCMonth() + 1).padStart(2, '0');
+        const d = String(val.getUTCDate()).padStart(2, '0');
+        return `${y}-${m}-${d}`;
+      }
+      const s = String(val);
+      return s.length > 10 ? s.slice(0, 10) : s;
+    };
+
     let advanceAmount: bigint | number | null = null;
     const rawAdv = row.advance_amount ?? row.advanceAmount;
     if (rawAdv !== undefined && rawAdv !== null) {
@@ -518,15 +530,15 @@ export class SystemRequest {
       updatedAt: parseDate(row.updated_at ?? row.updatedAt) ?? new Date(),
 
       leaveType: row.leave_type ?? row.leaveType ?? null,
-      leaveStartDate: row.leave_start_date ?? row.leaveStartDate ?? null,
-      leaveEndDate: row.leave_end_date ?? row.leaveEndDate ?? null,
+      leaveStartDate: formatDateStr(row.leave_start_date ?? row.leaveStartDate),
+      leaveEndDate: formatDateStr(row.leave_end_date ?? row.leaveEndDate),
       leaveDaysCount,
 
-      correctionDate: row.correction_date ?? row.correctionDate ?? null,
+      correctionDate: formatDateStr(row.correction_date ?? row.correctionDate),
       correctionPunchType: row.correction_punch_type ?? row.correctionPunchType ?? null,
       correctionActualTime: row.correction_actual_time ?? row.correctionActualTime ?? null,
 
-      otDate: row.ot_date ?? row.otDate ?? null,
+      otDate: formatDateStr(row.ot_date ?? row.otDate),
       otStartTime: row.ot_start_time ?? row.otStartTime ?? null,
       otEndTime: row.ot_end_time ?? row.otEndTime ?? null,
       otHours,

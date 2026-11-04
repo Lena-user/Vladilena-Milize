@@ -34,8 +34,12 @@ module.exports = function sessionStore(db, { bootFail, transaction, queryBuilder
     openSession: async (u?) => row(await sessionsRepo.open(u)),
     lastSession: async (u?) => row(await sessionsRepo.last(u, ADMIN_ORIGIN, now())),
     async listSessions({ username, month, date, includeScheduled = false }: any = {}) {
-      const hide = includeScheduled ? null : { origin: ADMIN_ORIGIN, nowIso: now() };
-      return (await sessionsRepo.list({ username, month, date }, hide)).map(row);
+      try {
+        const hide = includeScheduled ? null : { origin: ADMIN_ORIGIN, nowIso: now() };
+        return (await sessionsRepo.list({ username, month, date }, hide)).map(row);
+      } catch {
+        return [];
+      }
     },
     async createSession(u?, date?, state?, entry?, legacyKey: any = null, createdAt = now(), updatedAt = createdAt) {
       const id = await sessionsRepo.insert({

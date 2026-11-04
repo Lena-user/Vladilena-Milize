@@ -223,10 +223,21 @@ export class WorkSchedule {
   }
 
   static fromRow(row: WorkScheduleRow): WorkSchedule {
+    const rawDate = row.work_date as any;
+    let workDate = String(rawDate || '');
+    if (rawDate instanceof Date) {
+      const y = rawDate.getUTCFullYear();
+      const m = String(rawDate.getUTCMonth() + 1).padStart(2, '0');
+      const d = String(rawDate.getUTCDate()).padStart(2, '0');
+      workDate = `${y}-${m}-${d}`;
+    } else if (workDate.length > 10) {
+      workDate = workDate.slice(0, 10);
+    }
+
     return new WorkSchedule({
       id: row.id,
       employeeId: row.employee_id,
-      workDate: row.work_date,
+      workDate,
       shiftType: row.shift_type as ShiftType,
       plannedStartTime: row.planned_start_time,
       plannedEndTime: row.planned_end_time,

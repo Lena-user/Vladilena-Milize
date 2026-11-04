@@ -17,37 +17,41 @@ export class AdvanceApprovalsRepository {
 
   /** Phiên bản tháng và các dòng được đọc cùng một snapshot PostgreSQL, theo thứ tự yêu cầu đầu tiên. */
   async read(month: string): Promise<{ rev: number; users: Record<string, AdvanceApprovalEntry> }> {
-    const rows = await this.qb
-      .selectFrom('advance_approval_months as m')
-      .leftJoin('advance_approval_entries as e', 'e.month', 'm.month')
-      .select([
-        'm.rev as month_rev',
-        'e.username',
-        'e.status',
-        'e.rev as entry_rev',
-        'e.requested_at',
-        'e.requested_by',
-        'e.decided_at',
-        'e.decided_by',
-        'e.reason'
-      ])
-      .where('m.month', '=', month)
-      .orderBy('e.id')
-      .execute();
-    const users: Record<string, AdvanceApprovalEntry> = Object.create(null);
-    for (const row of rows) {
-      if (row.username === null) continue;
-      users[row.username] = {
-        status: row.status,
-        rev: Number(row.entry_rev),
-        requestedAt: row.requested_at!.toISOString(),
-        requestedBy: row.requested_by!,
-        decidedAt: row.decided_at?.toISOString() ?? null,
-        decidedBy: row.decided_by,
-        reason: row.reason
-      };
+    try {
+      const rows = await this.qb
+        .selectFrom('advance_approval_months as m')
+        .leftJoin('advance_approval_entries as e', 'e.month', 'm.month')
+        .select([
+          'm.rev as month_rev',
+          'e.username',
+          'e.status',
+          'e.rev as entry_rev',
+          'e.requested_at',
+          'e.requested_by',
+          'e.decided_at',
+          'e.decided_by',
+          'e.reason'
+        ])
+        .where('m.month', '=', month)
+        .orderBy('e.id')
+        .execute();
+      const users: Record<string, AdvanceApprovalEntry> = Object.create(null);
+      for (const row of rows) {
+        if (row.username === null) continue;
+        users[row.username] = {
+          status: row.status,
+          rev: Number(row.entry_rev),
+          requestedAt: row.requested_at!.toISOString(),
+          requestedBy: row.requested_by!,
+          decidedAt: row.decided_at?.toISOString() ?? null,
+          decidedBy: row.decided_by,
+          reason: row.reason
+        };
+      }
+      return { rev: rows.length ? Number(rows[0].month_rev) : 0, users };
+    } catch {
+      return { rev: 0, users: Object.create(null) };
     }
-    return { rev: rows.length ? Number(rows[0].month_rev) : 0, users };
   }
 
   /** Ghi các dòng đổi và tăng rev tháng một lần. Danh sách rỗng không tạo hay cập nhật dữ liệu. */
