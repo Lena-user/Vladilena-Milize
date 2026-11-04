@@ -71,7 +71,7 @@ for (const width of [375, 1440]) {
 
     await expect(page.getByRole('heading', { name: 'Đánh giá KPI' })).toBeVisible();
     await expect(page.getByText('1/2 người đạt, 1 người chưa chấm đủ')).toBeVisible();
-    await expect(page.getByText('1.800.000')).toBeVisible();
+    await expect(page.locator('.kpis').getByText('1.800.000₫', { exact: true })).toBeVisible();
     await expect(page.getByRole('link', { name: 'Quy tắc KPI' })).toHaveAttribute('href', '/admin/cai-dat/kpi');
 
     await page.getByRole('link', { name: /Lịch sử sửa điểm/ }).click();
@@ -85,7 +85,7 @@ for (const width of [375, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto('/admin/kpi?thang=2026-11');
 
-    await expect(page.getByText('Chưa có dữ liệu KPI của tháng này')).toBeVisible();
+    await expect(page.locator('.title').getByText('Chưa có dữ liệu KPI của tháng này', { exact: true })).toBeVisible();
     await expect(page.getByText(/người đạt, .*người chưa chấm đủ/)).toHaveCount(0);
     await expect(page.getByRole('link', { name: 'Quy tắc KPI' })).toBeVisible();
     await expect(page.getByRole('link', { name: /Lịch sử sửa điểm/ })).toBeVisible();
