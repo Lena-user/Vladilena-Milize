@@ -20,12 +20,20 @@ const { data: summary } = useLoad(
 
 const todayOpen = ref(false);
 const otOpen = ref(false);
+const todayPushed = ref(false);
+let todayHistoryPosition: number | null = null;
 
 watch(
   () => route.query.hop,
   hop => {
+    const wasTodayOpen = todayOpen.value;
     todayOpen.value = hop === 'hom-nay';
     otOpen.value = hop === 'duyet-ot';
+    if (hop === 'hom-nay') {
+      todayPushed.value = todayHistoryPosition !== null && window.history.state?.position === todayHistoryPosition;
+    } else if (wasTodayOpen) {
+      todayPushed.value = false;
+    }
   },
   { immediate: true }
 );
@@ -33,9 +41,21 @@ watch(
 function closeToday() {
   todayOpen.value = false;
   if (route.query.hop === 'hom-nay') {
+    if (todayPushed.value && window.history.state?.position === todayHistoryPosition) {
+      todayPushed.value = false;
+      router.back();
+      return;
+    }
     const { hop, ...rest } = route.query;
     router.replace({ query: rest });
   }
+}
+
+function openToday() {
+  router.push({ query: { ...route.query, hop: 'hom-nay' } }).then(() => {
+    todayHistoryPosition = window.history.state?.position ?? null;
+    todayPushed.value = true;
+  });
 }
 
 function closeOt() {
@@ -58,7 +78,7 @@ function closeOt() {
       <p v-else-if="summary">Chưa có dữ liệu chấm công của tháng này</p>
     </div>
     <div class="acts">
-      <button type="button" class="btn" @click="todayOpen = true">
+      <button type="button" class="btn" @click="openToday">
         <Icon name="cal" />Hôm nay<span v-if="summary && !summary.empty"> ({{ summary.inShift }} đang trong ca)</span>
       </button>
       <RouterLink

@@ -2,6 +2,7 @@ import { expect, test, type Page } from '@playwright/test';
 
 async function mockAttendance(page: Page, emptySummary = false) {
   const teamRequests: string[] = [];
+  let failNextToday = false;
   page.on('request', request => {
     const requestUrl = new URL(request.url());
     if (requestUrl.pathname === '/api/team') teamRequests.push(requestUrl.href);
@@ -11,6 +12,15 @@ async function mockAttendance(page: Page, emptySummary = false) {
     const path = requestUrl.pathname.replace('/api', '');
     const requestedMonth = requestUrl.searchParams.get('month') || '2026-11';
     let body: unknown = {};
+    if (path === '/today' && failNextToday) {
+      failNextToday = false;
+      await route.fulfill({
+        status: 500,
+        contentType: 'application/json',
+        body: JSON.stringify({ message: 'Mạng tạm thời không khả dụng' })
+      });
+      return;
+    }
     if (path === '/me') {
       body = {
         user: { username: 'demo_admin', name: 'Demo Admin', role: 'admin' },
@@ -40,7 +50,22 @@ async function mockAttendance(page: Page, emptySummary = false) {
               }
             ]
       };
-    else if (path === '/today') body = { today: `${requestedMonth}-03`, rows: [] };
+    else if (path === '/today')
+      body = {
+        today: `${requestedMonth}-03`,
+        rows: [
+          {
+            username: 'employee-1',
+            name: 'Ánh Nguyễn',
+            type: 'nv',
+            shiftCode: 'day',
+            in: '08:00',
+            out: '17:00',
+            status: 'checked-out',
+            sessionCount: 1
+          }
+        ]
+      };
     else if (path === '/settings/shifts')
       body = { shifts: [{ code: 'day', name: 'Ca ngày', in: '08:00', out: '17:00' }] };
     else if (path === '/holidays') body = { dates: [] };
@@ -58,7 +83,7 @@ async function mockAttendance(page: Page, emptySummary = false) {
       };
     await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify(body) });
   });
-  return teamRequests;
+  return { teamRequests, failNextToday: () => (failNextToday = true) };
 }
 
 for (const width of [375, 768, 1024, 1440]) {
@@ -147,7 +172,8 @@ test('phone uses labeled employee filter and retains both Today entry points', a
   await page.keyboard.press('Escape');
   await expect(page.getByRole('dialog')).toHaveCount(0);
 
-  await page.getByRole('button', { name: 'Hôm nay (0 đang trong ca)' }).click();
+  const titleOpener = page.getByRole('button', { name: 'Hôm nay (0 đang trong ca)' });
+  await titleOpener.click();
   await expect(page.getByRole('dialog', { name: /hôm nay/i })).toBeVisible();
 });
 
@@ -160,6 +186,93 @@ test('Today title action remains available when monthly attendance summary is em
   await expect(today).toBeVisible();
   await today.click();
   await expect(page.getByRole('dialog', { name: 'Chấm công hôm nay' })).toBeVisible();
+});
+
+test('Today dialog exposes retry after a failed request and renders refreshed rows', async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  const attendance = await mockAttendance(page);
+  await page.goto('/admin/cham-cong?thang=2026-11&filter=pending&q=Ánh&extra=keep');
+  await expect(page.getByRole('button', { name: 'Hôm nay (0 đang trong ca)' })).toBeVisible();
+
+  attendance.failNextToday();
+  await page.getByRole('button', { name: 'Hôm nay (0 đang trong ca)' }).click();
+  const dialog = page.getByRole('dialog');
+  await expect(dialog).toBeVisible();
+  const error = dialog.getByRole('alert');
+  await expect(error).toContainText('Không tải được dữ liệu chấm công hôm nay');
+  await dialog.getByRole('button', { name: 'Thử lại' }).click();
+  await expect(error).toHaveCount(0);
+  await expect(dialog.locator('tbody')).toContainText('Ánh Nguyễn');
+
+  attendance.failNextToday();
+  await dialog.getByRole('button', { name: 'Đang trong ca' }).click();
+  await expect(dialog.getByRole('alert')).toContainText('Dữ liệu đang hiển thị có thể đã cũ');
+  await expect(dialog.locator('tbody')).toContainText('Ánh Nguyễn');
+  await dialog.getByRole('button', { name: 'Thử lại' }).click();
+  await expect(dialog.getByRole('alert')).toHaveCount(0);
+  await expect(dialog.locator('tbody')).toContainText('Không có nhân sự nào phù hợp');
+});
+
+test('Today openers share the hop URL, deep-link on refresh, and remove only hop on close', async ({ page }) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await mockAttendance(page);
+  await page.goto('/admin/cham-cong?thang=2026-11&filter=pending&q=Ánh&extra=keep');
+  const baseUrl = page.url();
+
+  const titleOpener = page.getByRole('button', { name: 'Hôm nay (0 đang trong ca)' });
+  await titleOpener.click();
+  await expect(page).toHaveURL(/hop=hom-nay/);
+  await expect(page.getByRole('dialog')).toHaveCount(1);
+  await page.goBack();
+  await expect(page).toHaveURL(baseUrl);
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+  await expect(titleOpener).toBeFocused();
+  await page.goForward();
+  await expect(page).toHaveURL(/hop=hom-nay/);
+  await expect(page.getByRole('dialog')).toHaveCount(1);
+  await page.reload();
+  await expect(page.getByRole('dialog')).toHaveCount(1);
+
+  const closeButton = page.getByRole('dialog').getByRole('button', { name: 'Đóng' }).last();
+  await closeButton.click();
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+  let current = new URL(page.url());
+  expect(current.searchParams.get('thang')).toBe('2026-11');
+  expect(current.searchParams.get('filter')).toBe('pending');
+  expect(current.searchParams.get('q')).toBe('Ánh');
+  expect(current.searchParams.get('extra')).toBe('keep');
+  expect(current.searchParams.has('hop')).toBe(false);
+
+  const dateOpener = page.getByRole('button', { name: 'Ngày 3, T3. Mở chấm công hôm nay' });
+  await dateOpener.click();
+  await expect(page).toHaveURL(/hop=hom-nay/);
+  await expect(page.getByRole('dialog')).toHaveCount(1);
+  await page.goBack();
+  await expect(page).toHaveURL(baseUrl);
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+  await expect(dateOpener).toBeFocused();
+  await page.goForward();
+  await expect(page).toHaveURL(/hop=hom-nay/);
+  await expect(page.getByRole('dialog')).toHaveCount(1);
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+  current = new URL(page.url());
+  expect(current.searchParams.get('thang')).toBe('2026-11');
+  expect(current.searchParams.get('filter')).toBe('pending');
+  expect(current.searchParams.get('q')).toBe('Ánh');
+  expect(current.searchParams.get('extra')).toBe('keep');
+  expect(current.searchParams.has('hop')).toBe(false);
+
+  await page.goto(`${baseUrl}&hop=hom-nay`);
+  await expect(page.getByRole('dialog')).toHaveCount(1);
+  await page.getByRole('dialog').getByRole('button', { name: 'Đóng' }).last().click();
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+  current = new URL(page.url());
+  expect(current.searchParams.get('thang')).toBe('2026-11');
+  expect(current.searchParams.get('filter')).toBe('pending');
+  expect(current.searchParams.get('q')).toBe('Ánh');
+  expect(current.searchParams.get('extra')).toBe('keep');
+  expect(current.searchParams.has('hop')).toBe(false);
 });
 
 test('31-day month keeps every date and both employee identities reachable at the scroll end', async ({ page }) => {
@@ -190,7 +303,7 @@ test('31-day month keeps every date and both employee identities reachable at th
 
 test('filter and search URL state survives dialog, reload, back and forward', async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 });
-  const teamRequests = await mockAttendance(page);
+  const { teamRequests } = await mockAttendance(page);
   await page.goto('/admin/cham-cong?thang=2026-11&filter=pending&q=%C3%81nh&extra=keep');
 
   await expect(page.getByLabel('Lọc nhân sự')).toHaveValue('pending');

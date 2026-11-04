@@ -11,7 +11,6 @@ import Icon from '@/components/ui/Icon.vue';
 import BulkPunchDialog from './BulkPunchDialog.vue';
 import { dowShort, initials } from '@/utils/format';
 import DayDetailDialog from './DayDetailDialog.vue';
-import TodayDialog from './TodayDialog.vue';
 import PagerBar from './PagerBar.vue';
 import SearchBox from './SearchBox.vue';
 
@@ -22,7 +21,6 @@ const month = computed(() => period.month);
 const session = useSessionStore();
 const canBulk = computed(() => session.caps.includes('request.decide.*'));
 const bulkOpen = ref(false);
-const todayOpen = ref(false);
 const dayOpener = ref<HTMLElement | null>(null);
 
 const CHIPS = [
@@ -174,6 +172,9 @@ function openDay(row: any, day: any, event: MouseEvent) {
   picked.value = { id: row.id, date: day.date };
   router.replace({ query: { ...route.query, hop: 'chi-tiet-ngay', nv: row.id, ngay: day.date } });
 }
+function openToday() {
+  router.push({ query: { ...route.query, hop: 'hom-nay' } });
+}
 function scrollGrid(event: KeyboardEvent) {
   if (event.target !== event.currentTarget) return;
   const region = event.currentTarget as HTMLElement;
@@ -263,7 +264,7 @@ function onSaved() {
                 type="button"
                 class="today-heading"
                 :aria-label="`Ngày ${c.n}, ${c.wd}. Mở chấm công hôm nay`"
-                @click="todayOpen = true"
+                @click="openToday"
               >
                 <span class="dn">{{ c.n }}</span
                 ><span class="wd">{{ c.wd }}</span>
@@ -327,7 +328,6 @@ function onSaved() {
 
   <BulkPunchDialog v-if="bulkOpen" :month="month" @close="bulkOpen = false" @saved="onBulkSaved" />
   <DayDetailDialog v-if="picked" :person-id="picked.id" :date="picked.date" @close="closeDialog" @saved="onSaved" />
-  <TodayDialog v-if="todayOpen" @close="todayOpen = false" />
 </template>
 
 <style scoped>
