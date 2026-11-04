@@ -27,11 +27,23 @@ export const SETTINGS_NAV: any[] = [
 
 // This is the actual data rendered by AdminSidebar; tests exercise the same hierarchy.
 export const ADMIN_SIDEBAR_GROUPS = [
-  [null, [['tong-quan', 'grid', 'Tổng quan', '/admin/tong-quan'], ['duyet', 'inbox', 'Yêu cầu', '/admin/yeu-cau']]],
-  ['Kỳ lương', [['cham-cong', 'clock', 'Chấm công', '/admin/cham-cong'], ['kpi', 'target', 'Đánh giá KPI', '/admin/kpi'], ['luong', 'cash', 'Bảng lương', '/admin/bang-luong']]],
+  [
+    null,
+    [
+      ['tong-quan', 'grid', 'Tổng quan', '/admin/tong-quan'],
+      ['duyet', 'inbox', 'Yêu cầu', '/admin/yeu-cau']
+    ]
+  ],
+  [
+    'Kỳ lương',
+    [
+      ['cham-cong', 'clock', 'Chấm công', '/admin/cham-cong'],
+      ['kpi', 'target', 'Đánh giá KPI', '/admin/kpi'],
+      ['luong', 'cash', 'Bảng lương', '/admin/bang-luong']
+    ]
+  ],
   ['Đội ngũ', [['ho-so', 'file', 'Nhân sự', '/admin/nhan-su']]]
 ];
-
 
 // Đường dẫn dùng lại ở nhiều màn (liên kết chéo)
 export const PATHS = {

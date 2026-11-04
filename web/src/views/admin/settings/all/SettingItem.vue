@@ -215,8 +215,17 @@ const pickOption = (item?, o?) => {
   border: 5px solid var(--text);
 }
 @media (max-width: 1200px) {
-  .it2 { grid-template-columns: minmax(0, 1fr); gap: 12px; padding: 14px; }
-  .it2 .c { min-width: 0; }
-  .pr { gap: 12px; flex-wrap: wrap; }
+  .it2 {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+    padding: 14px;
+  }
+  .it2 .c {
+    min-width: 0;
+  }
+  .pr {
+    gap: 12px;
+    flex-wrap: wrap;
+  }
 }
 </style>

@@ -74,10 +74,27 @@ function search() {
   color: var(--text);
 }
 @media (max-width: 1200px) {
-  .set { min-width: 0; grid-template-columns: minmax(0, 1fr); gap: 12px; }
-  nav.sub { min-width: 0; max-width: 100%; display: flex; gap: 6px; overflow-x: auto; padding: 8px; }
-  nav.sub .g { display: none; }
-  nav.sub .it { flex: 0 0 auto; }
-  .main { min-width: 0; }
+  .set {
+    min-width: 0;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+  nav.sub {
+    min-width: 0;
+    max-width: 100%;
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding: 8px;
+  }
+  nav.sub .g {
+    display: none;
+  }
+  nav.sub .it {
+    flex: 0 0 auto;
+  }
+  .main {
+    min-width: 0;
+  }
 }
 </style>

@@ -1,12 +1,38 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { buildAllSettings, filterAllSettings, searchAllSettings } from '../../web/src/builders/admin-config/all-settings';
+import {
+  buildAllSettings,
+  filterAllSettings,
+  searchAllSettings
+} from '../../web/src/builders/admin-config/all-settings';
 
 const idx = {
   entries: [
-    { id: 'pay.method', group: 2, label: 'Phương thức trả lương', class: 'choice', wired: true, instances: [{ key: 'pay.method', value: 'monthly' }], rules: { options: [{ value: 'monthly', label: 'Hàng tháng' }] } },
-    { id: 'system.tax-code', group: 10, label: 'Mã thuế tham chiếu', class: 'fixed', readOnly: true, instances: [{ key: 'system.tax-code', value: 'TX-1' }] },
-    { id: 'advance.period', group: 1, label: 'Tạm ứng theo kỳ', class: 'fixed', readOnly: true, instances: [{ key: 'advance.period', value: 'monthly' }] }
+    {
+      id: 'pay.method',
+      group: 2,
+      label: 'Phương thức trả lương',
+      class: 'choice',
+      wired: true,
+      instances: [{ key: 'pay.method', value: 'monthly' }],
+      rules: { options: [{ value: 'monthly', label: 'Hàng tháng' }] }
+    },
+    {
+      id: 'system.tax-code',
+      group: 10,
+      label: 'Mã thuế tham chiếu',
+      class: 'fixed',
+      readOnly: true,
+      instances: [{ key: 'system.tax-code', value: 'TX-1' }]
+    },
+    {
+      id: 'advance.period',
+      group: 1,
+      label: 'Tạm ứng theo kỳ',
+      class: 'fixed',
+      readOnly: true,
+      instances: [{ key: 'advance.period', value: 'monthly' }]
+    }
   ]
 };
 
