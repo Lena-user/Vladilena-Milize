@@ -2,6 +2,8 @@
 // Tổng điểm, kết quả (Đạt / Chưa đạt) và mức KPI là số máy chủ trả; ở đây chỉ chọn nhãn, lọc, tìm và chia trang.
 const PAGE_SIZE = 20;
 const TYPE_LABEL = { nv: 'NV', ctv: 'CTV', tts: 'TTS' };
+export const KPI_RULES_LINK = { path: '/admin/cai-dat/kpi', label: 'Quy tắc KPI' };
+export const KPI_HISTORY_ROUTE = '/admin/kpi/lich-su';
 
 /** Thứ tự cột điểm của màn, khớp scores[0..4]. */
 export const KPI_KEYS = ['wework', 'user', 'peer', 'manager', 'self'];
@@ -59,6 +61,8 @@ export function buildKpiSummary(raw?) {
   return {
     month: raw.month,
     empty: !items.length,
+    state: !items.length ? 'empty' : items.some(FILTERS.incomplete) ? 'incomplete' : 'evaluated',
+    total: items.length,
     passed: items.filter(FILTERS.dat).length,
     incomplete: items.filter(FILTERS.incomplete).length,
     failed: wework + below,
@@ -111,5 +115,5 @@ export function buildKpiHistory(audit?, raw?) {
         by: { name: r.actor, username: r.actor }
       };
     });
-  return { rows };
+  return { route: KPI_HISTORY_ROUTE, rows };
 }
