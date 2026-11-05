@@ -1,0 +1,1 @@
+import{a as e}from"./_plugin-vue_export-helper-ClUisvTy.js";import{_ as t,g as n}from"./useApi-CUWMwLLw-Dna_TMXL.js";function r(r){let i=n(),a=t();return{hop:e(()=>{let e=i.query.hop;return typeof e==`string`&&r.includes(e)?e:null}),open:e=>a.push({query:{...i.query,hop:e}}),close:()=>{let{hop:e,...t}=i.query;a.replace({query:t})}}}export{r as t};

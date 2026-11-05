@@ -1,0 +1,540 @@
+npm notice run luong-app-web@0.1.0 test:ui
+npm notice run playwright test --config playwright.config.ts
+[WebServer] npm notice run luong-app-web@0.1.0 dev:mock
+[WebServer] npm notice run vite --mode mock --host 127.0.0.1 --port 4177 --strictPort
+
+Running 268 tests using 4 workers
+
+  ok   1 tests\admin-bell.spec.ts:28:1 › bell drawer lists one line per pending item in five groups (2.3s)
+  ok   2 tests\admin-bell.spec.ts:55:1 › sick leave detail shows the leave type and the reason as separate facts (2.4s)
+  ok   4 tests\admin-bell.spec.ts:70:1 › approving in the bell updates the bell, the overview and selects the next item (2.3s)
+  ok   3 tests\admin-bell.spec.ts:90:1 › forgotten punches offer a reminder and a stand-in entry (2.7s)
+  ok   5 tests\admin-bell.spec.ts:117:1 › escape closes the detail first, then the drawer, returning focus (1.2s)
+  ok   6 tests\admin-bell.spec.ts:135:1 › resolving the last item leaves focus on the Cần duyệt tab (1.6s)
+  ok   7 tests\admin-bell.spec.ts:158:1 › a row name reads in the ink colour, not the sidebar group grey (1.4s)
+  ok   8 tests\admin-bell.spec.ts:165:1 › the detail avatar is 44px wide under the default compact density (1.3s)
+  ok  11 tests\admin-bell.spec.ts:197:1 › on a narrow screen the covered drawer is inert while a detail is open (1.8s)
+  ok  12 tests\admin-bell.spec.ts:230:1 › system news tab lists three read-only notes (1.7s)
+  ok   9 tests\admin-bell.spec.ts:176:1 › keyboard focus on a bell control draws a 2px ink outline (2.6s)
+  ok  10 tests\admin-bell.spec.ts:215:1 › Mở hồ sơ chấm công closes the drawer, also when already on that profile (2.3s)
+  ok  14 tests\admin-overlays.spec.ts:26:3 › admin overlays › a drawer without floating keeps its inline width, full height and shadow (644ms)
+  ok  15 tests\admin-overlays.spec.ts:43:3 › admin overlays › focuses the top overlay, traps Tab, and restores focus through nested close (571ms)
+  ok  16 tests\admin-overlays.spec.ts:81:3 › admin overlays › preserves nested scroll lock and keeps long content and explicit close reachable (663ms)
+  ok  17 tests\admin-overlays.spec.ts:97:3 › admin overlays › dismissable false blocks backdrop and Escape while retaining explicit close (646ms)
+  ok  13 tests\admin-overlays.spec.ts:4:3 › admin overlays › wide modal and drawer fit the viewport at supported widths (1.6s)
+  ok  18 tests\admin-overview.spec.ts:12:1 › overview shows the mock figures (1.0s)
+  ok  19 tests\admin-overview.spec.ts:35:1 › approving updates the list, KPI, bell and toast (1.3s)
+  ok  22 tests\admin-overview.spec.ts:97:1 › month change relabels the overview (941ms)
+  ok  21 tests\admin-overview.spec.ts:68:1 › payroll table filters by status and searches without accents (1.2s)
+  ok  23 tests\admin-overview.spec.ts:104:1 › overview fits 375px and the table scrolls in its own region (953ms)
+  ok  20 tests\admin-overview.spec.ts:53:1 › approving every request shows the empty state (2.5s)
+  ok  24 tests\admin-overview.spec.ts:130:1 › overview rows and totals follow the payroll mock (1.1s)
+  ok  25 tests\admin-overview.spec.ts:114:1 › overview links keep the chosen month (1.1s)
+  ok  29 tests\admin-shell.spec.ts:48:1 › bell shows the pending count and opens the notification drawer (1.4s)
+  ok  28 tests\admin-shell.spec.ts:38:1 › topbar month picker changes ?thang and label (1.4s)
+[WebServer] 8:02:18 AM [vite] http proxy error: /api/v2/settings/params
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+[WebServer] 8:02:18 AM [vite] http proxy error: /api/v2/settings/first-run
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+[WebServer] 8:02:18 AM [vite] http proxy error: /api/v2/settings/first-run
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+[WebServer] 8:02:19 AM [vite] http proxy error: /api/v2/explanations?status=answered
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+[WebServer] 8:02:19 AM [vite] http proxy error: /api/v2/approvals?status=pending&limit=500&offset=0
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+[WebServer] 8:02:19 AM [vite] http proxy error: /api/v2/approvals?status=all&limit=1&offset=0
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+[WebServer] 8:02:19 AM [vite] http proxy error: /api/v2/approvals?status=all&month=2026-10&limit=1&offset=0
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+[WebServer] 8:02:19 AM [vite] http proxy error: /api/v2/staff
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+  ok  27 tests\admin-shell.spec.ts:32:1 › unmocked screen keeps the shell (2.0s)
+[WebServer] 8:02:19 AM [vite] http proxy error: /api/v2/explanations?status=answered
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+[WebServer] 8:02:19 AM [vite] http proxy error: /api/v2/approvals?status=pending&limit=500&offset=0
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+[WebServer] 8:02:19 AM [vite] http proxy error: /api/v2/approvals?status=all&limit=1&offset=0
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+[WebServer] 8:02:19 AM [vite] http proxy error: /api/v2/approvals?status=all&month=2026-10&limit=1&offset=0
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+[WebServer] 8:02:19 AM [vite] http proxy error: /api/v2/staff
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+  ok  31 tests\admin-shell.spec.ts:73:1 › search opens the staff list with q (1.3s)
+  x   26 tests\admin-shell.spec.ts:13:1 › admin shell makes no /api requests while navigating (3.1s)
+  ok  30 tests\admin-shell.spec.ts:57:1 › steps strip shows on attendance and payroll only (1.6s)
+[WebServer] 8:02:20 AM [vite] http proxy error: /api/v2/settings/params
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+[WebServer] 8:02:20 AM [vite] http proxy error: /api/v2/settings/first-run
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+[WebServer] 8:02:20 AM [vite] http proxy error: /api/v2/settings/first-run
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+[WebServer] 8:02:21 AM [vite] http proxy error: /api/v2/explanations?status=answered
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+[WebServer] 8:02:21 AM [vite] http proxy error: /api/v2/approvals?status=pending&limit=500&offset=0
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+[WebServer] 8:02:21 AM [vite] http proxy error: /api/v2/approvals?status=all&limit=1&offset=0
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+[WebServer] 8:02:21 AM [vite] http proxy error: /api/v2/approvals?status=all&month=2026-10&limit=1&offset=0
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+[WebServer] 8:02:21 AM [vite] http proxy error: /api/v2/staff
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+  ok  33 tests\admin-shell.spec.ts:126:1 › navigation drops stale view queries without reopening a shell dialog (1.1s)
+  ok  34 tests\admin-shell.spec.ts:148:3 › topbar keeps controls inside the viewport at 375px (924ms)
+  ok  32 tests\admin-shell.spec.ts:81:1 › mobile admin drawer is keyboard accessible, closes on navigation and preserves queries (2.9s)
+  ok  35 tests\admin-shell.spec.ts:148:3 › topbar keeps controls inside the viewport at 768px (1.2s)
+  ok  36 tests\admin-shell.spec.ts:148:3 › topbar keeps controls inside the viewport at 1024px (1.2s)
+  ok  37 tests\admin-shell.spec.ts:161:1 › sidebar defaults to the dark floating card (1.1s)
+  ok  40 tests\admin-shell.spec.ts:194:1 › kem ground keeps the active sidebar link colours in both sidebar styles (1.4s)
+  ok  38 tests\admin-shell.spec.ts:136:1 › mobile drawer closes when resized to desktop (1.5s)
+  ok  39 tests\admin-shell.spec.ts:175:1 › light sidebar is chosen in the account menu and persists (1.8s)
+  ok  41 tests\admin-shell.spec.ts:211:1 › bell drawer docks to the right edge on desktop (1.4s)
+  ok  42 tests\admin-shell.spec.ts:224:1 › bell drawer and its detail stay inside a 375px viewport (1.3s)
+  ok  43 tests\admin-shell.spec.ts:240:1 › old KPI links land on Bảng lương with their query (1.5s)
+  ok  44 tests\admin-staff.spec.ts:37:1 › staff list follows board I without calling /api (1.4s)
+  ok  45 tests\admin-staff.spec.ts:98:1 › each cell holds one value on one line under six named columns (1.2s)
+  ok  46 tests\admin-staff.spec.ts:123:3 › staff table scrolls inside its own region at 375px (1.1s)
+  ok  47 tests\admin-staff.spec.ts:123:3 › staff table scrolls inside its own region at 768px (1.3s)
+  ok  49 tests\admin-staff.spec.ts:123:3 › staff table scrolls inside its own region at 1440px (1.2s)
+  ok  48 tests\admin-staff.spec.ts:123:3 › staff table scrolls inside its own region at 1024px (1.4s)
+  ok  50 tests\admin-staff.spec.ts:143:1 › staff screen has one dark card and no shadows (918ms)
+  ok  51 tests\admin-staff.spec.ts:165:1 › search matches name, code and email without diacritics or extra spaces (1.4s)
+  ok  53 tests\admin-staff.spec.ts:218:1 › inactive switch keeps only accounts not yet activated (1.4s)
+  ok  54 tests\admin-staff.spec.ts:256:1 › selecting rows counts them, tints them and labels the export (1.2s)
+  ok  52 tests\admin-staff.spec.ts:191:1 › topbar search opens the list with q and the query survives a reload (1.8s)
+  ok  57 tests\admin-staff.spec.ts:347:1 › csv quotes cells holding a semicolon, a quote or a line break (271ms)
+  ok  58 tests\admin-staff.spec.ts:375:1 › keyboard targets show a 2px ink focus ring and Space toggles a row (1.4s)
+  ok  55 tests\admin-staff.spec.ts:281:1 › select all follows the rows on screen and hidden picks are kept but not counted (1.9s)
+  ok  59 tests\admin-staff.spec.ts:410:1 › a name opens Hoàng Thị Mai's profile as on board I2 (1.5s)
+  ok  56 tests\admin-staff.spec.ts:315:1 › export downloads the shown or the selected rows as CSV (3.1s)
+  ok  62 tests\admin-staff.spec.ts:534:1 › opening the drawer keeps ?q, and ?nv and the walk list survive even if q changes underneath (1.4s)
+  ok  60 tests\admin-staff.spec.ts:459:1 › other profiles show their own values and a dash where no board gives one (1.9s)
+  ok  61 tests\admin-staff.spec.ts:496:1 › previous and next walk the rows shown when the drawer opened (2.4s)
+  ok  66 tests\admin-staff.spec.ts:612:1 › tenure counts months and days and never prints a negative span (228ms)
+  ok  64 tests\admin-staff.spec.ts:577:1 › keyboard opens the drawer from a name and it fits 375px (1.2s)
+  ok  65 tests\admin-staff.spec.ts:593:1 › drawer buttons and links show a 2px ink focus ring (1.4s)
+  ok  67 tests\admin-staff.spec.ts:620:1 › design index lists the profile drawer instead of the old staff dialogs (939ms)
+  ok  63 tests\admin-staff.spec.ts:557:1 › drawer links survive a reload and stale ones are dropped (2.8s)
+  -   71 tests\admin-workflows.spec.ts:101:6 › requests show the active period scope, retain unrelated query state, and expose selection actions
+  -   72 tests\admin-workflows.spec.ts:132:6 › request task groups remain limited to capabilities in the active session
+  ok  68 tests\admin-staff.spec.ts:631:1 › rows are 42px tall in Gọn and 56px in the roomy density, avatar and toolbar keep their spec size (1.5s)
+  ok  69 tests\admin-staff.spec.ts:653:1 › departed rows are muted in every cell, the name and the pill text stay as the spec says (1.2s)
+  ok  70 tests\admin-staff.spec.ts:666:1 › a person hidden by the filter opens with both arrows disabled and focus kept inside (1.4s)
+  ok  73 tests\attendance-employee.spec.ts:23:1 › profile shows the employee, the month and the pending day (1.4s)
+  ok  75 tests\attendance-employee.spec.ts:58:1 › stepping onto the last person hands focus to the other button (1.4s)
+  ok  76 tests\attendance-employee.spec.ts:68:1 › history folds plain work days and opens them (1.5s)
+  ok  74 tests\attendance-employee.spec.ts:42:1 › previous and next follow the roster and stop at the ends (2.3s)
+  ok  77 tests\attendance-employee.spec.ts:89:1 › exceptions filter and the hours table (1.5s)
+  ok  79 tests\attendance-employee.spec.ts:137:1 › strip day opens the day dialog without a profile link and deciding clears the callout (1.3s)
+  ok  80 tests\attendance-employee.spec.ts:153:1 › clearing the last pending day leaves focus on the strip day just handled (1.2s)
+  ok  81 tests\attendance-employee.spec.ts:163:1 › with no strip day left to return to, focus falls back to the history tab (1.2s)
+  ok  82 tests\attendance-employee.spec.ts:176:1 › the callout opens the first pending day (1.2s)
+  ok  78 tests\attendance-employee.spec.ts:112:1 › week names, the bell and the day dialog open the profile (3.2s)
+  ok  83 tests\attendance-employee.spec.ts:183:1 › unknown employee and other months (1.4s)
+  ok  84 tests\attendance-employee.spec.ts:195:1 › profile fits 375px and the month strip scrolls in its own region (1.2s)
+  ok  85 tests\attendance-mock.spec.ts:20:1 › roster and days follow the board (916ms)
+  ok  86 tests\attendance-mock.spec.ts:69:1 › everyone works Monday to Saturday and the period adds up to 27 (1.1s)
+  ok  87 tests\attendance-mock.spec.ts:116:1 › hand-written cells match the board (1.0s)
+  ok  89 tests\attendance-mock.spec.ts:172:1 › pending items overlay their days and lift when resolved (654ms)
+  ok  88 tests\attendance-mock.spec.ts:149:1 › other cells follow the generator (923ms)
+  ok  91 tests\attendance-mock.spec.ts:240:1 › day detail and other months (836ms)
+  ok  92 tests\attendance-mock.spec.ts:266:1 › weekdayName names every day (1.0s)
+  ok  90 tests\attendance-mock.spec.ts:198:1 › tiles count pending items by scope (1.5s)
+  ok  93 tests\attendance-mock.spec.ts:277:1 › employee view for Lê Hoàng Nam matches the board (1.4s)
+  ok  94 tests\attendance-mock.spec.ts:328:1 › history rows carry the times and the track (1.1s)
+  ok  95 tests\attendance-mock.spec.ts:371:1 › unknown people and other months (994ms)
+  ok  96 tests\attendance-ux.spec.ts:36:1 › attendance week shows tiles, the current week and today without calling /api (1.5s)
+  ok  97 tests\attendance-ux.spec.ts:63:1 › cells read their state and off days are not buttons (1.4s)
+  ok  99 tests\attendance-ux.spec.ts:125:1 › unknown department in the URL falls back to all (1.3s)
+  ok  98 tests\attendance-ux.spec.ts:87:1 › name and department filters live in the URL and survive dialog, reload, back and forward (2.5s)
+  ok 100 tests\attendance-ux.spec.ts:134:1 › phone keeps the labelled filters inside the viewport (1.4s)
+  ok 101 tests\attendance-ux.spec.ts:151:1 › phone keeps all four week buttons inside the viewport (1.5s)
+  ok 102 tests\attendance-ux.spec.ts:161:1 › pending tab lists every day to handle in date order (1.9s)
+  ok 104 tests\attendance-ux.spec.ts:210:1 › approving in the day dialog updates the cell, the tile and the bell (1.7s)
+  ok 103 tests\attendance-ux.spec.ts:182:1 › day dialog deep-links, shows the request and closes back to the grid (1.8s)
+  ok 105 tests\attendance-ux.spec.ts:224:1 › after deciding an item in Cần xử lý, focus lands on the row now at that place, or the one before it (1.8s)
+  ok 106 tests\attendance-ux.spec.ts:248:1 › a grid cell that turns into a plain span hands focus to the nearest cell in its row (1.6s)
+  ok 108 tests\attendance-ux.spec.ts:279:1 › deciding an item already handled elsewhere warns instead of confirming (1.4s)
+  ok 110 tests\attendance-ux.spec.ts:302:1 › other months show the empty line (882ms)
+  ok 109 tests\attendance-ux.spec.ts:289:1 › bad day links close quietly (2.7s)
+  ok 107 tests\attendance-ux.spec.ts:259:1 › design index entries for the attendance screens open real mock data (3.2s)
+  ok 112 tests\attendance-ux.spec.ts:323:1 › attendance css stays inside the attendance screens after navigating away (2.0s)
+  ok 111 tests\attendance-ux.spec.ts:308:1 › old attendance links land on the week view (2.6s)
+  ok 113 tests\attendance-ux.spec.ts:348:1 › legend items are flat: no capsule, no border (1.4s)
+  ok 114 tests\attendance-ux.spec.ts:357:1 › pill and dot rules apply only under the attendance root (1.5s)
+  ok 115 tests\attendance-ux.spec.ts:382:1 › the planned-shift legend swatch looks like the planned cell it explains (2.0s)
+  ok 116 tests\attendance-ux.spec.ts:396:1 › the legend is a labelled group on the week and on the profile (1.9s)
+  ok 117 tests\attendance-ux.spec.ts:403:1 › comfortable density keeps 48px day cells and an 8px gap between adjacent pills (1.8s)
+  ok 118 tests\attendance-ux.spec.ts:422:1 › the name cell shows the name alone and planned cells carry their hours only in the accessible name (1.7s)
+  ok 121 tests\attendance-ux.spec.ts:493:1 › week buttons move by seven days and Hôm nay returns to this week (2.1s)
+  ok 120 tests\attendance-ux.spec.ts:480:1 › a bad week value opens at today and one past the grid is clamped to the last week (2.4s)
+  ok 119 tests\attendance-ux.spec.ts:457:1 › the week place is kept in the URL and survives switching tabs and the profile round trip (2.6s)
+  ok 123 tests\attendance-ux.spec.ts:556:1 › a press released outside the grid does not leave a phantom drag behind (1.6s)
+  ok 125 tests\attendance-ux.spec.ts:611:1 › keys pressed inside a cell are not taken by the grid (1.4s)
+  ok 124 tests\attendance-ux.spec.ts:577:1 › keyboard scrolls the focused grid by day and by week (1.9s)
+  ok 126 tests\attendance-ux.spec.ts:620:1 › end of the grid keeps names and totals in view (1.2s)
+  ok 127 tests\attendance-ux.spec.ts:641:3 › grid scrolls inside its own region at 375px (1.2s)
+  ok 128 tests\attendance-ux.spec.ts:641:3 › grid scrolls inside its own region at 768px (1.1s)
+  ok 129 tests\attendance-ux.spec.ts:641:3 › grid scrolls inside its own region at 1024px (1.2s)
+  ok 130 tests\attendance-ux.spec.ts:641:3 › grid scrolls inside its own region at 1440px (1.1s)
+  ok 131 tests\attendance-ux.spec.ts:661:1 › day columns are exactly 96px once fonts have loaded (969ms)
+  ok 132 tests\attendance-ux.spec.ts:680:1 › keyboard focus ring on a day pill is drawn inside its cell, in a colour the pill does not swallow (1.4s)
+  ok 134 tests\attendance-ux.spec.ts:771:3 › day columns stay 96px at 1024px (1.1s)
+  ok 133 tests\attendance-ux.spec.ts:720:1 › on a wide screen the day columns stretch so seven days fill the card (1.5s)
+  x  122 tests\attendance-ux.spec.ts:525:1 › dragging scrolls, snaps to a day and opens nothing (7.2s)
+  ok 136 tests\attendance-ux.spec.ts:771:3 › day columns stay 96px at 375px (1.5s)
+  ok 135 tests\attendance-ux.spec.ts:781:1 › resizing keeps the week in view, re-snaps to a column and never writes the URL (2.0s)
+  ok 138 tests\auth-mock.spec.ts:27:1 › admin login lands on the overview (895ms)
+[WebServer] 8:03:04 AM [vite] http proxy error: /api/v2/me
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+[WebServer] 8:03:04 AM [vite] http proxy error: /api/v2/explanations
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+[WebServer] 8:03:04 AM [vite] http proxy error: /api/v2/me
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+[WebServer] 8:03:04 AM [vite] http proxy error: /api/v2/me
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+  ok 140 tests\auth-mock.spec.ts:48:1 › empty password shows the validation message (940ms)
+[WebServer] 8:03:04 AM [vite] http proxy error: /api/v2/me
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+  ok 137 tests\attendance-ux.spec.ts:809:1 › a name opened right after the grid scrolled still reaches the profile while its page is loading (3.4s)
+  ok 141 tests\auth-mock.spec.ts:20:1 › opens straight into admin with the default mock session (1.2s)
+  x  139 tests\auth-mock.spec.ts:38:1 › any other name lands in the staff area (1.6s)
+  ok 143 tests\auth-mock.spec.ts:69:1 › blocked storage still opens admin (914ms)
+  ok 142 tests\auth-mock.spec.ts:58:1 › logout survives a reload (1.5s)
+[WebServer] 8:03:06 AM [vite] http proxy error: /api/v2/me
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+[WebServer] 8:03:06 AM [vite] http proxy error: /api/v2/me
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+[WebServer] 8:03:06 AM [vite] http proxy error: /api/v2/explanations
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+[WebServer] 8:03:06 AM [vite] http proxy error: /api/v2/me
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+[WebServer] 8:03:06 AM [vite] http proxy error: /api/v2/me
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+  ok 146 tests\payroll-mock.spec.ts:22:1 › each sample slip matches board G (17ms)
+  ok 147 tests\payroll-mock.spec.ts:41:1 › period counts and totals match the board tiles (12ms)
+  ok 148 tests\payroll-mock.spec.ts:54:1 › what-if scores recompute KPI, tax and net (8ms)
+  ok 149 tests\payroll-mock.spec.ts:70:1 › editing scores writes history and deciding changes the counts (17ms)
+  ok 150 tests\payroll-mock.spec.ts:84:1 › saved scores are clamped to 0-100 and rounded; empty means missing, not 0 (22ms)
+  x  144 tests\auth-mock.spec.ts:108:1 › staff login can sign out back to /dang-nhap (1.3s)
+[WebServer] 8:03:06 AM [vite] http proxy error: /api/v2/me
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+[WebServer] 8:03:06 AM [vite] http proxy error: /api/v2/me
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+[WebServer] 8:03:07 AM [vite] http proxy error: /api/v2/me
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+[WebServer] 8:03:07 AM [vite] http proxy error: /api/v2/explanations
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+[WebServer] 8:03:07 AM [vite] http proxy error: /api/v2/me
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+  ok 145 tests\auth-mock.spec.ts:130:1 › session survives when only setItem fails (1.4s)
+  ok 151 tests\payroll-ux.spec.ts:29:1 › October payroll shows the board figures (1.3s)
+  ok 153 tests\payroll-ux.spec.ts:86:1 › filters stack and search folds đ and spaces (1.1s)
+  ok 152 tests\auth-mock.spec.ts:121:1 › staff login on a phone can sign out from the Tôi tab (1.3s)
+  ok 154 tests\payroll-ux.spec.ts:101:1 › one gold tile, and kem ground with the light sidebar (1.2s)
+  ok 155 tests\payroll-ux.spec.ts:116:1 › other months show the mockup notice (785ms)
+  ok 158 tests\payroll-ux.spec.ts:176:1 › group labels sit centred over their columns (1.4s)
+  ok 159 tests\payroll-ux.spec.ts:192:1 › group label stays readable beside the frozen column when scrolled (1.3s)
+  ok 156 tests\payroll-ux.spec.ts:64:1 › status filter, department and accent-free search (1.8s)
+  ok 157 tests\payroll-ux.spec.ts:125:1 › frozen columns stay put and mouse drag scrolls without opening a slip (2.1s)
+  ok 160 tests\payroll-ux.spec.ts:204:1 › group label stays inside the visible table at 375px (1.4s)
+  ok 161 tests\payroll-ux.spec.ts:217:1 › a press released outside the table does not start a drag later (1.6s)
+  ok 164 tests\payroll-ux.spec.ts:261:1 › csv quotes cells holding ; " or a line break (180ms)
+  ok 163 tests\payroll-ux.spec.ts:250:1 › payroll fits 375px and the table scrolls in its own region (1.3s)
+  ok 162 tests\payroll-ux.spec.ts:230:1 › export downloads the shown rows, or only the selected ones (2.3s)
+  ok 167 tests\payroll-ux.spec.ts:329:1 › floating drawer: rounded, no shadow, 540px; 16px margins at 375px (1.6s)
+  ok 165 tests\payroll-ux.spec.ts:288:1 › clicking a name opens that payslip (1.9s)
+  ok 168 tests\payroll-ux.spec.ts:340:1 › a stale phieu link opens nothing and is dropped (1.8s)
+  ok 166 tests\payroll-ux.spec.ts:313:1 › previous and next walk the rows shown when the slip opened (2.6s)
+  ok 169 tests\payroll-ux.spec.ts:353:1 › payslip opens with focus on Đóng and Tab still reaches the arrows (1.3s)
+  ok 171 tests\payroll-ux.spec.ts:383:1 › KPI group order: score cells first, then total, flag, pay, then history (661ms)
+  ok 172 tests\payroll-ux.spec.ts:395:1 › KPI group renders no slot rows when the slots are empty (668ms)
+  ok 170 tests\payroll-ux.spec.ts:361:1 › summary rows are 35px in both densities, groups 12px apart, labels inset 8px (1.6s)
+  ok 173 tests\payroll-ux.spec.ts:404:1 › payslip history lists the past score edits (1.3s)
+  ok 176 tests\payroll-ux.spec.ts:455:1 › closing right after typing keeps the score (1.3s)
+  ok 174 tests\payroll-ux.spec.ts:417:1 › typing a score recomputes KPI, tax and net at once (1.8s)
+  ok 175 tests\payroll-ux.spec.ts:434:1 › a missing score counts as zero and is flagged (1.9s)
+  ok 177 tests\payroll-ux.spec.ts:463:1 › moving to the next slip right after typing keeps the score (1.4s)
+  ok 178 tests\payroll-ux.spec.ts:473:1 › score inputs drop junk and cap at 100 (1.5s)
+  ok 180 tests\payroll-ux.spec.ts:508:1 › score inputs are 56x32 rectangles with 8px corners and a 2px ink focus ring (1.3s)
+  ok 179 tests\payroll-ux.spec.ts:486:1 › typing a decimal key by key stops at the point instead of becoming 725 (1.6s)
+  ok 181 tests\payroll-ux.spec.ts:532:1 › disabling an arrow at a list end moves focus to the other arrow (1.7s)
+  ok 182 tests\payroll-ux.spec.ts:549:1 › payslip on a 375px phone has no sideways scroll (1.3s)
+  ok 183 tests\payroll-ux.spec.ts:562:1 › KPI group keeps 35px rows around the score cells (1.3s)
+  ok 185 tests\payroll-ux.spec.ts:579:1 › blanking a score and closing puts the orange dot on that board row (1.1s)
+  ok 184 tests\payroll-ux.spec.ts:569:1 › closing with a slow save still refreshes the board row (2.2s)
+  ok 186 tests\payroll-ux.spec.ts:590:1 › the next slip shows its own stored scores after typing in the previous one (1.4s)
+  ok 187 tests\payroll-ux.spec.ts:602:1 › history starts closed on the next slip (1.5s)
+  ok 188 tests\payroll-ux.spec.ts:619:1 › a typed score survives the slip changing or closing without the buttons (1.5s)
+  ok 190 tests\payroll-ux.spec.ts:657:1 › an already approved slip has no decision buttons (1.4s)
+  ok 191 tests\payroll-ux.spec.ts:665:1 › print calls the browser dialog and prints only the slip (1.6s)
+  ok 189 tests\payroll-ux.spec.ts:634:1 › approving and rejecting update the slip, table, tiles and overview (2.3s)
+  ok 193 tests\payroll-ux.spec.ts:696:1 › after approving in a filtered list, closing puts focus on the next pending row (1.4s)
+  ok 194 tests\payroll-ux.spec.ts:710:1 › after approving the last pending row, closing puts focus on the previous row (1.2s)
+  ok 195 tests\payroll-ux.spec.ts:723:1 › closing after stepping to the next slip puts focus on that slip’s name link (1.2s)
+  ok 196 tests\payroll-ux.spec.ts:735:1 › the table avatar is 32px at the default Gọn density, not shrunk by the global .who .av rule (1.1s)
+  ok 197 tests\payroll-ux.spec.ts:755:1 › board controls show the 2px ink focus ring (1.5s)
+  -  200 tests\settings-search.spec.ts:117:6 › search opens a matching setting in another group by mouse and keyboard
+  ok 198 tests\payroll-ux.spec.ts:766:1 › payslip drawer controls show the 2px ink focus ring (1.5s)
+  -  202 tests\settings-search.spec.ts:148:6 › zero setup count hides the notice and active search progressively discloses group browsing
+  -  203 tests\settings-search.spec.ts:182:6 › nonzero setup count keeps the notice and review action visible
+  -  204 tests\settings-search.spec.ts:193:6 › group-only search keeps a read-only deep-link target visible and resets restrictive filters
+  -  205 tests\settings-search.spec.ts:228:6 › out-of-order group reads cannot replace the active settings revision used by save
+  -  206 tests\settings-search.spec.ts:247:6 › dirty group change cancel preserves query and values; confirmed discard uses fresh revision without overwriting another edit
+  -  207 tests\settings-search.spec.ts:285:6 › browser back and forward guard dirty query-driven group changes
+  -  208 tests\settings-search.spec.ts:312:6 › adding a position asks before discarding an in-progress settings draft
+  -  209 tests\settings-search.spec.ts:336:6 › same-group item focus and chip keep drafts; reset/save leave no stale dirty prompt
+  -  210 tests\settings-search.spec.ts:366:6 › add position guards dirty drafts; same-group navigation, reset, and save do not prompt later
+  ok 199 tests\payroll-ux.spec.ts:775:1 › after a typed decimal point, selecting all and retyping replaces the value (1.5s)
+[WebServer] 8:03:26 AM [vite] http proxy error: /api/v2/holidays
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+[WebServer] 8:03:26 AM [vite] http proxy error: /api/v2/settings/params?group=1
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+[WebServer] 8:03:26 AM [vite] http proxy error: /api/v2/settings/shifts
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+[WebServer] 8:03:26 AM [vite] http proxy error: /api/v2/settings/params?group=6
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+[WebServer] 8:03:26 AM [vite] http proxy error: /api/v2/settings/first-run
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+  ok 211 tests\staff-phone-attendance.spec.ts:10:1 › Chấm công makes no /api call (1.0s)
+[WebServer] 8:03:27 AM [vite] http proxy error: /api/v2/settings/params
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+[WebServer] 8:03:27 AM [vite] http proxy error: /api/v2/settings/first-run
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+[WebServer] 8:03:27 AM [vite] http proxy error: /api/v2/settings/first-run
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+[WebServer] 8:03:27 AM [vite] http proxy error: /api/v2/holidays
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+[WebServer] 8:03:27 AM [vite] http proxy error: /api/v2/settings/params?group=1
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+[WebServer] 8:03:27 AM [vite] http proxy error: /api/v2/settings/shifts
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+[WebServer] 8:03:27 AM [vite] http proxy error: /api/v2/settings/params?group=6
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+[WebServer] 8:03:27 AM [vite] http proxy error: /api/v2/settings/first-run
+[WebServer] Error: connect ECONNREFUSED 127.0.0.1:3000
+[WebServer]     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1706:16)
+  ok 201 tests\settings-search.spec.ts:136:1 › frame search carries only month context and returns to its source with Back (1.4s)
+  ok 212 tests\staff-phone-attendance.spec.ts:16:1 › header, month switch and the three tiles follow J2 (838ms)
+  ok 213 tests\staff-phone-attendance.spec.ts:31:1 › calendar paints October by group and only days with data are buttons (850ms)
+  ok 214 tests\staff-phone-attendance.spec.ts:45:1 › Gần đây lists the five latest days with times (706ms)
+  ok 192 tests\payroll-ux.spec.ts:681:1 › while a decision is in flight the buttons are disabled, then focus lands on the status line (5.9s)
+  ok 215 tests\staff-phone-attendance.spec.ts:57:1 › 27/10 sheet shows the late check-in and the pending explanation, then closes back (1.1s)
+  ok 217 tests\staff-phone-attendance.spec.ts:104:1 › a Gần đây row opens its day (1.2s)
+  ok 218 tests\staff-phone-attendance.spec.ts:112:3 › ?ngay=2026-10-29 opens nothing and is dropped from the URL (1.0s)
+  ok 219 tests\staff-phone-attendance.spec.ts:112:3 › ?ngay=2026-10-04 opens nothing and is dropped from the URL (912ms)
+  ok 216 tests\staff-phone-attendance.spec.ts:78:1 › other day kinds use the same sheet (1.8s)
+  ok 220 tests\staff-phone-attendance.spec.ts:112:3 › ?ngay=abc opens nothing and is dropped from the URL (891ms)
+  ok 221 tests\staff-phone-attendance.spec.ts:122:3 › calendar cells stay inside the card at 320px (969ms)
+  ok 222 tests\staff-phone-attendance.spec.ts:122:3 › calendar cells stay inside the card at 330px (980ms)
+  ok 223 tests\staff-phone-attendance.spec.ts:122:3 › calendar cells stay inside the card at 360px (961ms)
+  ok 225 tests\staff-phone-attendance.spec.ts:161:1 › Gần đây rows say the day status in their accessible name, not only by colour (848ms)
+  ok 224 tests\staff-phone-attendance.spec.ts:152:1 › calendar cells are exactly 40px at 390px (1.0s)
+  ok 228 tests\staff-phone-flow.spec.ts:36:1 › a J4 request row opens its sheet without aria-current or a new history entry (1.3s)
+  ok 227 tests\staff-phone-flow.spec.ts:25:1 › Hôm nay links open the day and the request sheets (1.9s)
+  ok 226 tests\staff-phone-flow.spec.ts:6:1 › Check-out on Hôm nay carries to Chấm công through the tab bar (2.0s)
+  ok 231 tests\staff-phone-home.spec.ts:4:1 › Hôm nay makes no /api call (1.1s)
+  ok 232 tests\staff-phone-home.spec.ts:10:1 › greeting shows Nam and the mock date (1.1s)
+  ok 230 tests\staff-phone-flow.spec.ts:68:1 › closing a sheet opened from Hôm nay lands on the matching J2 day and J4 row (1.4s)
+  ok 233 tests\staff-phone-home.spec.ts:20:1 › today card shows the shift, worked time and the Check-out button (998ms)
+  ok 234 tests\staff-phone-home.spec.ts:35:1 › Check-out records 09:40 and switches the card to the done state (1.1s)
+  ok 235 tests\staff-phone-home.spec.ts:47:1 › this week links days with data and marks the rest as images (1.1s)
+  ok 236 tests\staff-phone-home.spec.ts:74:1 › income card and the two latest requests link to their screens (1.0s)
+  ok 237 tests\staff-phone-home.spec.ts:93:3 › week cells stay inside the card at 341px (945ms)
+  ok 238 tests\staff-phone-home.spec.ts:93:3 › week cells stay inside the card at 360px (883ms)
+  ok 239 tests\staff-phone-home.spec.ts:93:3 › week cells stay inside the card at 375px (1.1s)
+  ok 240 tests\staff-phone-home.spec.ts:118:1 › week cells are exactly 40px wide at 390px (1.1s)
+  ok 241 tests\staff-phone-home.spec.ts:126:1 › Check-out by keyboard announces the new state and keeps focus on the card (1.1s)
+  ok 229 tests\staff-phone-flow.spec.ts:48:1 › no screen scrolls sideways at 320px and 360px and the tab bar never covers the last row (6.6s)
+  ok 242 tests\staff-phone-income.spec.ts:4:1 › Thu nhập makes no /api call (861ms)
+  ok 243 tests\staff-phone-income.spec.ts:10:1 › net pay card follows J6 (1.0s)
+  ok 244 tests\staff-phone-income.spec.ts:20:1 › KPI card shows the total, KPI pay and the five scores (1.0s)
+  ok 246 tests\staff-phone-income.spec.ts:31:1 › line items add up to the net pay and there is no full-payslip link (1.0s)
+  ok 245 tests\staff-phone-income.spec.ts:43:1 › design index lists the eight phone boards (1.1s)
+  ok 247 tests\staff-phone-requests.spec.ts:8:1 › Yêu cầu makes no /api call (858ms)
+  ok 248 tests\staff-phone-requests.spec.ts:14:1 › list groups four requests by month under the Tất cả tab (879ms)
+  ok 250 tests\staff-phone-requests.spec.ts:46:1 › arrow, Home and End keys move between tabs (1.1s)
+  ok 251 tests\staff-phone-requests.spec.ts:65:1 › Tạo yêu cầu shows a notice and opens nothing (1.1s)
+  ok 249 tests\staff-phone-requests.spec.ts:33:1 › tabs filter by status and hide empty month groups (1.2s)
+  ok 252 tests\staff-phone-requests.spec.ts:73:1 › the Phép năm 12/10 sheet follows J5 and closes back to its row (1.4s)
+  ok 255 tests\staff-phone-requests.spec.ts:123:1 › ?yc=khong-co opens nothing and is dropped from the URL (901ms)
+  ok 253 tests\staff-phone-requests.spec.ts:97:1 › pending and rejected requests show their steps (1.5s)
+  ok 254 tests\staff-phone-requests.spec.ts:113:1 › a filtered tab survives opening and closing a request (1.6s)
+  ok 256 tests\staff-phone-requests.spec.ts:130:1 › the status tabs fit inside the strip at 320px and 360px (1.5s)
+  ok 257 tests\staff-phone-requests.spec.ts:159:3 › the Tạo yêu cầu notice floats above the tab bar at 320px (1.3s)
+  ok 258 tests\staff-phone-requests.spec.ts:159:3 › the Tạo yêu cầu notice floats above the tab bar at 390px (1.2s)
+  ok 259 tests\staff-phone-shell.spec.ts:13:1 › the staff phone app makes no /api call on any tab (1.6s)
+  ok 262 tests\staff-phone-shell.spec.ts:45:1 › Tôi shows Nam’s profile and work facts (1.2s)
+  ok 260 tests\staff-phone-shell.spec.ts:22:1 › tab bar lists five tabs in order and marks only the open one (2.9s)
+  ok 263 tests\staff-phone-shell.spec.ts:62:1 › Đổi mật khẩu opens a sheet that validates, closes, and returns focus (1.8s)
+  -  266 tests\staff-ux.spec.ts:135:8 › staff desktop keeps its task order without overflow at 768px
+  -  267 tests\staff-ux.spec.ts:135:8 › staff desktop keeps its task order without overflow at 1024px
+  -  268 tests\staff-ux.spec.ts:135:8 › staff desktop keeps its task order without overflow at 1440px
+  ok 261 tests\staff-phone-shell.spec.ts:32:1 › tab bar floats 16px above the bottom and no tab scrolls sideways (2.9s)
+  ok 264 tests\staff-phone-shell.spec.ts:85:1 › password deep link opens the sheet; Escape and Huỷ close it (1.5s)
+  ok 265 tests\staff-phone-shell.spec.ts:97:1 › Đăng xuất signs out to /dang-nhap (634ms)
+
+
+  1) tests\admin-shell.spec.ts:13:1 › admin shell makes no /api requests while navigating ──────────
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  -  1
+    + Received  + 10
+
+    - Array []
+    + Array [
+    +   "GET /api/v2/settings/params",
+    +   "GET /api/v2/settings/first-run",
+    +   "GET /api/v2/settings/first-run",
+    +   "GET /api/v2/explanations",
+    +   "GET /api/v2/approvals",
+    +   "GET /api/v2/approvals",
+    +   "GET /api/v2/approvals",
+    +   "GET /api/v2/staff",
+    + ]
+
+      27 |   await page.getByRole('link', { name: 'Mở trang Yêu cầu' }).click();
+      28 |   await expect(page).toHaveURL(/\/admin\/yeu-cau$/);
+    > 29 |   expect(calls).toEqual([]);
+         |                 ^
+      30 | });
+      31 |
+      32 | test('unmocked screen keeps the shell', async ({ page }) => {
+        at C:\Users\Lena\Downloads\Vladilena-Milize-lena-main\Vladilena-Milize-lena-main\web\tests\admin-shell.spec.ts:29:17
+
+    Error Context: test-results\admin-shell-admin-shell-ma-71b50-i-requests-while-navigating\error-context.md
+
+  2) tests\attendance-ux.spec.ts:525:1 › dragging scrolls, snaps to a day and opens nothing ────────
+
+    Error: expect(page).toHaveURL(expected) failed
+
+    Expected pattern: /\/admin\/cham-cong$/
+    Received string:  "http://127.0.0.1:4177/admin/cham-cong?tuan=2026-10-26"
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toHaveURL" with timeout 5000ms
+        11 × locator resolved to <html lang="vi" data-side="dark" data-density="gon">…</html>
+           - unexpected value "http://127.0.0.1:4177/admin/cham-cong?tuan=2026-10-26"
+
+
+      545 |   await page.mouse.up();
+      546 |   await expect.poll(() => scrollLeftOf(page)).toBe(1344);
+    > 547 |   await expect(page).toHaveURL(/\/admin\/cham-cong$/);
+          |                      ^
+      548 |   expect(await clicksSeen(page)).toBe(0);
+      549 |
+      550 |   // Cờ chặn tự xoá: một cú bấm thường ngay sau đó vẫn tới nơi và mở hộp.
+        at C:\Users\Lena\Downloads\Vladilena-Milize-lena-main\Vladilena-Milize-lena-main\web\tests\attendance-ux.spec.ts:547:22
+
+    Error Context: test-results\attendance-ux-dragging-scr-6a4f5--to-a-day-and-opens-nothing\error-context.md
+
+  3) tests\auth-mock.spec.ts:38:1 › any other name lands in the staff area ─────────────────────────
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 7
+
+    - Array []
+    + Array [
+    +   "GET /api/v2/me",
+    +   "GET /api/v2/me",
+    +   "GET /api/v2/me",
+    +   "GET /api/v2/explanations",
+    +   "GET /api/v2/me",
+    + ]
+
+      43 |   await page.getByRole('button', { name: 'Đăng nhập' }).click();
+      44 |   await expect(page).toHaveURL(/\/nv-may-tinh/);
+    > 45 |   expect(calls).toEqual([]);
+         |                 ^
+      46 | });
+      47 |
+      48 | test('empty password shows the validation message', async ({ page }) => {
+        at C:\Users\Lena\Downloads\Vladilena-Milize-lena-main\Vladilena-Milize-lena-main\web\tests\auth-mock.spec.ts:45:17
+
+    Error Context: test-results\auth-mock-any-other-name-lands-in-the-staff-area\error-context.md
+
+  4) tests\auth-mock.spec.ts:108:1 › staff login can sign out back to /dang-nhap ───────────────────
+
+    Error: expect(received).toEqual(expected) // deep equality
+
+    - Expected  - 1
+    + Received  + 7
+
+    - Array []
+    + Array [
+    +   "GET /api/v2/me",
+    +   "GET /api/v2/me",
+    +   "GET /api/v2/me",
+    +   "GET /api/v2/explanations",
+    +   "GET /api/v2/me",
+    + ]
+
+      116 |   await page.reload();
+      117 |   await expect(page).toHaveURL(/\/dang-nhap/);
+    > 118 |   expect(calls).toEqual([]);
+          |                 ^
+      119 | });
+      120 |
+      121 | test('staff login on a phone can sign out from the Tôi tab', async ({ page }) => {
+        at C:\Users\Lena\Downloads\Vladilena-Milize-lena-main\Vladilena-Milize-lena-main\web\tests\auth-mock.spec.ts:118:17
+
+    Error Context: test-results\auth-mock-staff-login-can-sign-out-back-to-dang-nhap\error-context.md
+
+  4 failed
+    tests\admin-shell.spec.ts:13:1 › admin shell makes no /api requests while navigating ───────────
+    tests\attendance-ux.spec.ts:525:1 › dragging scrolls, snaps to a day and opens nothing ─────────
+    tests\auth-mock.spec.ts:38:1 › any other name lands in the staff area ──────────────────────────
+    tests\auth-mock.spec.ts:108:1 › staff login can sign out back to /dang-nhap ────────────────────
+  15 skipped
+  249 passed (1.7m)

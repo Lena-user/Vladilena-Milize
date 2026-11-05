@@ -1,0 +1,1 @@
+import{t as e}from"./http-CzcPcNpD.js";function t(){return Promise.reject(new e(501,`Màn này chưa nối dữ liệu thật.`,{code:`not_connected`}))}export{t};

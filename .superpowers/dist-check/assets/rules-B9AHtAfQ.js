@@ -1,0 +1,1 @@
+var e=e=>{let t=(e||``).trim().length;return t>=10&&t<=300};export{e as t};

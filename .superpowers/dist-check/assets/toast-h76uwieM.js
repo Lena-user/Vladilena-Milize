@@ -1,0 +1,2 @@
+import{W as e}from"./_plugin-vue_export-helper-ClUisvTy.js";var t={error:7e3,warn:9e3,ok:3500},n=0,r=e([]);function i(e,i){let o=String(i||``).trim();if(!o)return null;let s=r.findIndex(t=>t.kind===e&&t.text===o);s>=0&&r.splice(s,1);let c={id:++n,kind:e,text:o};return r.push(c),setTimeout(()=>a(c.id),t[e]||6e3),c.id}function a(e){let t=r.findIndex(t=>t.id===e);t>=0&&r.splice(t,1)}var o={error:e=>i(`error`,e),ok:e=>i(`ok`,e),warnings(e){return i(`warn`,(Array.isArray(e)?e:[]).map(e=>typeof e==`string`?e:e&&e.message).filter(Boolean).join(`
+`))}};export{o as n,r,a as t};
